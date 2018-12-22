@@ -1,7 +1,9 @@
 //
 // Created by mingj on 18-12-18.
 //
-#include "./helper/RawSocketHelper.cpp"
+//#include "./helper/RawSocketHelper.h"
+//#include "./helper/NDNHelper.h"
+#include "./helper/JSONCPPHelper.h"
 using namespace std;
 
 unsigned char data[1024] = {
@@ -14,17 +16,20 @@ unsigned char data[1024] = {
         0x75, 0x76, 0x77, 0x61, 0x62, 0x63, 0x64, 0x65,
         0x66, 0x67, 0x68, 0x69};
 
-int main() {
+int main(int argc, char *argv[]) {
     //创建套接字
-    RawSocketHelper rawSocketHelper;
-    int len = 60;
-    for(int i = 0; i < len; i++) {
-        cout << data[i] << ", ";
-    }
-    char s[] = "192.169.1.1";
+//    RawSocketHelper rawSocketHelper;
+//    NDNHelper ndnHelper;
+//    ndnHelper.initNDN();
+//    int len = 60;
+//    for(int i = 0; i < len; i++) {
+//        cout << data[i] << ", ";
+//    }
+//    char s[] = "192.169.1.1";
+//
+//    rawSocketHelper.sendPacketTo(&data, static_cast<size_t>(len), s);
+////    send(sockfd, )
 
-    rawSocketHelper.sendPacketTo(&data, static_cast<size_t>(len), s);
-//    send(sockfd, )
     return 0;
 }
 
