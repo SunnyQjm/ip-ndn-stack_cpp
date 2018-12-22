@@ -1,0 +1,32 @@
+;common settings
+[Common]
+;local ip address
+local_ip = "127.0.0.1"
+
+; 1: bind theads to CPU cores, 0: no bind
+is_pin_cpu = 0;
+
+;zmq settings
+zmq_data_server = "tcp://10.75.77.77:9000"
+zmq_cmd_server = "tcp://127.0.0.1:9001"
+
+;upload period, in ms
+interval_len = 1000
+
+;interface used for packet capturing
+pcap_if = "p55p1"
+;capturing buffer size, 20*1024*1024 (2MB)
+pcap_buf_size = 20971520
+;the snapshot length for pcap handler
+pcap_snap_len = 65535
+;the read timeout for pcap handler, in ms
+pcap_to_ms = 1
+
+;the ip address of redis server
+redis_server = "127.0.0.1"
+redis_port = 6379
+
+;settings for hash table
+[HashTable]
+;the size of hash table
+ht_size = 40000
