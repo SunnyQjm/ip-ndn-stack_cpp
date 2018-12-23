@@ -95,12 +95,15 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
     if (interest_name.find(pre, 0) != string::npos) {
         string next_name = "/IP";
         vector<string> fileds;
-        boost::split(fileds, interest_name, boost::is_any_of("|"));
+        boost::split(fileds, interest_name, boost::is_any_of("/"));
 
-        for(int i = 0; i < fileds.size(); i++) {
-            cout << fileds[i] << " - ";
-        }
-        cout << endl;
+        string sip = fileds[3];
+        string dip = fileds[4];
+        string uid = fileds[5];
+        next_name.append("/" + dip);
+        next_name.append("/" + sip);
+        next_name.append("/" + uid);
+
         //回复一个空包
         Data data(interest_name);
         data.setContent((const uint8_t *) empty_content, sizeof(empty_content));
