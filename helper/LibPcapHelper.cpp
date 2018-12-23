@@ -103,7 +103,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
 //    }
 //    s1 = pthread_create(&this->readRingBufferThreadId, &attr1, &get_ip_fun, NULL); //create a thread
 //    if (s1 != 0) {
-        LOG_ERR("pthread_create: %s\n", strerror(errno));
+//        LOG_ERR("pthread_create: %s\n", strerror(errno));
 //    }
 
     int res;
