@@ -8,6 +8,11 @@
 #include <iostream>
 #include "../libpcapcapture/ndn.cpp"
 #include "JSONCPPHelper.h"
+#include <string>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <ndn-cpp/face.hpp>
 
 using namespace std;
 class LibPcapHelper {
@@ -15,10 +20,13 @@ public:
     LibPcapHelper();
     void initLibPcap(string configFilePath);
     void close();
+    string generateUUID();
     void join();
 private:
     pcap_t *ph;
     pthread_t readRingBufferThreadId;
+    Face face;
+    void deal(tuple_t tuple);
 };
 
 

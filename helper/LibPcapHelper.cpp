@@ -70,7 +70,7 @@ void* get_ip_fun(void *arg) {
     pthread_exit(NULL);
 }
 
-LibPcapHelper::LibPcapHelper() {
+LibPcapHelper::LibPcapHelper(): face("localhost") {
 
 }
 
@@ -140,8 +140,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
         decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
-        t_kern.index = static_cast<unsigned int>(AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762));
-        while (write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
+        this->deal(t_kern);
+//        t_kern.index = static_cast<unsigned int>(AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762));
+//        while (write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
     }
 
 }
@@ -155,4 +156,52 @@ void LibPcapHelper::close() {
 
 void LibPcapHelper::join() {
     pthread_join(this->readRingBufferThreadId, nullptr);
+}
+
+void LibPcapHelper::deal(tuple_t tuple) {
+    ipPacketCache.insert(make_pair(this->generateUUID(), tuple));
+
+    //发送兴趣包
+    uint32_t int_sip = ntohl(tuple.key.src_ip);
+    uint32_t int_dip = ntohl(tuple.key.dst_ip);
+    //cout<<int_sip<<endl;
+    string sip1 = to_string((int_sip >> 24) & 0xFF);
+    string sip2 = to_string((int_sip >> 16) & 0xFF);
+    string sip3 = to_string((int_sip >> 8) & 0xFF);
+    string sip4 = to_string((int_sip) & 0xFF);
+    string dip1 = to_string((int_dip >> 24) & 0xFF);
+    string dip2 = to_string((int_dip >> 16) & 0xFF);
+    string dip3 = to_string((int_dip >> 8) & 0xFF);
+    string dip4 = to_string((int_dip) & 0xFF);
+    string uuid = to_string(tuple.index);
+
+    string name = "IP/pre/";
+    //char * ip = (char*) (&t.key.src_ip);
+    name.append(dip1);
+    name.append(".");
+    name.append(dip2);
+    name.append(".");
+    name.append(dip3);
+    name.append(".");
+    name.append(dip4);
+    name.append("/");
+
+    name.append(sip1);
+    name.append(".");
+    name.append(sip2);
+    name.append(".");
+    name.append(sip3);
+    name.append(".");
+    name.append(sip4);
+    name.append("/");
+
+    name.append(uuid);
+
+    face.expressInterest(name, bind(&Consumer::onData, &consumer, _1, _2), bind(&Consumer::onTimeout, &consumer, _1));
+}
+
+string LibPcapHelper::generateUUID() {
+    boost::uuids::uuid a_uuid = boost::uuids::random_generator()(); // 这里是两个() ，因为这里是调用的 () 的运算符重载
+    const string tmp_uuid = boost::uuids::to_string(a_uuid);
+    return tmp_uuid;
 }
