@@ -159,7 +159,8 @@ void LibPcapHelper::join() {
 }
 
 void LibPcapHelper::deal(tuple_t tuple) {
-    ipPacketCache.insert(make_pair(this->generateUUID(), tuple));
+    string uuid = this->generateUUID();
+    ipPacketCache.insert(make_pair(uuid, tuple));
 
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);
@@ -173,7 +174,6 @@ void LibPcapHelper::deal(tuple_t tuple) {
     string dip2 = to_string((int_dip >> 16) & 0xFF);
     string dip3 = to_string((int_dip >> 8) & 0xFF);
     string dip4 = to_string((int_dip) & 0xFF);
-    string uuid = to_string(tuple.index);
 
     string name = "IP/pre/";
     //char * ip = (char*) (&t.key.src_ip);
