@@ -22,6 +22,8 @@
 #include <ndn-cpp/face.hpp>
 #include <ndn-cpp/security/key-chain.hpp>
 #include <unordered_map>
+#include <boost/algorithm/string.hpp>
+#include <vector>
 
 using namespace ndn;
 using namespace ndn::func_lib;
@@ -92,18 +94,20 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
     string pre = "/IP/pre/";
     if (interest_name.find(pre, 0) != string::npos) {
         string next_name = "/IP";
-        int find_index1 = 7;
-        int find_index2 = 0;
-        find_index1 = interest_name.find('/', find_index1 + 1);
-        find_index2 = interest_name.find('/', find_index1 + 1);
-        next_name.append(interest_name.substr(find_index1, find_index2 - find_index1));
-        next_name.append(interest_name.substr(7, find_index1));
-        next_name.append(interest_name.substr(find_index2, interest_name.length() - find_index2));
+        vector<string> fileds;
+        boost::split(fileds, interest_name, boost::is_any_of("|"));
 
-        Data data(next_name);
+        for(int i = 0; i < fileds.size(); i++) {
+            cout << fileds[i] << " - ";
+        }
+        cout << endl;
+        //回复一个空包
+        Data data(interest_name);
         data.setContent((const uint8_t *) empty_content, sizeof(empty_content));
         KeyChain_.sign(data);
         face.putData(data);
+
+        //发一个正式拉取的请求
         face.expressInterest(next_name, bind(&Consumer::onData, &consumer, _1, _2),
                              bind(&Consumer::onTimeout, &consumer, _1));
         printf("\n================execute empty onInterest================\n");
