@@ -107,6 +107,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name>& prefix,const ptr_lib::share
          next_name.append(interest_name.substr(find_index2,interest_name.length()-find_index2));
 
          unsigned int uuid = atoi(interest_name.substr(28,interest_name.length()).c_str());
+         cout << "reply interest :" << next_name << ", " << uuid << endl;
 		 while(head->next != NULL){
 			 if(uuid == head->next->index)
 			 {

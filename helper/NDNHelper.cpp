@@ -44,7 +44,7 @@ void NDNHelper::initNDN(string configFilePath) {
     int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, NULL);    //byj
     if(s != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
-        exit(-1);
+            exit(-1);
     }
 
 

@@ -136,7 +136,6 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
         decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
-        cout << header->caplen << "-" << header->len << endl;
         t_kern.index = static_cast<unsigned int>(AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762));
         while (write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
     }
