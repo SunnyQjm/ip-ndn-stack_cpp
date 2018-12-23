@@ -21,6 +21,7 @@
 #include <pcap.h>
 #include <ndn-cpp/face.hpp>
 #include <ndn-cpp/security/key-chain.hpp>
+#include <unordered_map>
 
 using namespace ndn;
 using namespace ndn::func_lib;
@@ -31,7 +32,8 @@ using namespace std;
 ringbuffer_t *rb_all_flow;
 pthread_t all_flow_thread;
 //transform timeval to double
-tuple_t *head = NULL;
+//tuple_t *head = NULL;
+unordered_map<string, tuple_t> ipPacketCache;
 char empty_content[] = "none";
 char content[] = "success";
 
@@ -82,7 +84,6 @@ public:
 
 Producer producer;
 Consumer consumer;
-Face face("localhost");
 
 void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
               Face &face) {
@@ -116,24 +117,37 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         next_name.append(interest_name.substr(3, find_index1));
         next_name.append(interest_name.substr(find_index2, interest_name.length() - find_index2));
 
-        unsigned int uuid = atoi(interest_name.substr(28, interest_name.length()).c_str());
+//        unsigned int uuid = atoi(interest_name.substr(28, interest_name.length()).c_str());
+        string uuid = interest_name.substr(28, interest_name.length());
         cout << "reply interest :" << next_name << ", " << uuid << endl;
-        while (head->next != NULL) {
-            cout << "finding" << endl;
-            if (uuid == head->next->index) {
-                Data data(next_name);
-                data.setContent((const uint8_t *) head->next->pkt, sizeof(head->next->pkt));
-                KeyChain_.sign(data);
-                face.putData(data);
-                tuple_t *tmp = head->next->next;
-                free(head->next);
-                head->next = tmp;
-                break;
-            }
-            tuple_t *tmp = head->next->next;
-            free(head->next);
-            head->next = tmp;
+        auto result = ipPacketCache.find(uuid);
+        if(result == ipPacketCache.end()) {
+            cout << "没有找到uuid = " << uuid << "的数据包" << endl;
+            return;
         }
+        tuple_t tuple1 = result->second;
+
+        Data data(next_name);
+        data.setContent(tuple1.pkt, tuple1.size);
+        KeyChain_.sign(data);
+        face.putData(data);
+
+//        while (head->next != NULL) {
+//            cout << "finding" << endl;
+//            if (uuid == head->next->index) {
+//                Data data(next_name);
+//                data.setContent((const uint8_t *) head->next->pkt, sizeof(head->next->pkt));
+//                KeyChain_.sign(data);
+//                face.putData(data);
+//                tuple_t *tmp = head->next->next;
+//                free(head->next);
+//                head->next = tmp;
+//                break;
+//            }
+//            tuple_t *tmp = head->next->next;
+//            free(head->next);
+//            head->next = tmp;
+//        }
         printf("\n================execute onInterest================\n");
     }
 }

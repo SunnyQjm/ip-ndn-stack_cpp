@@ -18,13 +18,14 @@ void* get_ip_fun(void *arg) {
     cout << "get_ip_fun" << endl;
     tuple_t t;
     memset(&t, 0, sizeof(struct Tuple));
-    tuple_t * tail = head = (tuple_t*)malloc(sizeof(tuple_t));
-    tail->next = NULL;
+    tuple_t * tail  = (tuple_t*)malloc(sizeof(tuple_t));
+    tail->next = nullptr;
+    Face face("localhost");
     while (true) {
         while (read_ringbuffer(rb_all_flow, &t) < 0) {}; //read the ringbuff
         tail->next = (tuple_t *)malloc(sizeof(tuple_t));
         tail = tail->next ;
-        memcpy(head,&t,sizeof(tuple_t));
+//        memcpy(head,&t,sizeof(tuple_t));
         //	printf("144 tuple sip:%d ,dip:%d ,flag:%d ,size:%d\n ,uid:%d\n", t.key.src_ip, t.key.dst_ip, t.flag, t.size, t.index);
         uint32_t int_sip = ntohl(t.key.src_ip);
         uint32_t int_dip = ntohl(t.key.dst_ip);
@@ -38,6 +39,9 @@ void* get_ip_fun(void *arg) {
         string dip3 = to_string((int_dip >> 8) & 0xFF);
         string dip4 = to_string((int_dip) & 0xFF);
         string uuid = to_string(t.index);
+
+        ipPacketCache.insert(std::make_pair(uuid, t));
+
         string name = "IP/pre/";
         //char * ip = (char*) (&t.key.src_ip);
         name.append(dip1);
