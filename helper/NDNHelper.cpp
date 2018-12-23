@@ -13,10 +13,11 @@ NDNHelper::NDNHelper(): face("localhost") {
  * @param arg
  * @return
  */
-void *dealEvent(void* arg, Face& face) {
+void *dealEvent(void* arg) {
     cout << "dealEvent" << endl;
+    Face *face = (Face *)arg;
     while(true) {
-        face.processEvents();
+        face->processEvents();
         usleep(50);
     }
 }
@@ -41,7 +42,7 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
 
     //开始循环处理事件
-    int s = pthread_create(&this->processEventThreadId, NULL, std::bind(dealEvent, std::placeholders::_1, this->face), NULL);    //byj
+    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *)&this->face);    //byj
     if(s != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
             exit(-1);
