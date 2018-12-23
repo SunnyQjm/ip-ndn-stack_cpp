@@ -15,6 +15,6 @@ ssize_t RawSocketHelper::sendPacketTo(const void *buffer, size_t len, string &ip
     sockaddr_in address{};
     bzero(&address, sizeof(address));
     address.sin_family = AF_INET;
-    inet_pton(AF_INET, ip.c_str(), (void *)&address);
+    address.sin_addr.s_addr = inet_addr(ip.c_str());
     return sendto(this->sockfd, buffer, len, flag, (sockaddr *)&address, sizeof(address));
 }
