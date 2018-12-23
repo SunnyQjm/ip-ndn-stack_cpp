@@ -1,14 +1,14 @@
 PROGS = main
 
-SRC += libpcapcapture/config.h libpcapcapture/config.cpp libpcapcapture/packet.cpp libpcapcapture/ttime.cpp libpcapcapture/util.cpp  \
-    libpcapcapture/ringbuffer.cpp libpcapcapture/hash.cpp helper/NDNHelper.cpp \
-	helper/RawSocketHelper.cpp
+SRC += libpcapcapture/packet.cpp libpcapcapture/ttime.cpp libpcapcapture/util.cpp  \
+    libpcapcapture/ringbuffer.cpp libpcapcapture/hash.cpp  \
+	helper/JSONCPPHelper.cpp helper/RawSocketHelper.cpp
 
 OBJS = main.o
 
 CFLAGS = -Wall -std=c++14 #-fno-omit-frame-pointer
 
-DEFAULT_LINK_LIBS = -lrt -liniparser -lm  -lpcap -lpthread -lndn-cpp
+DEFAULT_LINK_LIBS = -lrt -liniparser -lm  -lpcap -lpthread -lndn-cpp -ljsoncpp
 
 #CFLAGS += -D APPROXIMATE
 #CFLAGS += -D TRACE_FILE

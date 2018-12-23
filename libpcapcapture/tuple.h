@@ -27,7 +27,7 @@ typedef struct Tuple {
     flow_key_t key;
 	//header
 	//struct pcap_pkthdr *header;
-	int index;//uid
+    unsigned int index;//uid
 	//pkt
 	const uint8_t *pkt;
     // 1 byte
@@ -43,6 +43,7 @@ typedef struct Tuple {
     uint64_t seq;
     // 8 bytes
     uint64_t size; //inner IP datagram length(header + data)
+	struct Tuple * next ;
 } tuple_t;
 
 #endif

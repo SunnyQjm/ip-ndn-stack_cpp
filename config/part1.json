@@ -5,6 +5,6 @@
   "pcap_buf_size": 2097152,
   "pcap_snap_len": 65535,
   "pcap_to_ms": 1,
-  "pcap_dstmac": "ether dst a0:36:9f:85:bc:8c",
-  "registerIp": "192.169.1.4"
+  "pcap_dstmac": "ether proto \\ip && ether dst a0:36:9f:85:bc:8c",
+  "registerIp": "192.169.1.1"
 }

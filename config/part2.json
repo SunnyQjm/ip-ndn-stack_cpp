@@ -1,10 +1,10 @@
 {
   "is_pin_cpu": false,
   "interval_len": 1000,
-  "pcap_if": "enp2s0f0",
+  "pcap_if": "enp6s0f1",
   "pcap_buf_size": 2097152,
   "pcap_snap_len": 65535,
   "pcap_to_ms": 1,
-  "pcap_dstmac": "ether dst a0:36:9f:85:bc:8c",
+  "pcap_dstmac": "ether proto \\ip && ether dst a0:36:9f:85:c4:9d",
   "registerIp": "192.169.1.4"
 }

@@ -1,8 +1,9 @@
 //
 // Created by mingj on 18-12-18.
 //
-//#include "./helper/RawSocketHelper.h"
-//#include "./helper/NDNHelper.h"
+#include "./helper/RawSocketHelper.h"
+#include "./helper/NDNHelper.cpp"
+#include "./libpcapcapture/ndn.cpp"
 #include "./helper/JSONCPPHelper.h"
 using namespace std;
 
@@ -17,6 +18,8 @@ unsigned char data[1024] = {
         0x66, 0x67, 0x68, 0x69};
 
 int main(int argc, char *argv[]) {
+    NDNHelper ndnHelper;
+    ndnHelper.initNDN("./config/test.json");
     //创建套接字
 //    RawSocketHelper rawSocketHelper;
 //    NDNHelper ndnHelper;

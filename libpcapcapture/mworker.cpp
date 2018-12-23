@@ -1,4 +1,4 @@
-#include "ndn.h"
+#include "ndn.cpp"
 
 
 //byj-----------------------------------begin
@@ -17,11 +17,6 @@ void *init(void* arg) {
 //byj-----------------------------------end
 
 
-extern conf_t* conf;
-//init variables for ringbuff
-ringbuffer_t* rb_all_flow;
-pthread_t all_flow_thread;
-//transform timeval to double
 double time2dbl(struct timeval time_value) {
 	     double new_time = 0;
 	     new_time = (double)(time_value.tv_usec);
@@ -34,12 +29,14 @@ double time2dbl(struct timeval time_value) {
 static void* get_ip_fun(void *arg) {
 	     tuple_t t;
 	     memset(&t, 0, sizeof(struct Tuple));
+		 tuple_t * tail = head = (tuple_t*)malloc(sizeof(tuple_t));
+		 tail->next = NULL;
 		 while (1) {
 			 while (read_ringbuffer(rb_all_flow, &t) < 0) {}; //read the ringbuff  
-			 flow_key_t *k;
-			 k = (flow_key_t*)malloc(sizeof(flow_key_t));
-			 memcpy(k, &t.key, sizeof(flow_key_t));
-			// printf("144 tuple sip:%d ,dip:%d ,flag:%d ,size:%d\n ,uid:%d\n", t.key.src_ip, t.key.dst_ip, t.flag, t.size, t.index);
+			 tail->next = (tuple_t *)malloc(sizeof(tuple_t));
+			 tail = tail->next ;
+			 memcpy(head,&t,sizeof(tuple_t));
+		//	printf("144 tuple sip:%d ,dip:%d ,flag:%d ,size:%d\n ,uid:%d\n", t.key.src_ip, t.key.dst_ip, t.flag, t.size, t.index);
              uint32_t int_sip = ntohl(t.key.src_ip);
              uint32_t int_dip = ntohl(t.key.dst_ip);
              //cout<<int_sip<<endl;
@@ -75,7 +72,7 @@ static void* get_ip_fun(void *arg) {
 			 name.append(uuid);
 
 			 face.expressInterest(name, bind(&Consumer::onData, &consumer, _1, _2), bind(&Consumer::onTimeout, &consumer, _1)); 
-			 free(k);
+			 
 		 }
 		 pthread_exit(NULL);	
  }
@@ -106,7 +103,7 @@ static void* get_ip_fun(void *arg) {
 	 int to_ms = conf_common_pcap_toms(conf); //the value of to_ms is the rea    d timeout for pcap handler, in ms
 											  //init ringbuffer (there are two ringbuffers)
 	 sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
-	 rb_all_flow = create_ringbuffer_shm1(tmp, sizeof(tuple_t));  //create a ri    ngbuffer
+	 rb_all_flow = create_ringbuffer_shm1(tmp, sizeof(tuple_t));  //create a ringbuffer
 	 tuple_t t_kern;
 	 double pkt_ts;
 	 memset(&t_kern, 0, sizeof(struct Tuple));
@@ -116,12 +113,12 @@ static void* get_ip_fun(void *arg) {
 	 if (s1 != 0) {
 		 LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
 	 }
-	 s1 = pthread_create(&all_flow_thread, &attr1, &get_ip_fun, NULL); //crea    te a thread
+	 s1 = pthread_create(&all_flow_thread, &attr1, &get_ip_fun, NULL); //create a thread
 	 if (s1 != 0) {
 		 LOG_ERR("pthread_creat: %s\n", strerror(errno));
 	 }
 	 //init pcap
-	 pcap_t *ph = pcap_create(dev_name, ebuf); //dev_name is the network devic    e to open, ebuf is error buffer
+	 pcap_t *ph = pcap_create(dev_name, ebuf); //dev_name is the network device to open, ebuf is error buffer
 	 if (ph == NULL) {
 		 pcap_close(ph);
 		// printf("%s: pcap_create failed: %s\n", dev_name, ebuf);

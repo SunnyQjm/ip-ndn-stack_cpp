@@ -17,6 +17,7 @@ JSONCPPHelper::JSONCPPHelper(string filePath) {
 
     //将根节点解析到root当中
     reader.parse(in, this->root);
+    in.close();
 }
 
 string JSONCPPHelper::getString(string key) {

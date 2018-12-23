@@ -28,7 +28,7 @@ void check_instance() {
     // }
 }
 
-const char* doGetSting(dictionary* dict, const char* sec, const char* key, char* def) {
+char* getstring(const dictionary* dict, const char* sec, const char* key, char* def) {
     check_instance();
     return iniparser_getstring(dict, strconcat(sec, key), def);
 }
@@ -38,15 +38,15 @@ int getint(const dictionary* dict,  const char* sec, const char* key, int def) {
 }
 unsigned long long getull(const dictionary* dict,  const char* sec, const char* key, unsigned long long def) {
     check_instance();
-    const char* str = iniparser_getstring(dict, strconcat(sec, key), NULL);
+    char* str = iniparser_getstring(dict, strconcat(sec, key), NULL);
     if (str == NULL) return def;
     return strtoull(str, NULL, 10);
 }
-double getdouble(dictionary* dict,  const char* sec, const char* key, double def) {
+double getdouble(const dictionary* dict,  const char* sec, const char* key, double def) {
     check_instance();
     return iniparser_getdouble(dict, strconcat(sec, key), def);
 }
-int getboolean(dictionary* dict,  const char* sec, const char* key, int def) {
+int getboolean(const dictionary* dict,  const char* sec, const char* key, int def) {
     check_instance();
     return iniparser_getboolean(dict, strconcat(sec, key), def);
 }
@@ -55,7 +55,7 @@ int getboolean(dictionary* dict,  const char* sec, const char* key, int def) {
 
 conf_t* Config_Init(char* ininame) { //iniparser    get the dictionary object
     conf_t* ret = (conf_t*)calloc(1, sizeof(conf_t));
-    if(ret == NULL)
+    if(ret == NULL) 
         LOG_ERR("error: allocate config error\n");
     if(ininame) {
         ret->dict = iniparser_load(ininame); //load the iniparser file
@@ -71,7 +71,7 @@ conf_t* Config_Init(char* ininame) { //iniparser    get the dictionary object
     return ret;
 }
 void Config_Destroy(conf_t* conf) {
-    if (conf == NULL)
+    if (conf == NULL) 
         return;
     if (conf->dict) {
         iniparser_freedict(conf->dict);
@@ -91,11 +91,11 @@ unsigned long long conf_common_interval_len(conf_t *conf) {
 }
 
 const char *conf_common_pcap_if(conf_t *conf) {
-    return doGetSting(conf->dict, SEC_COMM, KEY_COMM_PCAP_IF, DEF_COMM_PCAP_IF);
+    return getstring(conf->dict, SEC_COMM, KEY_COMM_PCAP_IF, DEF_COMM_PCAP_IF);
 }
 
 const char *conf_common_pcap_dstmac(conf_t *conf) {
-	return doGetSting(conf->dict, SEC_COMM, KEY_COMM_PCAP_DSTMAC, DEF_COMM_PCAP_DSTMAC);
+	return getstring(conf->dict, SEC_COMM, KEY_COMM_PCAP_DSTMAC, DEF_COMM_PCAP_DSTMAC);
 }
 
 int conf_common_pcap_bufsize(conf_t *conf) {

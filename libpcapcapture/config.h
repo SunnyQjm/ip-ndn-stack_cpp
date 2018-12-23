@@ -2,8 +2,7 @@
 #define __AFS_CONFIG_INCLUDED_HPP__
 
 #include <stdint.h>
-#include <iniparser/iniparser.h>
-#include <iniparser/dictionary.h>
+#include <iniparser.h>
 #include "util.h"
 
 //wrap iniparser dictionary
@@ -51,11 +50,11 @@ void Config_Destroy(conf_t* conf);
 const char* strconcat(const char* a, const char* b);
 void check_instance();
 
-char* getstring(dictionary* dict, const char* sec, const char* key, char* def);
-int getint(dictionary* dict,  const char* sec, const char* key, int def);
-unsigned long long getull(dictionary* dict,  const char* sec, const char* key, unsigned long long def);
-double getdouble(dictionary* dict,  const char* sec, const char* key, double def);
-int getboolean(dictionary* dict,  const char* sec, const char* key, int def);
+char* getstring(const dictionary* dict, const char* sec, const char* key, char* def);
+int getint(const dictionary* dict,  const char* sec, const char* key, int def);
+unsigned long long getull(const dictionary* dict,  const char* sec, const char* key, unsigned long long def);
+double getdouble(const dictionary* dict,  const char* sec, const char* key, double def);
+int getboolean(const dictionary* dict,  const char* sec, const char* key, int def);
 
 conf_t* Config_Init(char* ininame);
 void Config_Destroy(conf_t* conf);

@@ -1,7 +1,6 @@
 //
 // Created by mingj on 18-12-22.
 //
-
 #ifndef IP_NDN_STACK_CPP_JSONCPPHELPER_H
 #define IP_NDN_STACK_CPP_JSONCPPHELPER_H
 
