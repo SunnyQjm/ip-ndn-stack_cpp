@@ -77,7 +77,7 @@ void* get_ip_fun(void *arg) {
  * @param configFilePath 配置文件的路径
  * @return
  */
-pthread_t NDNHelper::initNDN(string configFilePath) {
+void NDNHelper::initNDN(string configFilePath) {
     JSONCPPHelper jsoncppHelper(configFilePath);
     string registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
     cout << "registerIp: " << registerIp << endl;
@@ -90,9 +90,25 @@ pthread_t NDNHelper::initNDN(string configFilePath) {
     this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
 
     //开始循环处理事件
-    pthread_t threadId;   //byj
-    pthread_create(&threadId, NULL, dealEvent, NULL);    //byj
+    pthread_create(&this->processEventThreadId, NULL, dealEvent, NULL);    //byj
+    if(this->processEventThreadId != 0) {
+        LOG_ERR("pthread_create: %s\n", strerror(errno));
+        exit(-1);
+    }
 
-    return threadId;
+    //开始循环读取RingBuffer
+    pthread_create(&this->readRingBufferThreadId, NULL, get_ip_fun, NULL);
+    if(this->processEventThreadId != 0) {
+        LOG_ERR("pthread_create: %s\n", strerror(errno));
+        exit(-1);
+    }
+}
+
+/**
+ * join thread
+ */
+void NDNHelper::join() {
+    pthread_join(this->processEventThreadId, nullptr);
+    pthread_join(this->readRingBufferThreadId, nullptr);
 }
 

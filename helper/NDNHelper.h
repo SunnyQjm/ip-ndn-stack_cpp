@@ -13,7 +13,8 @@ using namespace std;
 class NDNHelper {
 public:
     NDNHelper();
-    pthread_t initNDN(string configFilePath);
+    void initNDN(string configFilePath);
+    void join();
 
 public: //静态变量
     static const string PREFIX_PRE_REQUEST;
@@ -21,6 +22,8 @@ public: //静态变量
     static const string KEY_CONFIG_REGISTER_IP;
 private:
     Face face;
+    pthread_t processEventThreadId;
+    pthread_t readRingBufferThreadId;
 };
 
 //前缀

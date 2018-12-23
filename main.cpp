@@ -5,6 +5,7 @@
 #include "./helper/NDNHelper.cpp"
 #include "./libpcapcapture/ndn.cpp"
 #include "./helper/JSONCPPHelper.h"
+#include "./helper/LibPcapHelper.cpp"
 using namespace std;
 
 unsigned char data[1024] = {
@@ -18,9 +19,15 @@ unsigned char data[1024] = {
         0x66, 0x67, 0x68, 0x69};
 
 int main(int argc, char *argv[]) {
+    LibPcapHelper libPcapHelper;
+    libPcapHelper.initLibPcap(argv[1]);
+
     NDNHelper ndnHelper;
-    pthread_t pthreadId = ndnHelper.initNDN(argv[1]);
-    pthread_join(pthreadId, nullptr);
+    ndnHelper.initNDN(argv[1]);
+
+
+    ndnHelper.join();
+    libPcapHelper.close();
     //创建套接字
 //    RawSocketHelper rawSocketHelper;
 //    NDNHelper ndnHelper;
