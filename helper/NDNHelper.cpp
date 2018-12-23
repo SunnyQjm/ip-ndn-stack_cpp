@@ -84,8 +84,8 @@ pthread_t NDNHelper::initNDN(string configFilePath) {
     // 前缀注册
     KeyChain KeyChain_;
     this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
-    Name register_prefix1("/IP/192.169.1.1");
-    Name register_prefix2("/IP/pre/192.169.1.1");
+    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
+    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
     this->face.registerPrefix(register_prefix1,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
     this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
 
