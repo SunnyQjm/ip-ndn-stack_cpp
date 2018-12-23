@@ -11,10 +11,10 @@ RawSocketHelper::RawSocketHelper() {
     }
 }
 
-ssize_t RawSocketHelper::sendPacketTo(const void *buffer, size_t len, char *ip, int flag) {
+ssize_t RawSocketHelper::sendPacketTo(const void *buffer, size_t len, string &ip, int flag) {
     sockaddr_in address{};
     bzero(&address, sizeof(address));
     address.sin_family = AF_INET;
-    inet_pton(AF_INET, ip, (void *)&address);
+    inet_pton(AF_INET, ip.c_str(), (void *)&address);
     return sendto(this->sockfd, buffer, len, flag, (sockaddr *)&address, sizeof(address));
 }

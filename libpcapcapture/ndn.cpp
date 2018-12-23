@@ -24,6 +24,7 @@
 #include <unordered_map>
 #include <boost/algorithm/string.hpp>
 #include <vector>
+#include "../helper/RawSocketHelper.h"
 
 using namespace ndn;
 using namespace ndn::func_lib;
@@ -38,6 +39,7 @@ pthread_t all_flow_thread;
 unordered_map<string, tuple_t> ipPacketCache;
 char empty_content[] = "none";
 char content[] = "success";
+RawSocketHelper rawSocketHelper;
 
 void showpcap(const ptr_lib::shared_ptr<Data> &data);
 
@@ -159,8 +161,18 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
 }
 
 void showpcap(const ptr_lib::shared_ptr<Data> &data) {
+    string name = data->getName().toUri();
     cout << "Name: " << data->getName().toUri() << endl;
     cout << "Content: " << data->getContent() << endl;
+    string pre = "/IP/pre/";
+    if (name.find(pre, 0) != string::npos) {
+
+    } else {        //正式拉取到包的回复
+        vector<string> fileds;
+        boost::split(fileds, name, boost::is_any_of("/"));
+
+        rawSocketHelper.sendPacketTo(data->getContent().buf(), data->getContent().size(), fileds[4]);
+    }
 }
 
 #endif //IP_NDN_STACK_CPP_NDN_H

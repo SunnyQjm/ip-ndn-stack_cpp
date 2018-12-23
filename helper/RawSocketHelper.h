@@ -6,11 +6,12 @@
 #define IP_NDN_STACK_CPP_RAWSOCKETHELPER_H
 
 #include <iostream>
-#include <strings.h>
+#include <cstring>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+using namespace std;
 class RawSocketHelper {
 
 public:
@@ -24,7 +25,7 @@ public:
      * @param flag      调用方式标志位, 默认为0, 改变Flags，将会改变Sendto发送的形式
      * @return
      */
-    ssize_t sendPacketTo(const void * buffer, size_t len, char *ip, int flag = 0);
+    ssize_t sendPacketTo(const void * buffer, size_t len, string &ip, int flag = 0);
 
 private:
     int sockfd;     //原始套接字handler
