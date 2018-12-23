@@ -41,8 +41,8 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
 
     //开始循环处理事件
-    pthread_create(&this->processEventThreadId, NULL, dealEvent, NULL);    //byj
-    if(this->processEventThreadId != 0) {
+    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, NULL);    //byj
+    if(s != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
         exit(-1);
     }
