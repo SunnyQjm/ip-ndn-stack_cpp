@@ -171,6 +171,7 @@ void showpcap(const ptr_lib::shared_ptr<Data> &data) {
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
 
+        cout << "发raw socket 到: " << fileds[4] << endl;
         rawSocketHelper.sendPacketTo(data->getContent().buf(), data->getContent().size(), fileds[4]);
     }
 }
