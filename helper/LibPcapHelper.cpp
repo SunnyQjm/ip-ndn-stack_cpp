@@ -203,5 +203,6 @@ void LibPcapHelper::deal(tuple_t tuple) {
 string LibPcapHelper::generateUUID() {
     boost::uuids::uuid a_uuid = boost::uuids::random_generator()(); // 这里是两个() ，因为这里是调用的 () 的运算符重载
     const string tmp_uuid = boost::uuids::to_string(a_uuid);
+    cout << "generate uuid: " << tmp_uuid << endl;
     return tmp_uuid;
 }
