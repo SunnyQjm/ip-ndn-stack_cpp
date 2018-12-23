@@ -108,18 +108,17 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
                              bind(&Consumer::onTimeout, &consumer, _1));
         printf("\n================execute empty onInterest================\n");
     } else {
-        string next_name = "/IP";
-        int find_index1 = 3;
-        int find_index2 = 0;
-        find_index1 = interest_name.find('/', find_index1 + 1);
-        find_index2 = interest_name.find('/', find_index1 + 1);
-        next_name.append(interest_name.substr(find_index1, find_index2 - find_index1));
-        next_name.append(interest_name.substr(3, find_index1));
-        next_name.append(interest_name.substr(find_index2, interest_name.length() - find_index2));
+//        int find_index1 = 3;
+//        int find_index2 = 0;
+//        find_index1 = interest_name.find('/', find_index1 + 1);
+//        find_index2 = interest_name.find('/', find_index1 + 1);
+//        next_name.append(interest_name.substr(find_index1, find_index2 - find_index1));
+//        next_name.append(interest_name.substr(3, find_index1));
+//        next_name.append(interest_name.substr(find_index2, interest_name.length() - find_index2));
 
 //        unsigned int uuid = atoi(interest_name.substr(28, interest_name.length()).c_str());
         string uuid = interest_name.substr(28, interest_name.length());
-        cout << "reply interest :" << next_name << ", " << uuid << endl;
+        cout << "reply interest :" << interest_name << ", " << uuid << endl;
         auto result = ipPacketCache.find(uuid);
         if(result == ipPacketCache.end()) {
             cout << "没有找到uuid = " << uuid << "的数据包" << endl;
@@ -127,7 +126,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         }
         tuple_t tuple1 = result->second;
 
-        Data data(next_name);
+        Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
         KeyChain_.sign(data);
         face.putData(data);
