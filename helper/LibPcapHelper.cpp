@@ -23,6 +23,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     char tmp[1024];
     string dev_name = jsoncppHelper.getString("pcap_if");
 
+    cout << "dev_name" << dev_name << endl;
     //const char *dev_name = pcap_lookupdev(NULL);//the value of dev_name is     the interface used for packet capturing in config.ini
     struct pcap_pkthdr *header;
     const u_char *pkt;
