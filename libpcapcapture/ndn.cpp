@@ -14,7 +14,6 @@
 #include <math.h>
 #include <semaphore.h>
 #include "util.h"
-#include "ringbuffer.h"
 #include "packet.h"
 #include "hash.h"
 //#include "config.h"
@@ -32,7 +31,6 @@ using namespace std;
 
 //extern conf_t *conf;
 //init variables for ringbuff
-ringbuffer_t *rb_all_flow;
 pthread_t all_flow_thread;
 //transform timeval to double
 //tuple_t *head = NULL;
@@ -117,17 +115,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
                              bind(&Consumer::onTimeout, &consumer, _1));
         printf("\n================execute empty onInterest================\n");
     } else {
-//        int find_index1 = 3;
-//        int find_index2 = 0;
-//        find_index1 = interest_name.find('/', find_index1 + 1);
-//        find_index2 = interest_name.find('/', find_index1 + 1);
-//        next_name.append(interest_name.substr(find_index1, find_index2 - find_index1));
-//        next_name.append(interest_name.substr(3, find_index1));
-//        next_name.append(interest_name.substr(find_index2, interest_name.length() - find_index2));
-
-//        unsigned int uuid = atoi(interest_name.substr(28, interest_name.length()).c_str());
         string uuid = interest_name.substr(28, interest_name.length());
-        cout << "reply interest :" << interest_name << ", " << uuid << endl;
         auto result = ipPacketCache.find(uuid);
         if(result == ipPacketCache.end()) {
             cout << "没有找到uuid = " << uuid << "的数据包" << endl;
@@ -140,30 +128,14 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         KeyChain_.sign(data);
         face.putData(data);
 
-//        while (head->next != NULL) {
-//            cout << "finding" << endl;
-//            if (uuid == head->next->index) {
-//                Data data(next_name);
-//                data.setContent((const uint8_t *) head->next->pkt, sizeof(head->next->pkt));
-//                KeyChain_.sign(data);
-//                face.putData(data);
-//                tuple_t *tmp = head->next->next;
-//                free(head->next);
-//                head->next = tmp;
-//                break;
-//            }
-//            tuple_t *tmp = head->next->next;
-//            free(head->next);
-//            head->next = tmp;
-//        }
         printf("\n================execute onInterest================\n");
     }
 }
 
 void showpcap(const ptr_lib::shared_ptr<Data> &data) {
     string name = data->getName().toUri();
-    cout << "Name: " << data->getName().toUri() << endl;
-    cout << "Content: " << data->getContent() << endl;
+//    cout << "Name: " << data->getName().toUri() << endl;
+//    cout << "Content: " << data->getContent() << endl;
     string pre = "/IP/pre/";
     if (name.find(pre, 0) != string::npos) {
 
@@ -171,7 +143,7 @@ void showpcap(const ptr_lib::shared_ptr<Data> &data) {
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
 
-        cout << "发raw socket 到: " << fileds[3] << ", size=" << data->getContent().size()<< endl;
+//        cout << "发raw socket 到: " << fileds[3] << ", size=" << data->getContent().size()<< endl;
         rawSocketHelper.sendPacketTo(data->getContent().buf(), data->getContent().size(), fileds[3]);
     }
 }
