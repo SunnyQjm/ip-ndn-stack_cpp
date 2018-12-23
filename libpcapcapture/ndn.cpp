@@ -17,7 +17,7 @@
 #include "ringbuffer.h"
 #include "packet.h"
 #include "hash.h"
-#include "config.h"
+//#include "config.h"
 #include <pcap.h>
 #include <ndn-cpp/face.hpp>
 #include <ndn-cpp/security/key-chain.hpp>
@@ -26,7 +26,7 @@ using namespace ndn;
 using namespace ndn::func_lib;
 using namespace std;
 
-extern conf_t *conf;
+//extern conf_t *conf;
 //init variables for ringbuff
 ringbuffer_t *rb_all_flow;
 pthread_t all_flow_thread;
