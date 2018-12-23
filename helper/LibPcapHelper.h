@@ -15,9 +15,10 @@ public:
     LibPcapHelper();
     void initLibPcap(string configFilePath);
     void close();
-
+    void join();
 private:
     pcap_t *ph;
+    pthread_t readRingBufferThreadId;
 };
 
 

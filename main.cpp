@@ -19,15 +19,15 @@ unsigned char data[1024] = {
         0x66, 0x67, 0x68, 0x69};
 
 int main(int argc, char *argv[]) {
-    LibPcapHelper libPcapHelper;
-    libPcapHelper.initLibPcap(argv[1]);
 
-    cout << "init ndn" << endl;
     NDNHelper ndnHelper;
     ndnHelper.initNDN(argv[1]);
 
+    LibPcapHelper libPcapHelper;
+    libPcapHelper.initLibPcap(argv[1]);
 
     ndnHelper.join();
+    libPcapHelper.join();
     libPcapHelper.close();
     //创建套接字
 //    RawSocketHelper rawSocketHelper;

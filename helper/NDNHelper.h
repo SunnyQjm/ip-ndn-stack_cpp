@@ -23,7 +23,6 @@ public: //静态变量
 private:
     Face face;
     pthread_t processEventThreadId;
-    pthread_t readRingBufferThreadId;
 };
 
 //前缀
