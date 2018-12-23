@@ -92,10 +92,14 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     memset(&t_kern, 0, sizeof(struct Tuple));
 
     //开始循环读取RingBuffer
-    pthread_create(&this->readRingBufferThreadId, NULL, get_ip_fun, NULL);
-    if(this->readRingBufferThreadId != 0) {
+    pthread_attr_t attr1;
+    int s1 = pthread_attr_init(&attr1); //initialize
+    if (s1 != 0) {
+        LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+    }
+    s1 = pthread_create(&this->readRingBufferThreadId, &attr1, &get_ip_fun, NULL); //create a thread
+    if (s1 != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
-        exit(-1);
     }
 
     int res;
@@ -133,7 +137,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         //
         decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
         cout << header->caplen << "-" << header->len << endl;
-        t_kern.index = AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762);
+        t_kern.index = static_cast<unsigned int>(AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762));
         while (write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
     }
 

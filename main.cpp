@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
     LibPcapHelper libPcapHelper;
     libPcapHelper.initLibPcap(argv[1]);
 
-    ndnHelper.join();
     libPcapHelper.join();
+    ndnHelper.join();
     libPcapHelper.close();
     //创建套接字
 //    RawSocketHelper rawSocketHelper;
