@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
     LibPcapHelper libPcapHelper;
     libPcapHelper.initLibPcap(argv[1]);
 
+    cout << "init ndn" << endl;
     NDNHelper ndnHelper;
     ndnHelper.initNDN(argv[1]);
 

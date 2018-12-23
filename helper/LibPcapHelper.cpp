@@ -23,10 +23,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     char tmp[1024];
     string dev_name = jsoncppHelper.getString("pcap_if");
 
-    cout << "dev_name" << dev_name << endl;
     //const char *dev_name = pcap_lookupdev(NULL);//the value of dev_name is     the interface used for packet capturing in config.ini
     struct pcap_pkthdr *header;
-    const u_char *pkt;
+    const uint8_t *pkt = nullptr;
     char ebuf[PCAP_ERRBUF_SIZE];
 
     int bufsize = jsoncppHelper.getInt("pcap_buf_size"); //the value of bufsize is     the the capturing buffer size in config.ini
@@ -43,6 +42,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     this->ph = pcap_create(dev_name.c_str(), ebuf); //dev_name is the network device to open, ebuf is error buffer
     if (ph == nullptr) {
         pcap_close(ph);
+        cout << "ph create failed" << endl;
         // printf("%s: pcap_create failed: %s\n", dev_name, ebuf);
         exit(-1);
     }
@@ -59,8 +59,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     pcap_lookupnet(dev_name.c_str(), &net, &mask, ebuf);
     //capture packets and copy the packets to the ringbuffer
     while ((res = pcap_next_ex(ph, &header, &pkt)) >= 0) { //reads the next packe    t and returns a success/failure indication.
-        if (pkt != nullptr) {
-            if (res == 0)
+        if (pkt == nullptr || res == 0) {
                 continue;
         }
         //decode the captured packet
@@ -72,7 +71,8 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
         decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
-        t_kern.index = static_cast<unsigned int>(AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762));
+        cout << header->caplen << "-" << header->len << endl;
+        t_kern.index = AwareHash((uint8_t*)t_kern.pkt, 8, 388650253, 388650319, 1176845762);
         while (write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
     }
 

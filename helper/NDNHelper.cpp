@@ -14,6 +14,7 @@ NDNHelper::NDNHelper(): face("localhost") {
  * @return
  */
 void *dealEvent(void* arg) {
+    cout << "dealEvent" << endl;
     while(true) {
         face.processEvents();
         usleep(50);
@@ -22,6 +23,7 @@ void *dealEvent(void* arg) {
 
 //all-flow function
 void* get_ip_fun(void *arg) {
+    cout << "get_ip_fun" << endl;
     tuple_t t;
     memset(&t, 0, sizeof(struct Tuple));
     tuple_t * tail = head = (tuple_t*)malloc(sizeof(tuple_t));
@@ -102,6 +104,7 @@ void NDNHelper::initNDN(string configFilePath) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
         exit(-1);
     }
+    cout << "NDN init success" << endl;
 }
 
 /**
