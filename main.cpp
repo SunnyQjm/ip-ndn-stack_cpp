@@ -19,7 +19,8 @@ unsigned char data[1024] = {
 
 int main(int argc, char *argv[]) {
     NDNHelper ndnHelper;
-    ndnHelper.initNDN("./config/test.json");
+    pthread_t pthreadId = ndnHelper.initNDN("./config/test.json");
+    pthread_join(pthreadId, nullptr);
     //创建套接字
 //    RawSocketHelper rawSocketHelper;
 //    NDNHelper ndnHelper;
