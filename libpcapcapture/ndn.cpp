@@ -86,7 +86,6 @@ Face face("localhost");
 
 void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
               Face &face) {
-	cout << "sendpcap" << endl;
     string interest_name = interest->getName().toUri();
     KeyChain KeyChain_;
     string pre = "/IP/pre/";
@@ -120,6 +119,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         unsigned int uuid = atoi(interest_name.substr(28, interest_name.length()).c_str());
         cout << "reply interest :" << next_name << ", " << uuid << endl;
         while (head->next != NULL) {
+            cout << "finding" << endl;
             if (uuid == head->next->index) {
                 Data data(next_name);
                 data.setContent((const uint8_t *) head->next->pkt, sizeof(head->next->pkt));
