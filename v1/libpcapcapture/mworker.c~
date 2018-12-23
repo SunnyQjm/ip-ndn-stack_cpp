@@ -1,0 +1,896 @@
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <sys/wait.h>
+#include <pthread.h>
+#include <errno.h>
+#include <sys/time.h>
+#include <math.h>
+#include <semaphore.h>
+#include "util.h"
+#include "ringbuffer.h"
+#include "packet.h"
+#include "flow.h"
+#include "config.h"
+//#include "cpu.h"
+#include <pcap.h>
+#include <ght_hash_table.h>
+#include <zmq.h>
+#include <hiredis/hiredis.h>
+#include "alg_losscount_cons.h"
+#include "alg_cmddos.h"
+
+
+#define UPLOAD_EVENT 888
+#define ELE_PER 889
+#define DOS_PER 890
+
+Dos_t* dos;
+losscount_t* array;
+
+//init variables for ini
+extern conf_t* conf;
+
+//init variables for ringbuff
+ringbuffer_t* rb_all_flow;
+ringbuffer_t* rb_elephant;
+ringbuffer_t* rb_ddos;
+ringbuffer_t* rb_all_flow_output;
+ringbuffer_t* rb_elephant_output;
+ringbuffer_t* rb_ddos_output;
+pthread_t all_flow_thread;
+pthread_t elephant_thread;
+pthread_t ddos_thread;
+pthread_t send_all_flow_thread;
+pthread_t send_thread;
+
+//init variables for redis
+redisContext *redis_ctx;
+
+//variables used for timer
+struct itimerspec tick; //define the time interval
+unsigned long long isec;
+unsigned long long inano;
+unsigned long long interval_len;
+timer_t upload_timer;
+pthread_spinlock_t glock;
+ght_hash_table_t *p_table;
+
+//variables used for elephant timer
+struct itimerspec elephant_tick;
+unsigned long long elephant_isec;
+unsigned long long elephant_inano;
+unsigned long long elephant_interval_len;
+timer_t elephant_upload_timer;
+
+//variables used for ddos timer
+struct itimerspec ddos_tick;
+unsigned long long ddos_isec;
+unsigned long long ddos_inano;
+unsigned long long ddos_interval_len;
+timer_t ddos_upload_timer;
+
+
+void *data_socket;
+struct in_addr local_ip;
+
+uint64_t cur_ts;
+
+//transform timeval to double
+double time2dbl(struct timeval time_value) {
+    double new_time = 0;
+    new_time = (double) (time_value.tv_usec) ;
+    new_time /= 1000000;
+    new_time += (double)time_value.tv_sec;
+    return(new_time);
+}
+
+
+//transform sec and msec to double
+double sec_msec2dbl(int sec,int msec)
+{
+	double new_time;
+	double temp=(double)msec/1000.0;
+	new_time=(double)sec+temp;
+	return new_time;
+}
+
+//save packet tuple to redis
+int packet_into_redis(tuple_t tuple)
+{
+	char ipkey[30];
+
+	//printf("packet_into_redis %s %f:%u:%s:%hu:%u:%s:%hu:%d:%lu",ip2a(tuple.key.src_ip,ipkey),tuple.pkt_ts,tuple.key.src_ip,
+			//ip2a(tuple.key.src_ip,ip1),tuple.key.src_port,tuple.key.dst_ip,ip2a(tuple.key.dst_ip,ip2),tuple.key.dst_port,tuple.key.proto,tuple.size);
+	redisReply* reply=redisCommand(redis_ctx,"LPUSH %s %f:%u:%s:%hu:%u:%s:%hu:%d:%lu",ip2a(tuple.key.src_ip,ipkey),tuple.pkt_ts,tuple.key.src_ip,
+			ip2a(tuple.key.src_ip,ip1),tuple.key.src_port,tuple.key.dst_ip,ip2a(tuple.key.dst_ip,ip2),tuple.key.dst_port,tuple.key.proto,tuple.size);
+	//redisReply* reply=redisCommand(redis_ctx,"LPUSH %s %f",ip2a(tuple.key.src_ip,ipkey),tuple.pkt_ts);
+	//int temp=1234;
+	//printf("%s %llu",ip2a(tuple.key.src_ip,ipkey),tuple.seq);
+	//redisReply* reply=redisCommand(redis_ctx,"LPUSH %s %d:%d",ip2a(tuple.key.src_ip,ipkey),temp,temp);
+
+	if(reply==NULL)
+	{
+		printf("\nredisCommand fail\n");
+		freeReplyObject(reply);
+		return 0;
+	}
+	if(reply->type!=REDIS_REPLY_INTEGER)
+	{
+		printf("\nredisCommand fail\n");
+               
+		LOG_MSG("reply: %d: %s\n",reply->type,reply->str);
+		freeReplyObject(reply);;
+		return 0;
+	}
+	//printf("\nredisCommand success\n");
+        
+	freeReplyObject(reply);
+	return 1;
+}
+
+//save ringbuffer_into_redis
+int ringbuffer_into_redis(fe_t fe)
+{
+	char *key="fullflow";//redis key
+	double time1=Time_to_double(fe.flow_start_time);
+	double time2=Time_to_double(fe.flow_end_time);
+	//printf("ringbuffer_into_redis %s %u:%s:%hu:%u:%s:%hu:%d:%f:%f:%llu:%llu:%f",
+				//key,fe.key.src_ip,ip2a(fe.key.src_ip,ip1),fe.key.src_port,fe.key.dst_ip,ip2a(fe.key.dst_ip,ip2),
+				//fe.key.dst_port,fe.key.proto,time1,time2,fe.pkt_cnt,fe.pkt_size,fe.pkt_size/(time2-time1));
+	redisReply* reply=redisCommand(redis_ctx,"LPUSH %s %u:%s:%hu:%u:%s:%hu:%d:%f:%f:%llu:%llu:%f",
+			key,fe.key.src_ip,ip2a(fe.key.src_ip,ip1),fe.key.src_port,fe.key.dst_ip,ip2a(fe.key.dst_ip,ip2),
+			fe.key.dst_port,fe.key.proto,time1,time2,fe.pkt_cnt,fe.pkt_size,fe.pkt_size/(time2-time1));
+        
+//use rediscommand to save data to redis
+	if(reply==NULL)
+	{
+		printf("\nredisCommand fail\n");
+		freeReplyObject(reply);
+		return 0;
+	}
+	if(reply->type!=REDIS_REPLY_INTEGER)
+	{
+		printf("\nredisCommand fail\n");
+		LOG_MSG("reply: %d: %s\n",reply->type,reply->str);
+		freeReplyObject(reply);;
+		return 0;
+	}
+	//printf("\nredisCommand success\n");
+	freeReplyObject(reply);
+	return 1;
+}
+
+//stop the timer
+void stop_timer() {
+    struct itimerspec value;
+    value.it_value.tv_sec=0;
+    value.it_value.tv_nsec=0;
+    value.it_interval=value.it_value;
+    timer_settime(upload_timer, 0,&value, NULL);
+    timer_settime(elephant_upload_timer,0,&value,NULL);
+}
+
+//function:upload all-flow data periodicly
+/*void periodic_upload(union sigval v) {
+    if(v.sival_int == UPLOAD_EVENT) {
+        fb_t *sb_first = (fb_t *)malloc(sizeof(fb_t));
+        memset(sb_first, 0,sizeof(fb_t));
+        sb_first->ts=cur_ts;
+        fb_t *tmp_fb = NULL;
+        fe_t *pvi = NULL;
+        const void *pv, *pk;
+        ght_iterator_t iterator;
+
+        pthread_spin_lock(&glock); //add spin lock
+        sb_first->num_entry=ght_size(p_table);
+        printf("\nhash size:%d\n",ght_size(p_table));
+        if(!ght_size(p_table))
+        {
+        	cur_ts=now_us();
+        	pthread_spin_unlock(&glock);
+     
+        	sb_first=NULL;
+        	return;
+        }//if the ghthash size is zero,return directly
+        //printf("There are %u flows\n", sb_first->num_entry);
+        for(pv=(fe_t*)ght_first(p_table,&iterator, &pk); pv;
+                pv=(fe_t*) ght_next(p_table,&iterator, &pk)){ //get the next element
+            pvi=(fe_t*)pv;
+
+            if(tmp_fb){
+                fb_t *sb_next=(fb_t *)malloc(sizeof(fb_t));
+                memset(sb_next, 0,sizeof(fb_t));
+
+                sb_next->flow=pvi;
+                tmp_fb->f_next=sb_next;
+                tmp_fb=sb_next;  //copy the content of the hash table to a linked list
+            } else {  //process the first entry
+                sb_first->flow=pvi;
+                tmp_fb=sb_first;
+            }  //the first node of the linked list
+
+            //remove the entry from the hash table
+            ght_remove(p_table, sizeof(flow_key_t), pk);
+        }
+        //get data from hash table and save them to a list then write the head of list to ringbuffer
+        while (write_ringbuffer(rb_all_flow_output, sb_first, sizeof(fb_t))<0) {}; //write to the ringbuffer
+        cur_ts = now_us();  //update the time slot
+        pthread_spin_unlock(&glock); //unlock
+        free(sb_first);
+        sb_first=NULL;
+        //timer_cur++
+        //printf("Current time slot: %llu\n", (unsigned long long)cut_ts):
+    }
+    return;
+}*/
+void periodic_upload(union sigval v) {
+    if(v.sival_int == UPLOAD_EVENT) {
+        fb_t *sb_first = (fb_t *)malloc(sizeof(fb_t));
+        memset(sb_first, 0,sizeof(fb_t));
+        sb_first->ts=cur_ts;
+        fb_t *tmp_fb = NULL;
+        fe_t *pvi = NULL;
+        const void *pv, *pk;
+        ght_iterator_t iterator;
+
+        pthread_spin_lock(&glock); //add spin lock
+        sb_first->num_entry=ght_size(p_table);
+        //printf("There are %u flows\n", sb_first->num_entry);
+        for(pv=(fe_t*)ght_first(p_table,&iterator, &pk); pv;
+                pv=(fe_t*) ght_next(p_table,&iterator, &pk)){ //get the next element
+            pvi=(fe_t*)pv;
+
+            if(tmp_fb){
+                fb_t *sb_next=(fb_t *)malloc(sizeof(fb_t));
+                memset(sb_next, 0,sizeof(fb_t));
+
+                sb_next->flow=pvi;
+                tmp_fb->f_next=sb_next;
+                tmp_fb=sb_next;  //copy the content of the hash table to a linked list
+            } else {  //process the first entry
+                sb_first->flow=pvi;
+                tmp_fb=sb_first;
+            }  //the first node of the linked list
+
+            //remove the entry from the hash table
+            ght_remove(p_table, sizeof(flow_key_t), pk);
+        }
+        while (write_ringbuffer(rb_all_flow_output, sb_first, sizeof(fb_t))<0) {}; //write to the ringbuffer
+        cur_ts = now_us();  //update the time slot
+        pthread_spin_unlock(&glock); //unlock
+
+        free(sb_first);
+        sb_first=NULL;
+        //timer_cur++
+        //printf("Current time slot: %llu\n", (unsigned long long)cut_ts):
+    }
+
+    return;
+}
+
+
+//elephant period function
+void elephant_period(union sigval v)
+{
+	printf("enter elephant_period\n");
+	if(v.sival_int == ELE_PER)
+	{
+		losscount_send(array,local_ip,data_socket);
+		losscount_reset(array);
+		return;
+	}
+	return;
+}
+
+void ddos_period(union sigval v)
+{
+	printf("enter ddos period\n");
+	if(v.sival_int == DOS_PER)
+	{
+		char *key="ddos";
+		Dos_Print(dos, key);//半成品
+		Dos_Reset(dos);
+	}
+	return;
+}
+//all-flow function
+/*static void* all_flow_fun(void *arg) {
+    tuple_t t;
+    memset(&t, 0, sizeof(struct Tuple));
+
+    while(1)
+    {
+        while (read_ringbuffer(rb_all_flow, &t) < 0) {}; //read the ringbuffer
+        flow_key_t *k;
+        k=(flow_key_t*)malloc(sizeof(flow_key_t));
+        memcpy(k, &t.key, sizeof(flow_key_t));
+        pthread_spin_lock(&glock);
+        fe_t *ht_entry=(fe_t*)ght_get(p_table, sizeof(flow_key_t), k); //get the hash entry based on the key
+        if(ht_entry) { // keys exist, update the entry
+            ht_entry->pkt_cnt +=1; //the count of packet ++
+            ht_entry->pkt_size += t.size; //the total size + the packet size
+            double_time_to_Time(t.pkt_ts,&(ht_entry->flow_end_time));//update the end_time
+        } else { // insert a new entry to the hash table
+            fe_t *kfe;
+            kfe=(fe_t*)malloc(sizeof(fe_t));
+            memcpy(&(kfe->key), &(t.key), sizeof(flow_key_t));
+            kfe->pkt_cnt =1;
+            kfe->pkt_size = t.size;
+            //if the packet is the fisrt packet of a flow,update the start time and end time
+            double_time_to_Time(t.pkt_ts,&(kfe->flow_end_time));
+            double_time_to_Time(t.pkt_ts,&(kfe->flow_start_time));
+            ght_insert(p_table ,kfe ,sizeof(flow_key_t), k);//insert the tuple to ghthash_table
+            //free(kfe);
+        }
+
+        pthread_spin_unlock(&glock);
+
+        free(k);
+    }
+
+    pthread_exit(NULL);
+}*/
+
+static void* all_flow_fun(void *arg) {
+    tuple_t t;
+    memset(&t, 0, sizeof(struct Tuple));
+
+    while(1) {
+        while (read_ringbuffer(rb_all_flow, &t) < 0) {}; //read the ringbuffer
+
+        flow_key_t *k;
+        k=(flow_key_t*)malloc(sizeof(flow_key_t));
+        memcpy(k, &t.key, sizeof(flow_key_t)); 
+
+        pthread_spin_lock(&glock);
+        fe_t *ht_entry=(fe_t*)ght_get(p_table, sizeof(flow_key_t), k); //get the hash entry based on the key
+        if(ht_entry) { // keys exist, update the entry
+            ht_entry->pkt_cnt +=1; //the count of packet ++
+            ht_entry->pkt_size += t.size; //the total size + the packet size
+	    double_time_to_Time(t.pkt_ts,&(ht_entry->flow_end_time));
+        } else { // insert a new entry to the hash table
+            fe_t *kfe;
+            kfe=(fe_t*)malloc(sizeof(fe_t));
+            memcpy(&(kfe->key), &(t.key), sizeof(flow_key_t));
+            kfe->pkt_cnt =1;
+            kfe->pkt_size = t.size;
+            double_time_to_Time(t.pkt_ts,&(kfe->flow_end_time));
+            double_time_to_Time(t.pkt_ts,&(kfe->flow_start_time));
+            ght_insert(p_table ,kfe ,sizeof(flow_key_t), k);
+        }
+
+        pthread_spin_unlock(&glock);
+
+        free(k);
+    }
+
+    pthread_exit(NULL);
+}
+
+//elephant_function
+static void * elephant_fun(void *argv)
+{
+	tuple_t t;
+	memset(&t, 0, sizeof(struct Tuple));
+
+	while(1)
+	{
+		while (read_ringbuffer(rb_elephant, &t) < 0) {}; //read the ringbuffer
+		losscount_update(array, &t);
+	}
+	pthread_exit(NULL);
+}
+
+//ddos_funciont:to be done
+static void * ddos_fun(void *argv)
+{
+	tuple_t t;
+	memset(&t, 0, sizeof(struct Tuple));
+	while(1)
+	{
+		while (read_ringbuffer(rb_ddos, &t) < 0) {}; //read the ringbuffer
+		Dos_Update(dos, (unsigned char*)&t.key.dst_ip, (unsigned char*)&t.key.src_ip, t.size);
+	}
+	pthread_exit(NULL);
+}
+
+//function to send-all-flow data
+/*static void* send_all_flow(void *arg) {
+    // fe_t *fe = NULL;
+    fb_t *sbf = (fb_t *)malloc(sizeof(fb_t)); //sending buffer
+    memset(sbf, 0, sizeof(fb_t));
+    fb_t *tmp_f =NULL;
+    fb_t *sbn = NULL;
+    int ic = 1;
+
+    unsigned int serial_size = 0;
+
+    while (1) {
+        while (read_ringbuffer(rb_all_flow_output, sbf) == 0) {
+        	char *serial_buf=malloc(sizeof(struct in_addr)+sizeof(int)+sizeof(fe_t));
+        	serial_size=sizeof(struct in_addr)+sizeof(int)+sizeof(fe_t);
+            if(serial_buf ==NULL) {
+                LOG_ERR("allocate serial_buf error\n");
+            }
+            printf("uploading flow table: %llu, flow entries: %u\n",
+                    (unsigned long long)sbf->ts , sbf->num_entry);
+            if(sbf->num_entry){
+                //process the first flow
+                //fe = sbf->flow;
+                //printf("Flow %s(%u) <-> %s(%u) %u, %llu (%llu)\n"),
+                //      ip2a(fe->key.src_ip, ip1), fe->key.src_port,
+                //      ip2a(fe->key.dst_ip, ip2), fe->key.dst_port,
+                //      fe->key.proto, fe->pkt_cnt, fe->pkt_size);
+                //*(fe_t *)(serial_buf + sizeof(uint64_t) + sizeof(unsigned int)) = *fe;
+                memcpy(serial_buf, &local_ip, sizeof(struct in_addr));
+                int flag=0;
+                memcpy((serial_buf + sizeof(struct in_addr)), &(flag), sizeof(int));
+                memcpy((serial_buf + sizeof(struct in_addr)+sizeof(int)),
+                        sbf->flow, sizeof(fe_t));
+                sbn = sbf->f_next;
+                ringbuffer_into_redis(*sbf->flow);
+        		if (zmq_send(data_socket, serial_buf, serial_size, 0) == -1) { //send the message by zmq
+                fprintf(stderr, "ZeroQueue.write(): %s\n", zmq_strerror(errno));
+        		}
+        		printf("zmq send sucess\n");
+        		fe_t temp;
+        		temp=*(fe_t *)(serial_buf+sizeof(struct in_addr)+sizeof(int));
+        		printf("sorce ip:%s\n",ip2a(temp.key.src_ip,ip1));
+        		free(sbf->flow);
+        		//free(serial_buf);
+                //process the following flows
+                while(sbn) {
+                        if(sbn->f_next) {
+                            tmp_f = sbn->f_next;
+                        } else {
+                            tmp_f = NULL;
+                        }
+
+
+                    //fe = sbf->flow;
+                    //printf("Flow %s(%u) <-> %s(%u) %u, %llu (%llu)\n"),
+                    //      ip2a(fe->key.src_ip, ip1), fe->key.src_port,
+                    //      ip2a(fe->key.dst_ip, ip2), fe->key.dst_port,
+                    //      fe->key.proto, fe->pkt_cnt, fe->pkt_size);
+                    //*(fe_t *)(serial_buf + sizeof(uint64_t) + sizeof(unsigned int) + sizeof((fe_t)*ic)) = *fe;
+                    memcpy(serial_buf, &local_ip, sizeof(struct in_addr));
+                    int flag=0;
+                    memcpy((serial_buf + sizeof(struct in_addr)), &(flag), sizeof(int));
+                    memcpy((serial_buf + sizeof(struct in_addr)+sizeof(int)),
+                    		sbn->flow, sizeof(fe_t));
+                    //sbn = sbf->f_next;
+                    ringbuffer_into_redis(*sbn->flow);
+                    if (zmq_send(data_socket, serial_buf, serial_size, 0) == -1) { //send the message by zmq
+                        fprintf(stderr, "ZeroQueue.write(): %s\n", zmq_strerror(errno));
+                		}
+                    printf("zmq send sucess\n");
+                    free(sbn->flow);
+                    free(sbn);
+                    sbn=tmp_f;
+                    ic++;
+                }
+            } //encapsulates a message based on the format
+
+            free(serial_buf);
+            //free(sbf->flow);
+            ic=1;
+        }
+
+    }
+    free(sbf);
+    sbf=NULL;
+    sbn=NULL;
+    tmp_f=NULL;
+    //fe=NULL;
+    pthread_exit(NULL);
+}*/
+static void* send_all_flow(void *arg) {
+    // fe_t *fe = NULL;
+    fb_t *sbf = (fb_t *)malloc(sizeof(fb_t)); //sending buffer
+    memset(sbf, 0, sizeof(fb_t));
+    fb_t *tmp_f =NULL; 
+    fb_t *sbn = NULL;
+    int ic = 1;
+
+    unsigned int serial_size = 0;
+
+    while (1) {
+        while (read_ringbuffer(rb_all_flow_output, sbf) == 0) {
+            //init the sending buffer
+            //format: sender ip+ts+num of flows+flow 1+flow 2+...+flow n
+            serial_size = sizeof(struct in_addr)+sizeof(int)+sizeof(unsigned int)
+                            + sizeof(fe_t)*(sbf->num_entry);
+            unsigned char *serial_buf = calloc(sizeof(char)*serial_size, 1);
+            int flag=0;
+            if(serial_buf ==NULL) {
+                LOG_ERR("allocate serial_buf error\n");
+            }
+            //printf("uploading flow table: %llu, flow entries: %u\n",
+                   // (unsigned long long)sbf->ts , sbf->num_entry);
+            memcpy(serial_buf, &local_ip, sizeof(struct in_addr));
+            memcpy((serial_buf + sizeof(struct in_addr)), &flag, sizeof(int));
+            memcpy((serial_buf + sizeof(struct in_addr) + sizeof(int)), &(sbf->num_entry), sizeof(unsigned int));
+
+            if(sbf->num_entry){
+                //process the first flow
+                //fe = sbf->flow;
+                //printf("Flow %s(%u) <-> %s(%u) %u, %llu (%llu)\n"),
+                //      ip2a(fe->key.src_ip, ip1), fe->key.src_port,
+                //      ip2a(fe->key.dst_ip, ip2), fe->key.dst_port,
+                //      fe->key.proto, fe->pkt_cnt, fe->pkt_size);
+                //*(fe_t *)(serial_buf + sizeof(uint64_t) + sizeof(unsigned int)) = *fe;
+                memcpy((serial_buf + sizeof(struct in_addr)+sizeof(int)+sizeof(unsigned int)),
+                        sbf->flow, sizeof(fe_t));
+                sbn = sbf->f_next;
+         
+       
+
+                while(sbn) {
+                        if(sbn->f_next) {
+                            tmp_f = sbn->f_next;
+                        } else {
+                            tmp_f = NULL;
+                        }
+                
+
+                    //fe = sbf->flow;
+                    //printf("Flow %s(%u) <-> %s(%u) %u, %llu (%llu)\n"),
+                    //      ip2a(fe->key.src_ip, ip1), fe->key.src_port,
+                    //      ip2a(fe->key.dst_ip, ip2), fe->key.dst_port,
+                    //      fe->key.proto, fe->pkt_cnt, fe->pkt_size);
+                    //*(fe_t *)(serial_buf + sizeof(uint64_t) + sizeof(unsigned int) + sizeof((fe_t)*ic)) = *fe;
+                    memcpy((serial_buf + sizeof(struct in_addr)+sizeof(int)+sizeof(unsigned int)+sizeof(fe_t)*ic),
+                            sbn->flow, sizeof(fe_t));
+                    ringbuffer_into_redis(*sbn->flow);
+                    free(sbn->flow);
+                    free(sbn);
+                    sbn=tmp_f;
+                    ic++;
+                }
+            } //encapsulates a message based on the format
+
+            if (zmq_send(data_socket, serial_buf, serial_size, 0) == -1) { //send the message by zmq
+                fprintf(stderr, "ZeroQueue.write(): %s\n", zmq_strerror(errno));
+            }
+            printf("zmq send sucess\n");
+            free(sbf->flow);
+            free(serial_buf);
+            ic=1;
+        }
+    }
+
+
+    free(sbf);
+    sbf=NULL;
+    sbn=NULL;
+    tmp_f=NULL;
+    //fe=NULL;
+    pthread_exit(NULL);
+} 
+
+
+int main (int argc, char *argv[]) {
+	//printf("%d",sizeof(fe_t));
+	//return 0;
+    
+    
+    if (argc !=2) {
+        fprintf(stderr, "Usage: %s [config file]\n", argv[0]);
+        exit(-1);
+    }
+	int bit = 104;
+	int size = 2000;
+	double eps = 0.001;
+	double thresh = 0.3; //added by weichao
+	long long  linkspeed = 10000000000; //added
+
+	//losscount_t* array = losscount_init(bit, size, 1/eps); //default:104, 2000, 0.001
+	array = losscount_init(bit, size, eps, thresh, linkspeed); //modified by weichao
+      
+/*      
+	int width = conf_dos_width(conf);
+	int depth = conf_dos_depth(conf);
+	int cm_width = conf_dos_cm_width(conf);
+	int cm_depth = conf_dos_cm_depth(conf);
+	int rev_width = conf_dos_rev_width(conf);
+	int rev_depth = conf_dos_rev_depth(conf);
+	int key_word_len = conf_dos_key_word_len(conf);
+	int hash_word_len = conf_dos_hash_word_len(conf);
+	int ddos_thresh = conf_dos_thresh(conf);
+	dos = Dos_Init(width, depth, cm_width, cm_depth, rev_width, rev_depth, key_word_len, hash_word_len, 32, 32, ddos_thresh);
+*/
+
+	int width = 1000;
+	int depth = 2;
+	int cm_width = 250;
+	int cm_depth = 4;
+	int rev_width = 65536;
+	int rev_depth = 2;
+	int key_word_len = 16;
+	int hash_word_len = 8;
+	int ddos_thresh = 50;
+	dos = Dos_Init(width, depth, cm_width, cm_depth, rev_width, rev_depth, key_word_len, hash_word_len, 32, 32, ddos_thresh);
+
+
+   
+    //init config and redis_ctx
+    conf = Config_Init(argv[1]); //get the content of config.ini
+    const char *redis_ip=conf_common_redis_ip(conf);
+   
+    int redis_port=conf_common_redis_port(conf);
+    redis_ctx=redisConnect(redis_ip,redis_port);
+    if(redis_ctx==NULL||redis_ctx->err)
+    {
+    	if(redis_ctx==NULL)
+        {
+    		LOG_ERR("cant allocate redis context");
+      	}
+    	else
+        {
+    		LOG_ERR("ErrorL %s \n",redis_ctx->errstr);
+       	}
+    }
+ 
+    interval_len = conf_common_interval_len(conf);  //the value of interval_len is the "upload period" in config.ini, in ms
+    elephant_interval_len=1000;
+    ddos_interval_len=1000;
+    char tmp[1024];
+    unsigned int ht_size = conf_ht_table_size(conf); //the value of ht_size is the size of hash table in config.ini
+    const char *dev_name = conf_common_pcap_if(conf);
+    //const char *dev_name = pcap_lookupdev(NULL);//the value of dev_name is the interface used for packet capturing in config.ini
+    struct pcap_pkthdr *header; //pcap_pkthdr has three element: time stamp, length of portion present (which means the length of the packet that we catch), length of this packet.
+    const u_char *pkt;
+    char ebuf[PCAP_ERRBUF_SIZE];
+    int bufsize = conf_common_pcap_bufsize(conf); //the value of bufsize is the the capturing buffer size in config.ini
+    int snaplen = conf_common_pcap_snaplen(conf); //the value of snaplen is the snapshot length for pcap handler in config.ini
+    int to_ms = conf_common_pcap_toms(conf); //the value of to_ms is the read timeout for pcap handler, in ms
+   
+    //init zmq socket
+    const char *sip = conf_common_local_ip(conf); //the local ip address
+    if(inet_aton(sip, &local_ip) == 0) { //convert the ip characters into an ip address, the loacal_ip represent the in_addr
+        printf("Error: could not convert the local IP address\n");
+    }
+    void *zmq_ctx = zmq_ctx_new(); //create a new zmq context
+    if(zmq_ctx == 0){
+        fprintf(stderr, "zmq_ctx_new(): %s\n", zmq_strerror(errno)); //if creating failed, return null
+    }
+    if(zmq_ctx_set(zmq_ctx, ZMQ_IO_THREADS, 1) == -1){ //set the context attributes
+													   //ZMQ_IO_THREADS - the number of IO threads, define the size of thread pool, and the value is set 1 as default.
+													   //if succeed, return 0, else, return -1.
+        fprintf(stderr, "zmq_ctx_set(): %s\n", zmq_strerror(errno));
+    }
+    const char *zmq_data_server = conf_common_data_server(conf); //the value of zmq_data_server is the manage address of mserver in config.ini
+    data_socket=zmq_socket(zmq_ctx, ZMQ_PUSH); //create zmq socket, and the type is ZMQ_PUSH, which means we use the pipeline mode, a ZMQ_PUSH socket is used by a pipeline node to send message to the downstream of the pipeline.
+    if(zmq_connect(data_socket,zmq_data_server)==-1) { //create an outgoing connect by the data_socket, and connect to the zmq_data_server
+													   //if succeed, return 0, else, return -1.
+        fprintf(stderr, "zmq_connect(): %s\n", zmq_strerror(errno));
+    }
+
+    //init hash table
+    if(!(p_table=ght_create(ht_size))){ //create a hash table which has ht_size elements,and return a pointer of an ght_hash_table_t
+        printf("Error:could not create hash table\n");
+    }
+  
+    
+    //init ringbuffer (there are two ringbuffers)
+    sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
+    rb_all_flow=create_ringbuffer_shm1(tmp, sizeof(tuple_t));  //create a ringbuffer
+   
+    sprintf(tmp, "pub2%02d", 1); //fomat the tmp characters.
+    rb_elephant=create_ringbuffer_shm2(tmp, sizeof(tuple_t));  //create a ringbuffer
+   
+    sprintf(tmp, "pub3%02d", 2); //fomat the tmp characters.
+    rb_ddos=create_ringbuffer_shm3(tmp, sizeof(tuple_t));  //create a ringbuffer
+   
+    sprintf(tmp, "snd4%02d", 0);
+    rb_all_flow_output=create_ringbuffer_shm4(tmp, sizeof(fb_t));
+    
+    tuple_t t_kern;
+    double pkt_ts;
+    memset(&t_kern, 0, sizeof(struct Tuple));
+    int res;
+
+    //setup timer parameters
+    isec=(unsigned long long)floor(interval_len/1000); //round down, get the number of seconds
+    inano=(interval_len - isec*1000)*1000000; //get the number of ns
+    tick.it_value.tv_sec = isec; //the init value of timer
+    tick.it_value.tv_nsec = inano; //ns
+    tick.it_interval.tv_sec = isec;  //the interval
+    tick.it_interval.tv_nsec = inano;
+
+    elephant_isec=(unsigned long long)floor(elephant_interval_len/1000);
+    elephant_inano=(elephant_interval_len - elephant_isec*1000)*1000000; //get the number of ns
+    elephant_tick.it_value.tv_sec = elephant_isec; //the init value of timer
+    elephant_tick.it_value.tv_nsec = elephant_inano; //ns
+    elephant_tick.it_interval.tv_sec = elephant_isec;  //the interval
+    elephant_tick.it_interval.tv_nsec = elephant_inano;
+
+    ddos_isec=(unsigned long long)floor(ddos_interval_len/1000);
+    ddos_inano=(ddos_interval_len - ddos_isec*1000)*1000000; //get the number of ns
+    ddos_tick.it_value.tv_sec = ddos_isec; //the init value of timer
+    ddos_tick.it_value.tv_nsec = ddos_inano; //ns
+    ddos_tick.it_interval.tv_sec = ddos_isec;  //the interval
+    ddos_tick.it_interval.tv_nsec = ddos_inano;
+   
+    //set up timer event
+    struct sigevent evp; //the asynchronous notification when timer expire
+    struct sigevent elephant_evp;
+    struct sigevent ddos_evp;
+    memset(&evp, 0, sizeof(struct sigevent));
+    memset(&elephant_evp,0,sizeof(struct sigevent));
+    memset(&ddos_evp,0,sizeof(struct sigevent));
+    evp.sigev_value.sival_int = UPLOAD_EVENT;
+    evp.sigev_notify = SIGEV_THREAD; //when timer expires,in current thread, the kernel will create a new thread whose attribute is sigev_notification_attributes,
+									 //and let it execute the sigev_notify_function, the sigev_value is a parameter of the function
+    evp.sigev_notify_function = periodic_upload;
+
+    elephant_evp.sigev_value.sival_int = ELE_PER;
+    elephant_evp.sigev_notify = SIGEV_THREAD; //when timer expires,in current thread, the kernel will create a new thread whose attribute is sigev_notification_attributes,
+									 //and let it execute the sigev_notify_function, the sigev_value is a parameter of the function
+    elephant_evp.sigev_notify_function = elephant_period;
+
+    ddos_evp.sigev_value.sival_int = DOS_PER;
+    ddos_evp.sigev_notify = SIGEV_THREAD; //when timer expires,in current thread, the kernel will create a new thread whose attribute is sigev_notification_attributes,
+									 //and let it execute the sigev_notify_function, the sigev_value is a parameter of the function
+    ddos_evp.sigev_notify_function = ddos_period;
+   
+    if(timer_create(CLOCK_REALTIME, &evp, &upload_timer) == -1) { //create a specific timer, based CLOCK_REALTIME, &upload_timer is the id,
+        perror("Fail ti creat timer. \n"); //failed
+        return -1;
+    }
+  
+
+    if(timer_create(CLOCK_REALTIME, &elephant_evp, &elephant_upload_timer) == -1) { //create a specific timer, based CLOCK_REALTIME, &upload_timer is the id,
+        perror("Fail ti creat timer. \n"); //failed
+        return -1;
+    }
+    
+    if(timer_create(CLOCK_REALTIME, &ddos_evp, &ddos_upload_timer) == -1) { //create a specific timer, based CLOCK_REALTIME, &upload_timer is the id,
+        perror("Fail ti creat timer. \n"); //failed
+        return -1;
+    }
+ 
+
+    pthread_spin_init(&glock, PTHREAD_PROCESS_PRIVATE); //init the global spinlock
+														//allocate any resources required to use the spin lock referenced by lock and initialize the lock to an unlocked state.
+														//PTHREAD_PROCESS_PRIVATE, the spinlock can be operated on only by threads created within the same process as the thread that initialized the spinlock.
+
+
+    //create thread to handle the ringbuffer
+    pthread_attr_t attr1,attr2,attr3,attr4,attr5; // the attributes of thread
+    int s1 =pthread_attr_init(&attr1); //initialize
+    int s2 =pthread_attr_init(&attr2);
+    int s3 =pthread_attr_init(&attr3);
+    int s4 =pthread_attr_init(&attr4);
+    int s5 =pthread_attr_init(&attr5);
+    if( s1 !=0) {
+        LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+    }
+    if( s2 !=0) {
+        LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+    }
+    if( s3 !=0) {
+            LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+        }
+    if( s4 !=0) {
+            LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+        }
+    if( s5 !=0) {
+            LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+        }
+    s1=pthread_create(&all_flow_thread, &attr1, &all_flow_fun, NULL); //create a thread
+    s2=pthread_create(&elephant_thread,&attr2,&elephant_fun,NULL);
+    s3=pthread_create(&ddos_thread,&attr3,&ddos_fun,NULL);
+    s4=pthread_create(&send_all_flow_thread,&attr4,&send_all_flow,NULL);
+    //s4=pthread_create(&send_thread, &attr4, NULL, NULL);
+    if( s1 !=0) {
+        LOG_ERR("pthread_creat: %s\n", strerror(errno));
+    }
+    if( s2 !=0) {
+        LOG_ERR("pthread_creat: %s\n", strerror(errno));
+    }
+    if( s3 !=0) {
+            LOG_ERR("pthread_creat: %s\n", strerror(errno));
+        }
+    if( s4 !=0) {
+            LOG_ERR("pthread_creat: %s\n", strerror(errno));
+        }
+    //init pcap
+    pcap_t *ph = pcap_create(dev_name, ebuf); //dev_name is the network device to open, ebuf is error buffer
+    if(ph == NULL) {
+    	pcap_close(ph);
+        printf("%s: pcap_create failed: %s\n", dev_name, ebuf);
+        exit(-1);
+    }
+
+    if(pcap_set_snaplen(ph, snaplen) || pcap_set_buffer_size(ph, bufsize) ||
+            pcap_set_timeout(ph, to_ms) || pcap_set_immediate_mode(ph, 1) ||
+            pcap_activate(ph)) { //activate the handle, start to capture
+        printf("Capturing %s failed: %s\n", dev_name,
+                pcap_geterr(ph));
+        pcap_close(ph);
+        exit(-1);
+    }
+
+    
+    //start the timer
+    cur_ts = now_us();
+    printf("Current time slot: %llu\n", (unsigned long long)cur_ts);
+    if(timer_settime(upload_timer, 0,&tick, NULL)==-1){ //associate the timer to a expire time and start the clock period
+        printf("set timer error. %s \n", strerror(errno));
+        return -1;
+    }
+    
+    if(timer_settime(elephant_upload_timer, 0,&elephant_tick, NULL)==-1){ //associate the timer to a expire time and start the clock period
+        printf("set timer error. %s \n", strerror(errno));
+        return -1;
+    }
+    
+    if(timer_settime(ddos_upload_timer, 0,&ddos_tick, NULL)==-1){ //associate the timer to a expire time and start the clock period
+        printf("set timer error. %s \n", strerror(errno));
+        return -1;
+    }
+   //cuowu
+ 
+    //capture packets and copy the packets to the ringbuffer
+    while((res=pcap_next_ex(ph, &header, &pkt))>=0) { //reads the next packet and returns a success/failure indication.
+       // printf("\nhah----1----ahahahah\n");
+	if(pkt !=NULL){
+            if(res==0) {//capture timeout
+            continue;
+        }
+
+            //decode the captured packet
+            pkt_ts = time2dbl(header->ts); //doubleֵ
+            decode(pkt, header-> caplen, header->len, pkt_ts, &t_kern); 
+
+           while(write_ringbuffer(rb_all_flow, &t_kern, sizeof(tuple_t)) < 0) {}; 
+
+            
+           while(write_ringbuffer(rb_elephant, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
+
+           while(write_ringbuffer(rb_ddos, &t_kern, sizeof(tuple_t)) < 0) {}; //write to ringbuffer
+            
+        }
+   
+    }
+    
+ 
+//cuowu
+    pthread_join(all_flow_thread, NULL);  //join these to threads
+    pthread_join(elephant_thread,NULL);
+    pthread_join(ddos_thread,NULL);
+    pthread_join(send_all_flow_thread,NULL);
+   
+    //free the hash table
+    const void *pv, *pk;
+    ght_iterator_t iterator;
+    for(pv = (fe_t*)ght_first(p_table, &iterator, &pk); pv;
+            pv=(fe_t*) ght_next(p_table, &iterator, &pk)) {
+        (void)free((fe_t*)pv);
+    }
+    ght_finalize(p_table);
+
+    //free the ringbuffer
+    close_ringbuffer_kshm(rb_all_flow);
+    close_ringbuffer_kshm(rb_elephant);
+    close_ringbuffer_kshm(rb_ddos);
+    close_ringbuffer_kshm(rb_all_flow_output);
+    //free the pcap handler
+    pcap_close(ph);
+
+    //free the zmq handler
+    if(zmq_ctx_destroy(zmq_ctx)==-1){
+        fprintf(stderr, "zmq_ctx_destroy(): %s\n", zmq_strerror(errno));
+    }
+
+    //free redis_ctx
+    redisFree(redis_ctx);
+    //free config
+    Config_Destroy(conf);
+
+    return 0;
+}
