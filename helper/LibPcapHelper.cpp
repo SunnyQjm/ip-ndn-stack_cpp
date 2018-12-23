@@ -95,16 +95,16 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     double pkt_ts;
     memset(&t_kern, 0, sizeof(struct Tuple));
 
-    //开始循环读取RingBuffer
-    pthread_attr_t attr1;
-    int s1 = pthread_attr_init(&attr1); //initialize
-    if (s1 != 0) {
-        LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
-    }
-    s1 = pthread_create(&this->readRingBufferThreadId, &attr1, &get_ip_fun, NULL); //create a thread
-    if (s1 != 0) {
+//    //开始循环读取RingBuffer
+//    pthread_attr_t attr1;
+//    int s1 = pthread_attr_init(&attr1); //initialize
+//    if (s1 != 0) {
+//        LOG_ERR("pthread_attr_init: %s\n", strerror(errno));
+//    }
+//    s1 = pthread_create(&this->readRingBufferThreadId, &attr1, &get_ip_fun, NULL); //create a thread
+//    if (s1 != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
-    }
+//    }
 
     int res;
     //init pcap
@@ -155,7 +155,7 @@ void LibPcapHelper::close() {
 }
 
 void LibPcapHelper::join() {
-    pthread_join(this->readRingBufferThreadId, nullptr);
+//    pthread_join(this->readRingBufferThreadId, nullptr);
 }
 
 void LibPcapHelper::deal(tuple_t tuple) {
