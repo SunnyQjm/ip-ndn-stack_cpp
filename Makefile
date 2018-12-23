@@ -1,3 +1,4 @@
+
 PROGS = main
 
 SRC += libpcapcapture/packet.cpp libpcapcapture/ttime.cpp libpcapcapture/util.cpp  \
@@ -21,7 +22,7 @@ CFLAGS += -D HAVE_PF_RING
 
 all: ${PROGS}
 
-main: $(SRC) main.o
+main: $(SRC) main.cpp
 	g++ -g $(CFLAGS) -o $@ $^ ${DEFAULT_LINK_LIBS}
 
 clean:
