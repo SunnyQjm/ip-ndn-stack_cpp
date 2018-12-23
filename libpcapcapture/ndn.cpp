@@ -67,6 +67,7 @@ public:
                     const ptr_lib::shared_ptr<const Interest> &interest, Face &face,
                     uint64_t interestFilterId,
                     const ptr_lib::shared_ptr<const InterestFilter> &filter) {
+        cout << "onInterest" << endl;
         //callbackCount_+=100;
         sendpcap(prefix, interest, face);
 
