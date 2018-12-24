@@ -116,17 +116,17 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
-        auto result = ipPacketCache.find(uuid);
-        while(result == ipPacketCache.end()) {
-            cout << "没有找到uuid = " << uuid << "的数据包" << endl;
-            usleep(100);
-            result = ipPacketCache.find(uuid);
-        }
-        if(result == ipPacketCache.end()) {
+        auto result = ipPacketCache.count(uuid);
+//        while(result == ipPacketCache.end()) {
+//            cout << "没有找到uuid = " << uuid << "的数据包" << endl;
+//            usleep(100);
+//            result = ipPacketCache.find(uuid);
+//        }
+        if(result == 0) {
             cout << "没有找到uuid = " << uuid << "的数据包" << endl;
             return;
         }
-        tuple_t tuple1 = result->second;
+        tuple_t tuple1 = ipPacketCache.find(uuid)->second;
 
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);

@@ -70,7 +70,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
         decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
+        cout << "开始处理数据包" << endl;
         this->deal(t_kern);
+        cout << "处理一个数据包结束" << endl;
     }
 
 }
@@ -91,6 +93,11 @@ void LibPcapHelper::deal(tuple_t tuple) {
         cout << "插入失败" << endl;
     }
     cout << "插入uuid：" << uuid << endl;
+    auto res = ipPacketCache.find(uuid);
+    if(res == ipPacketCache.end()) {
+        cout << "没有找到uuid = " << uuid << "的数据包" << endl;
+        return;
+    }
 
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);
