@@ -18,7 +18,7 @@ void *dealEvent(void* arg) {
     Face *face = (Face *)arg;
     while(true) {
         face->processEvents();
-        usleep(50);
+        usleep(20);
     }
 }
 
