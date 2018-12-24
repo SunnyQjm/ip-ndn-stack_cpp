@@ -134,6 +134,7 @@ void LibPcapHelper::deal(tuple_t tuple) {
 
     name.append(uuid);
 
+    cout << "qjh express: " << name << endl;
     face.expressInterest(name, bind(&Consumer::onData, &consumer, _1, _2), bind(&Consumer::onTimeout, &consumer, _1));
 }
 
