@@ -41,7 +41,7 @@ RawSocketHelper rawSocketHelper;
 void showpcap(const ptr_lib::shared_ptr<Data> &data);
 
 void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
-              Face &face);
+              Face &face, bool isPre);
 
 class Consumer {
 public:
@@ -69,10 +69,10 @@ public:
     void onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                     const ptr_lib::shared_ptr<const Interest> &interest, Face &face,
                     uint64_t interestFilterId,
-                    const ptr_lib::shared_ptr<const InterestFilter> &filter) {
+                    const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) {
         cout << "onInterest" << endl;
         //callbackCount_+=100;
-        sendpcap(prefix, interest, face);
+        sendpcap(prefix, interest, face, isPre);
 
     }
 
@@ -87,11 +87,12 @@ Producer producer;
 Consumer consumer;
 
 void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
-              Face &face) {
+              Face &face, bool isPre) {
     string interest_name = interest->getName().toUri();
     KeyChain KeyChain_;
     string pre = "/IP/pre/";
-    if (interest_name.find(pre, 0) != string::npos) {
+//    if (interest_name.find(pre, 0) != string::npos) {
+    if(isPre){
         string next_name = "/IP";
         vector<string> fileds;
         boost::split(fileds, interest_name, boost::is_any_of("/"));

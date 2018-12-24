@@ -38,8 +38,8 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
-    this->face.registerPrefix(register_prefix1,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
-    this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5),bind(&Producer::onRegisterFailed,&producer, _1));
+    this->face.registerPrefix(register_prefix1,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5, true),bind(&Producer::onRegisterFailed,&producer, _1));
+    this->face.registerPrefix(register_prefix2,(const OnInterestCallback&)bind(&Producer::onInterest,&producer, _1, _2, _3, _4, _5, false),bind(&Producer::onRegisterFailed,&producer, _1));
 
     //开始循环处理事件
     int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *)&this->face);    //byj
