@@ -24,7 +24,6 @@ public:
     void join();
 private:
     pcap_t *ph;
-    pthread_t readRingBufferThreadId;
     Face face;
     void deal(tuple_t tuple);
 };

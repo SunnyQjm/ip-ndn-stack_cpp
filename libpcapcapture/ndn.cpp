@@ -30,7 +30,7 @@ using namespace std;
 
 //extern conf_t *conf;
 //init variables for ringbuff
-pthread_t all_flow_thread;
+//pthread_t all_flow_thread;
 //transform timeval to double
 //tuple_t *head = NULL;
 unordered_map<string, tuple_t> ipPacketCache;
