@@ -63,6 +63,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         }
         //decode the captured packet
         const char *filter_app = jsoncppHelper.getString("pcap_dstmac").c_str();
+        cout << filter_app << endl;
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
         struct bpf_program filter{};
         pcap_compile(ph, &filter, filter_app, 0, net);
