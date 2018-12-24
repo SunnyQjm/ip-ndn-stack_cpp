@@ -57,7 +57,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     bpf_u_int32 mask;
     pcap_lookupnet(dev_name.c_str(), &net, &mask, ebuf);
     const char *filter_app = jsoncppHelper.getString("pcap_dstmac").c_str();
-    cout << "filter: " << jsoncppHelper.getString("pcap_dstmac") << endl;
+    cout << "filter: " << jsoncppHelper.getString("pcap_dstmac").c_str() << endl;
     cout << "filter: " << filter_app << endl;
     //capture packets and copy the packets to the ringbuffer
     while ((res = pcap_next_ex(ph, &header, &pkt)) >= 0) { //reads the next packe    t and returns a success/failure indication.
