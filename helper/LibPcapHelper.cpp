@@ -56,14 +56,15 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     bpf_u_int32 net;
     bpf_u_int32 mask;
     pcap_lookupnet(dev_name.c_str(), &net, &mask, ebuf);
+    const char *filter_app = jsoncppHelper.getString("pcap_dstmac").c_str();
+    cout << "filter: " << jsoncppHelper.getString("pcap_dstmac") << endl;
+    cout << "filter: " << filter_app << endl;
     //capture packets and copy the packets to the ringbuffer
     while ((res = pcap_next_ex(ph, &header, &pkt)) >= 0) { //reads the next packe    t and returns a success/failure indication.
         if (pkt == nullptr || res == 0) {
                 continue;
         }
         //decode the captured packet
-        const char *filter_app = jsoncppHelper.getString("pcap_dstmac").c_str();
-        cout << filter_app << endl;
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
         struct bpf_program filter{};
         pcap_compile(ph, &filter, filter_app, 0, net);
