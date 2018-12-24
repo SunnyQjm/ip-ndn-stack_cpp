@@ -90,6 +90,7 @@ void LibPcapHelper::deal(tuple_t tuple) {
     if(!result.second) {
         cout << "插入失败" << endl;
     }
+    cout << "插入uuid：" << uuid << endl;
 
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);

@@ -117,6 +117,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         string uuid = interest_name.substr(28, interest_name.length());
         auto result = ipPacketCache.find(uuid);
         while(result == ipPacketCache.end()) {
+            cout << "没有找到uuid = " << uuid << "的数据包" << endl;
             usleep(100);
             result = ipPacketCache.find(uuid);
         }
