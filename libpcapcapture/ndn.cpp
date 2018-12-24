@@ -123,7 +123,7 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
 //            result = ipPacketCache.find(uuid);
 //        }
         if(result == 0) {
-            cout << "没有找到uuid = " << uuid << "的数据包" << endl;
+            cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
             return;
         }
         tuple_t tuple1 = ipPacketCache.find(uuid)->second;
