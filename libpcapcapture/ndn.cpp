@@ -110,7 +110,6 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         KeyChain_.sign(data);
         face.putData(data);
 
-        cout << "byj express" << next_name << endl;
         //发一个正式拉取的请求
         face.expressInterest(next_name, bind(&Consumer::onData, &consumer, _1, _2),
                              bind(&Consumer::onTimeout, &consumer, _1));
