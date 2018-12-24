@@ -86,7 +86,10 @@ void LibPcapHelper::join() {
 
 void LibPcapHelper::deal(tuple_t tuple) {
     string uuid = this->generateUUID();
-    ipPacketCache.insert(make_pair(uuid, tuple));
+    auto result = ipPacketCache.insert(make_pair(uuid, tuple));
+    if(!result.second) {
+        cout << "插入失败" << endl;
+    }
 
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);
