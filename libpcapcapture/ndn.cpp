@@ -16,7 +16,6 @@
 #include "util.h"
 #include "packet.h"
 #include "hash.h"
-//#include "config.h"
 #include <pcap.h>
 #include <ndn-cpp/face.hpp>
 #include <ndn-cpp/security/key-chain.hpp>
@@ -117,6 +116,10 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
         auto result = ipPacketCache.find(uuid);
+        while(result == ipPacketCache.end()) {
+            usleep(100);
+            result = ipPacketCache.find(uuid);
+        }
         if(result == ipPacketCache.end()) {
             cout << "没有找到uuid = " << uuid << "的数据包" << endl;
             return;
