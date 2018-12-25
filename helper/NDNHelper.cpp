@@ -42,6 +42,7 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
+    cout << "begin register" << endl;
     this->face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
