@@ -50,6 +50,7 @@ void NDNHelper::initNDN(string configFilePath) {
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
 
+    cout << "开始循环处理事件" << endl;
     //开始循环处理事件
     int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &this->face);    //byj
     if (s != 0) {
