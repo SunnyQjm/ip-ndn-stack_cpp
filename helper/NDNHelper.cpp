@@ -13,6 +13,32 @@ const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 NDNHelper::NDNHelper() : face("localhost") {
 }
 
+void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) {
+    this->dealOndata(data);
+}
+
+void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
+    if(interest == nullptr) {
+        cout << "null" << endl;
+    } else {
+        cout << "Timed out: " << interest->getName().toUri() << endl;
+    }
+}
+
+void NDNHelper::onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
+                           const ptr_lib::shared_ptr<const Interest> &interest, Face &face, uint64_t interestFilterId,
+                           const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) {
+    this->dealOnInterest(prefix, interest, face, isPre);
+}
+
+void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) {
+    cout << "Register failed for prefix " << prefix->toUri() << endl;
+}
+
+void NDNHelper::expressInterest(string name) {
+    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
+}
+
 /**
  * 在子线程中处理循环处理事件
  * @param arg
@@ -152,27 +178,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
     }
 }
 
-void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) {
-    this->dealOndata(data);
-}
 
-void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
-    cout << "Timed out: " << interest->getName().toUri() << endl;
-}
-
-void NDNHelper::onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
-                           const ptr_lib::shared_ptr<const Interest> &interest, Face &face, uint64_t interestFilterId,
-                           const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) {
-    this->dealOnInterest(prefix, interest, face, isPre);
-}
-
-void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) {
-    cout << "Register failed for prefix " << prefix->toUri() << endl;
-}
-
-void NDNHelper::expressInterest(string name) {
-    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
-}
 
 
 
