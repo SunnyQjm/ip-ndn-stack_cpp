@@ -13,9 +13,7 @@
 #include <sys/time.h>
 #include <math.h>
 #include <semaphore.h>
-#include "util.h"
 #include "packet.h"
-#include "hash.h"
 #include <pcap.h>
 #include <ndn-cpp/face.hpp>
 #include <ndn-cpp/security/key-chain.hpp>
@@ -35,7 +33,6 @@ using namespace std;
 //tuple_t *head = NULL;
 unordered_map<string, tuple_t> ipPacketCache;
 char empty_content[] = "none";
-char content[] = "success";
 RawSocketHelper rawSocketHelper;
 
 void showpcap(const ptr_lib::shared_ptr<Data> &data);
