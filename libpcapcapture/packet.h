@@ -7,6 +7,7 @@
 #include <netinet/udp.h>
 
 #include "tuple.h"
+#include "ttime.h"
 #include "util.h"
 
 #ifndef __PACKET_H__
