@@ -13,35 +13,56 @@
 #include <ndn-cpp/security/key-chain.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
+
 using namespace ndn;
 using namespace ndn::func_lib;
 using namespace std;
 
-
-
-class NDNHelper {
-private:
-    void dealOndata(const ptr_lib::shared_ptr<Data> &data);
-    void dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
-                        Face &face, bool isPre);
+class Callback {
 public:
-    NDNHelper();
-    void initNDN(string configFilePath);
-    void join();
-    void bindCacheHelper(CacheHelper cacheHelper);
-    void expressInterest(string name);
+    Callback(RawSocketHelper *rawSocketHelper, Face *face, CacheHelper *cacheHelper)
+            : rawSocketHelper(rawSocketHelper), face(face), cacheHelper(cacheHelper) {
 
-public: //回调
-    void onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data);
+    }
 
-    void onTimeout(const ptr_lib::shared_ptr<const Interest> &interest);
+    void onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) const;
+
+    void onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) const;
 
     void onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                     const ptr_lib::shared_ptr<const Interest> &interest, Face &face,
                     uint64_t interestFilterId,
-                    const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre);
+                    const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) const;
 
-    void onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix);
+    void onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) const;
+
+private:
+    RawSocketHelper *rawSocketHelper;
+    Face *face;
+    CacheHelper *cacheHelper;
+};
+
+class NDNHelper {
+private:
+    void dealOndata(const ptr_lib::shared_ptr<Data> &data);
+
+    void
+    dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
+                   Face &face, bool isPre);
+
+public:
+    NDNHelper();
+
+    void initNDN(string configFilePath);
+
+    void join();
+
+    void bindCacheHelper(CacheHelper cacheHelper);
+
+    void expressInterest(string name);
+
+public: //回调
+
 
 public: //静态变量
     static const string PREFIX_PRE_REQUEST;
@@ -52,10 +73,8 @@ private:
     CacheHelper cacheHelper;
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
+    Callback callback;
 };
-
-
-
 
 
 #endif //IP_NDN_STACK_CPP_NDNHELPER_H
