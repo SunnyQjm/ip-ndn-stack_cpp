@@ -6,16 +6,24 @@
 
 double time2dbl(struct timeval time_value) {
     double new_time = 0;
-    new_time = (double)(time_value.tv_usec);
+    new_time = (double) (time_value.tv_usec);
     new_time /= 1000000;
-    new_time += (double)time_value.tv_sec;
-    return(new_time);
+    new_time += (double) time_value.tv_sec;
+    return (new_time);
 
 }
 
 
-LibPcapHelper::LibPcapHelper(): face("localhost") {
+LibPcapHelper::LibPcapHelper() {
 
+}
+
+void LibPcapHelper::bindNDNHelper(NDNHelper ndnHelper) {
+    this->ndnHelper = ndnHelper;
+}
+
+void LibPcapHelper::bindCacheHelper(CacheHelper cacheHelper) {
+    this->cacheHelper = cacheHelper;
 }
 
 void LibPcapHelper::initLibPcap(string configFilePath) {
@@ -29,8 +37,10 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     const uint8_t *pkt = nullptr;
     char ebuf[PCAP_ERRBUF_SIZE];
 
-    int bufsize = jsoncppHelper.getInt("pcap_buf_size"); //the value of bufsize is     the the capturing buffer size in config.ini
-    int snaplen = jsoncppHelper.getInt("pcap_snap_len"); //the value of snaplen is     the snapshot length for pcap handler in config.ini
+    int bufsize = jsoncppHelper.getInt(
+            "pcap_buf_size"); //the value of bufsize is     the the capturing buffer size in config.ini
+    int snaplen = jsoncppHelper.getInt(
+            "pcap_snap_len"); //the value of snaplen is     the snapshot length for pcap handler in config.ini
     int to_ms = jsoncppHelper.getInt("pcap_to_ms"); //the value of to_ms is the read timeout for pcap handler, in ms
     //init ringbuffer (there are two ringbuffers)
     sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
@@ -58,9 +68,10 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     pcap_lookupnet(dev_name.c_str(), &net, &mask, ebuf);
     string filter_app = jsoncppHelper.getString("pcap_dstmac");
     //capture packets and copy the packets to the ringbuffer
-    while ((res = pcap_next_ex(ph, &header, &pkt)) >= 0) { //reads the next packe    t and returns a success/failure indication.
+    while ((res = pcap_next_ex(ph, &header, &pkt)) >=
+           0) { //reads the next packe    t and returns a success/failure indication.
         if (pkt == nullptr || res == 0) {
-                continue;
+            continue;
         }
         //decode the captured packet
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
@@ -86,16 +97,10 @@ void LibPcapHelper::join() {
 
 void LibPcapHelper::deal(tuple_t tuple) {
     string uuid = this->generateUUID();
-    auto result = ipPacketCache.insert(make_pair(uuid, tuple));
-    if(!result.second) {
+    auto result = cacheHelper.save(uuid, tuple);
+    if (result) {
         cout << "插入失败" << endl;
     }
-    auto res = ipPacketCache.find(uuid);
-    if(res == ipPacketCache.end()) {
-        cout << "没有找到uuid = " << uuid << "的数据包" << endl;
-        return;
-    }
-
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);
     uint32_t int_dip = ntohl(tuple.key.dst_ip);
@@ -131,12 +136,20 @@ void LibPcapHelper::deal(tuple_t tuple) {
 
     name.append(uuid);
 
-    face.expressInterest(name, bind(&Consumer::onData, &consumer, _1, _2), bind(&Consumer::onTimeout, &consumer, _1));
+    ndnHelper.expressInterest(name);
 }
 
+/**
+ * 随机生成一个uuid
+ * @return
+ */
 string LibPcapHelper::generateUUID() {
     boost::uuids::uuid a_uuid = boost::uuids::random_generator()(); // 这里是两个() ，因为这里是调用的 () 的运算符重载
     const string tmp_uuid = boost::uuids::to_string(a_uuid);
-//    cout << "generate uuid: " << tmp_uuid << endl;
     return tmp_uuid;
 }
+
+
+
+
+
