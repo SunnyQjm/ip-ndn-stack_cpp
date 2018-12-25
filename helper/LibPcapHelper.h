@@ -6,15 +6,19 @@
 #define IP_NDN_STACK_CPP_LIBPCAPHELPER_H
 
 #include <iostream>
-#include "../libpcapcapture/ndn.cpp"
+#include "../libpcapcapture/libpcap.h"
 #include "JSONCPPHelper.h"
 #include <string>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <ndn-cpp/face.hpp>
+#include <sys/wait.h>
+#include <errno.h>
+
 
 using namespace std;
+using namespace ndn;
 class LibPcapHelper {
 public:
     LibPcapHelper();
