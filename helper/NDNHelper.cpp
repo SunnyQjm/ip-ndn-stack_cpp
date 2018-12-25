@@ -58,7 +58,7 @@ void NDNHelper::initNDN(string configFilePath) {
     }
 
 
-//    cout << "NDN init success" << endl;
+    cout << "NDN init success" << endl;
 }
 
 /**
