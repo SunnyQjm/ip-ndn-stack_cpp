@@ -1,4 +1,3 @@
-#include "ttime.h"
 #include <stdint.h>
 #include "pcap.h"
 #ifndef __TUPLE_H__
