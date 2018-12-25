@@ -10,85 +10,7 @@ const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
-NDNHelper::NDNHelper() : face("localhost"), callback(&rawSocketHelper, &face, &cacheHelper) {
-}
-
-void Callback::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) const{
-    string name = data->getName().toUri();
-    string pre = "/IP/pre/";
-    if (name.find(pre, 0) != string::npos) {
-
-    } else {        //正式拉取到包的回复
-        vector<string> fileds;
-        boost::split(fileds, name, boost::is_any_of("/"));
-        rawSocketHelper->sendPacketTo(data->getContent().buf(), data->getContent().size(), fileds[3]);
-    }
-}
-
-void Callback::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) const{
-    if(interest == nullptr) {
-        cout << "null" << endl;
-    } else {
-        cout << "Timed out: " << interest->getName().toUri() << endl;
-    }
-}
-
-void Callback::onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
-                           const ptr_lib::shared_ptr<const Interest> &interest, Face &face, uint64_t interestFilterId,
-                           const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) const{
-    string interest_name = interest->getName().toUri();
-    KeyChain KeyChain_;
-    string pre = "/IP/pre/";
-//    if (interest_name.find(pre, 0) != string::npos) {
-    if (isPre) {
-        string next_name = "/IP";
-        vector<string> fileds;
-        boost::split(fileds, interest_name, boost::is_any_of("/"));
-
-        string sip = fileds[3];
-        string dip = fileds[4];
-        string uid = fileds[5];
-        next_name.append("/" + dip);
-        next_name.append("/" + sip);
-        next_name.append("/" + uid);
-
-//        //回复一个空包
-//        Data data(interest_name);
-//        data.setContent((const uint8_t *) empty_content, sizeof(empty_content));
-//        KeyChain_.sign(data);
-//        face.putData(data);
-
-        //发一个正式拉取的请求
-        face.expressInterest(next_name, bind(&Callback::onData, this, _1, _2),
-                             bind(&Callback::onTimeout, this, _1));
-        printf("\n================execute empty onInterest================\n");
-    } else {
-        string uuid = interest_name.substr(28, interest_name.length());
-        auto res = cacheHelper->get(uuid);
-        if (!res.second) {
-            cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
-            return;
-        }
-        tuple_t tuple1 = res.first;
-
-        //删除
-        cacheHelper->erase(uuid);
-
-        Data data(interest_name);
-        data.setContent(tuple1.pkt, tuple1.size);
-        KeyChain_.sign(data);
-        face.putData(data);
-
-        printf("\n================execute onInterest================\n");
-    }
-}
-
-void Callback::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) const{
-    cout << "Register failed for prefix " << prefix->toUri() << endl;
-}
-
-void NDNHelper::expressInterest(string name) {
-    face.expressInterest(name, bind(&Callback::onData, &this->callback, _1, _2), bind(&Callback::onTimeout, &this->callback, _1));
+NDNHelper::NDNHelper() : face("localhost") {
 }
 
 /**
@@ -120,16 +42,14 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
-    cout << "begin register" << endl;
     this->face.registerPrefix(register_prefix1,
-                              (const OnInterestCallback &) bind(&Callback::onInterest, &this->callback, _1, _2, _3, _4, _5, true),
-                              bind(&Callback::onRegisterFailed, &this->callback, _1));
+                              (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
+                              bind(&NDNHelper::onRegisterFailed, this, _1));
     this->face.registerPrefix(register_prefix2,
-                              (const OnInterestCallback &) bind(&Callback::onInterest, &this->callback, _1, _2, _3, _4, _5,
+                              (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
-                              bind(&Callback::onRegisterFailed, &this->callback, _1));
+                              bind(&NDNHelper::onRegisterFailed, this, _1));
 
-    cout << "开始循环处理事件" << endl;
     //开始循环处理事件
     int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &this->face);    //byj
     if (s != 0) {
@@ -138,7 +58,7 @@ void NDNHelper::initNDN(string configFilePath) {
     }
 
 
-    cout << "NDN init success" << endl;
+//    cout << "NDN init success" << endl;
 }
 
 /**
@@ -162,7 +82,15 @@ void NDNHelper::bindCacheHelper(CacheHelper cacheHelper) {
  * @param data
  */
 void NDNHelper::dealOndata(const ptr_lib::shared_ptr<Data> &data) {
+    string name = data->getName().toUri();
+    string pre = "/IP/pre/";
+    if (name.find(pre, 0) != string::npos) {
 
+    } else {        //正式拉取到包的回复
+        vector<string> fileds;
+        boost::split(fileds, name, boost::is_any_of("/"));
+        this->rawSocketHelper.sendPacketTo(data->getContent().buf(), data->getContent().size(), fileds[3]);
+    }
 }
 
 /**
@@ -174,10 +102,71 @@ void NDNHelper::dealOndata(const ptr_lib::shared_ptr<Data> &data) {
  */
 void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                                const ptr_lib::shared_ptr<const Interest> &interest, Face &face, bool isPre) {
+    string interest_name = interest->getName().toUri();
+    KeyChain KeyChain_;
+    string pre = "/IP/pre/";
+//    if (interest_name.find(pre, 0) != string::npos) {
+    if (isPre) {
+        string next_name = "/IP";
+        vector<string> fileds;
+        boost::split(fileds, interest_name, boost::is_any_of("/"));
 
+        string sip = fileds[3];
+        string dip = fileds[4];
+        string uid = fileds[5];
+        next_name.append("/" + dip);
+        next_name.append("/" + sip);
+        next_name.append("/" + uid);
+
+//        //回复一个空包
+//        Data data(interest_name);
+//        data.setContent((const uint8_t *) empty_content, sizeof(empty_content));
+//        KeyChain_.sign(data);
+//        face.putData(data);
+
+        //发一个正式拉取的请求
+        face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
+                             bind(&NDNHelper::onTimeout, this, _1));
+        printf("\n================execute empty onInterest================\n");
+    } else {
+        string uuid = interest_name.substr(28, interest_name.length());
+        auto res = cacheHelper.get(uuid);
+        if (!res.second) {
+            cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
+            return;
+        }
+        tuple_t tuple1 = res.first;
+
+        //删除
+        cacheHelper.erase(uuid);
+
+        Data data(interest_name);
+        data.setContent(tuple1.pkt, tuple1.size);
+        KeyChain_.sign(data);
+        face.putData(data);
+
+        printf("\n================execute onInterest================\n");
+    }
 }
 
+void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) {
+    this->dealOndata(data);
+}
 
+void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
+    cout << "Timed out: " << interest->getName().toUri() << endl;
+}
 
+void NDNHelper::onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
+                           const ptr_lib::shared_ptr<const Interest> &interest, Face &face, uint64_t interestFilterId,
+                           const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre) {
+    this->dealOnInterest(prefix, interest, face, isPre);
+}
 
+void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) {
+    cout << "Register failed for prefix " << prefix->toUri() << endl;
+}
 
+void NDNHelper::expressInterest(string name) {
+    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
+}
