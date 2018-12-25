@@ -128,6 +128,8 @@ void sendpcap(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shar
         }
         tuple_t tuple1 = ipPacketCache.find(uuid)->second;
 
+        //删除
+        ipPacketCache.erase(uuid);
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
         KeyChain_.sign(data);
