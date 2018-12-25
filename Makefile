@@ -1,7 +1,7 @@
 PROGS = main
 
 SRC += libpcapcapture/packet.cpp libpcapcapture/ttime.cpp libpcapcapture/util.cpp  \
-    libpcapcapture/hash.cpp helper/JSONCPPHelper.cpp helper/RawSocketHelper.cpp
+    helper/JSONCPPHelper.cpp helper/RawSocketHelper.cpp
 
 OBJS = main.o
 
