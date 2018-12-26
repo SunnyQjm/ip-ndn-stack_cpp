@@ -135,7 +135,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
         //发一个正式拉取的请求
         face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
                              bind(&NDNHelper::onTimeout, this, _1, false));
-        printf("\n================execute empty onInterest================\n");
+//        printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
         auto res = cacheHelper->get(uuid);
@@ -153,7 +153,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
         KeyChain_.sign(data);
         face.putData(data);
 
-        printf("\n================execute onInterest================\n");
+//        printf("\n================execute onInterest================\n");
     }
 }
 
