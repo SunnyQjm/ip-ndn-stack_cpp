@@ -58,12 +58,12 @@ void NDNHelper::initNDN(string configFilePath) {
                               bind(&NDNHelper::onRegisterFailed, this, _1));
     this->face.processEvents();
 
-    //开始循环处理事件
-//    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
-//    if (s != 0) {
-//        LOG_ERR("pthread_create: %s\n", strerror(errno));
-//        exit(-1);
-//    }
+//    开始循环处理事件
+    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
+    if (s != 0) {
+        LOG_ERR("pthread_create: %s\n", strerror(errno));
+        exit(-1);
+    }
 
 
     cout << "NDN init success" << endl;
