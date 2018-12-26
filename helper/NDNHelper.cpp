@@ -21,11 +21,11 @@ NDNHelper::NDNHelper(): face("localhost") {
  */
 void *dealEvent(void *arg) {
     Face * face = (Face *) arg;
-    cout << "dealEvent" << endl;
-    while (true) {
+//    cout << "dealEvent" << endl;
+//    while (true) {
         face->processEvents();
-        usleep(5);
-    }
+//        usleep(5);
+//    }
 }
 
 
