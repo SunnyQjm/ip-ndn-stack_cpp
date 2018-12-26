@@ -39,7 +39,7 @@ void NDNHelper::initNDN(string configFilePath) {
     cout << "registerIp: " << registerIp << endl;
     // 前缀注册
     KeyChain KeyChain_;
-    this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
+    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     string register_prefix1_str(PREFIX_PRE_REQUEST);
     register_prefix1_str.append("/");
     register_prefix1_str.append(registerIp);
@@ -48,10 +48,10 @@ void NDNHelper::initNDN(string configFilePath) {
     register_prefix2_str.append(registerIp);
     Name register_prefix1(register_prefix1_str);
     Name register_prefix2(register_prefix2_str);
-    this->face.registerPrefix(register_prefix1,
+    face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
-    this->face.registerPrefix(register_prefix2,
+    face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
