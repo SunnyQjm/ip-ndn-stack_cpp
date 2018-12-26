@@ -146,6 +146,7 @@ void LibPcapHelper::deal(tuple_t tuple) {
     name.append(".");
     dip.append(dip4);
 
+    cout << "发送到" << dip << endl;
 //    ndnHelper->expressInterest(name);
     this->rawSocketHelper.sendPacketTo(tuple.pkt, tuple.size, dip);
 }
