@@ -18,7 +18,6 @@ using namespace ndn;
 using namespace ndn::func_lib;
 using namespace std;
 
-
 class NDNHelper {
 private:
     void dealOnData(const ptr_lib::shared_ptr<Data> &data);

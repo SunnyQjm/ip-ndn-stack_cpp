@@ -24,7 +24,6 @@ void *dealEvent(void *arg) {
     cout << "dealEvent" << endl;
     while (true) {
         face->processEvents();
-        boost::this_thread::sleep(boost::posix_time::microsec(5))
     }
 }
 
@@ -52,18 +51,20 @@ void NDNHelper::initNDN(string configFilePath) {
     this->face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
+    this->face.processEvents();
+
     this->face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
     this->face.processEvents();
 
-//    开始循环处理事件
-    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
-    if (s != 0) {
-        LOG_ERR("pthread_create: %s\n", strerror(errno));
-        exit(-1);
-    }
+////    开始循环处理事件
+//    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
+//    if (s != 0) {
+//        LOG_ERR("pthread_create: %s\n", strerror(errno));
+//        exit(-1);
+//    }
 
 
     cout << "NDN init success" << endl;
