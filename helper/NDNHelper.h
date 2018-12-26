@@ -33,7 +33,7 @@ public:
 public: //回调
     void onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data);
 
-    void onTimeout(const ptr_lib::shared_ptr<const Interest> &interest);
+    void onTimeout(const ptr_lib::shared_ptr<const Interest> &interest, bool isPre = false);
 
     void onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                     const ptr_lib::shared_ptr<const Interest> &interest, Face &face,

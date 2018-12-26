@@ -134,7 +134,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
 
         //发一个正式拉取的请求
         face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
-                             bind(&NDNHelper::onTimeout, this, _1));
+                             bind(&NDNHelper::onTimeout, this, _1, false));
         printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
@@ -161,8 +161,10 @@ void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, cons
     this->dealOnData(data);
 }
 
-void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
-    cout << "Timed out: " << interest->getName().toUri() << endl;
+void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest, bool isPre) {
+    if(!isPre) {
+        cout << "Timed out: " << interest->getName().toUri() << endl;
+    }
 }
 
 void NDNHelper::onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
@@ -176,5 +178,5 @@ void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) 
 }
 
 void NDNHelper::expressInterest(string name) {
-    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
+    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, true));
 }
