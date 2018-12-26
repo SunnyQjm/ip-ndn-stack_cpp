@@ -98,7 +98,7 @@ void LibPcapHelper::join() {
 void LibPcapHelper::deal(tuple_t tuple) {
     string uuid = this->generateUUID();
     auto result = cacheHelper->save(uuid, tuple);
-    if (result) {
+    if (!result) {
         cout << "插入失败" << endl;
         return;
     }
