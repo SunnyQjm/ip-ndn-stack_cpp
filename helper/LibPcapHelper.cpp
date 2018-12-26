@@ -100,6 +100,7 @@ void LibPcapHelper::deal(tuple_t tuple) {
     auto result = cacheHelper->save(uuid, tuple);
     if (result) {
         cout << "插入失败" << endl;
+        return;
     }
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple.key.src_ip);
