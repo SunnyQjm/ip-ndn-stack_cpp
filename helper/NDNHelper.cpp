@@ -56,13 +56,14 @@ void NDNHelper::initNDN(string configFilePath) {
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
+    this->face.processEvents();
 
     //开始循环处理事件
-    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
-    if (s != 0) {
-        LOG_ERR("pthread_create: %s\n", strerror(errno));
-        exit(-1);
-    }
+//    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
+//    if (s != 0) {
+//        LOG_ERR("pthread_create: %s\n", strerror(errno));
+//        exit(-1);
+//    }
 
 
     cout << "NDN init success" << endl;
@@ -133,8 +134,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
 //        this->face.putData(data);
 
         //发一个正式拉取的请求
-        this->face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
-                             bind(&NDNHelper::onTimeout, this, _1, false));
+        this->expressInterest(next_name, false);
 //        printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
@@ -177,6 +177,7 @@ void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) 
     cout << "Register failed for prefix " << prefix->toUri() << endl;
 }
 
-void NDNHelper::expressInterest(string name) {
-    this->face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, true));
+void NDNHelper::expressInterest(string name, bool isPre) {
+    this->face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
+    this->face.processEvents();
 }

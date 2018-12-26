@@ -28,7 +28,7 @@ public:
     void initNDN(string configFilePath);
     void join();
     void bindCacheHelper(CacheHelper* cacheHelper);
-    void expressInterest(string name);
+    void expressInterest(string name, bool isPre = true);
 
 public: //回调
     void onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data);
