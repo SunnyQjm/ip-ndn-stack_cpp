@@ -20,7 +20,7 @@ using namespace std;
 
 class NDNHelper {
 private:
-    void dealOndata(const ptr_lib::shared_ptr<Data> &data);
+    void dealOnData(const ptr_lib::shared_ptr<Data> &data);
     void dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
                         Face &face, bool isPre);
 public:

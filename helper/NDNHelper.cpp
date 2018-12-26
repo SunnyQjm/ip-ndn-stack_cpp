@@ -41,7 +41,9 @@ void NDNHelper::initNDN(string configFilePath) {
     KeyChain KeyChain_;
     this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
+    cout << register_prefix1.toUri() << endl;
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
+
     this->face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
@@ -58,7 +60,7 @@ void NDNHelper::initNDN(string configFilePath) {
     }
 
 
-//    cout << "NDN init success" << endl;
+    cout << "NDN init success" << endl;
 }
 
 /**
@@ -81,7 +83,7 @@ void NDNHelper::bindCacheHelper(CacheHelper cacheHelper) {
  * 内部函数，处理onData事件
  * @param data
  */
-void NDNHelper::dealOndata(const ptr_lib::shared_ptr<Data> &data) {
+void NDNHelper::dealOnData(const ptr_lib::shared_ptr<Data> &data) {
     string name = data->getName().toUri();
     string pre = "/IP/pre/";
     if (name.find(pre, 0) != string::npos) {
@@ -150,7 +152,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
 }
 
 void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) {
-    this->dealOndata(data);
+    this->dealOnData(data);
 }
 
 void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
