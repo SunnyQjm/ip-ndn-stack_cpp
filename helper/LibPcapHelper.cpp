@@ -139,11 +139,11 @@ void LibPcapHelper::deal(tuple_t tuple) {
 
     string dip = "";
     dip.append(dip1);
-    name.append(".");
+    dip.append(".");
     dip.append(dip2);
-    name.append(".");
+    dip.append(".");
     dip.append(dip3);
-    name.append(".");
+    dip.append(".");
     dip.append(dip4);
 
     cout << "发送到" << dip << endl;
