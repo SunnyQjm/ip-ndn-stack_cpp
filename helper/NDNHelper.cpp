@@ -48,15 +48,15 @@ void NDNHelper::initNDN(string configFilePath) {
     register_prefix2_str.append(registerIp);
     Name register_prefix1(register_prefix1_str);
     Name register_prefix2(register_prefix2_str);
-    this->face.setInterestFilter(register_prefix1,
-                              (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true));
-//                              bind(&NDNHelper::onRegisterFailed, this, _1));
+    this->face.registerPrefix(register_prefix1,
+                              (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
+                              bind(&NDNHelper::onRegisterFailed, this, _1));
     this->face.processEvents();
 
-    this->face.setInterestFilter(register_prefix2,
+    this->face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
-                                                                false));
-//                              bind(&NDNHelper::onRegisterFailed, this, _1));
+                                                                false),
+                              bind(&NDNHelper::onRegisterFailed, this, _1));
     this->face.processEvents();
 
 //    开始循环处理事件
