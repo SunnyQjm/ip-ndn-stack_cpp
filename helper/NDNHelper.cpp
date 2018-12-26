@@ -34,6 +34,7 @@ void *dealEvent(void *arg) {
  * @return
  */
 void NDNHelper::initNDN(string configFilePath) {
+    Face face("localhost");
     JSONCPPHelper jsoncppHelper(configFilePath);
     string registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
     cout << "registerIp: " << registerIp << endl;
