@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     CacheHelper cacheHelper;
     LibPcapHelper libPcapHelper;
 
-    ndnHelper.bindCacheHelper(cacheHelper);
+    ndnHelper.bindCacheHelper(&cacheHelper);
     libPcapHelper.bindCacheHelper(&cacheHelper);
     libPcapHelper.bindNDNHelper(&ndnHelper);
 
