@@ -31,16 +31,16 @@ public:
 
     string generateUUID();
 
-    void bindNDNHelper(NDNHelper ndnHelper);
+    void bindNDNHelper(NDNHelper* ndnHelper);
 
-    void bindCacheHelper(CacheHelper cacheHelper);
+    void bindCacheHelper(CacheHelper* cacheHelper);
 
     void join();
 
 private:
     pcap_t *ph;
-    NDNHelper ndnHelper;
-    CacheHelper cacheHelper;
+    NDNHelper *ndnHelper;
+    CacheHelper *cacheHelper;
 
     void deal(tuple_t tuple);
 };

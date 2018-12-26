@@ -13,8 +13,8 @@ int main(int argc, char *argv[]) {
     LibPcapHelper libPcapHelper;
 
     ndnHelper.bindCacheHelper(cacheHelper);
-    libPcapHelper.bindCacheHelper(cacheHelper);
-    libPcapHelper.bindNDNHelper(ndnHelper);
+    libPcapHelper.bindCacheHelper(&cacheHelper);
+    libPcapHelper.bindNDNHelper(&ndnHelper);
 
     ndnHelper.initNDN(argv[1]);
     libPcapHelper.initLibPcap(argv[1]);

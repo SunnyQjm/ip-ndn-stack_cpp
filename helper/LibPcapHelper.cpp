@@ -18,11 +18,11 @@ LibPcapHelper::LibPcapHelper() {
 
 }
 
-void LibPcapHelper::bindNDNHelper(NDNHelper ndnHelper) {
+void LibPcapHelper::bindNDNHelper(NDNHelper* ndnHelper) {
     this->ndnHelper = ndnHelper;
 }
 
-void LibPcapHelper::bindCacheHelper(CacheHelper cacheHelper) {
+void LibPcapHelper::bindCacheHelper(CacheHelper* cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
@@ -97,7 +97,7 @@ void LibPcapHelper::join() {
 
 void LibPcapHelper::deal(tuple_t tuple) {
     string uuid = this->generateUUID();
-    auto result = cacheHelper.save(uuid, tuple);
+    auto result = cacheHelper->save(uuid, tuple);
     if (result) {
         cout << "插入失败" << endl;
     }
@@ -136,7 +136,7 @@ void LibPcapHelper::deal(tuple_t tuple) {
 
     name.append(uuid);
 
-    ndnHelper.expressInterest(name);
+    ndnHelper->expressInterest(name);
 }
 
 /**

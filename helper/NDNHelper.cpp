@@ -21,7 +21,6 @@ NDNHelper::NDNHelper(): face("localhost") {
  */
 void *dealEvent(void *arg) {
     cout << "dealEvent" << endl;
-    Face face("localhost");
     while (true) {
         face.processEvents();
         usleep(50);
@@ -35,7 +34,6 @@ void *dealEvent(void *arg) {
  * @return
  */
 void NDNHelper::initNDN(string configFilePath) {
-    Face face("localhost");
     JSONCPPHelper jsoncppHelper(configFilePath);
     string registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
     cout << "registerIp: " << registerIp << endl;
@@ -80,7 +78,7 @@ void NDNHelper::join() {
  * 绑定一个LibPcapHelper模块实例
  * @param libPcapHelper
  */
-void NDNHelper::bindCacheHelper(CacheHelper cacheHelper) {
+void NDNHelper::bindCacheHelper(CacheHelper* cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
@@ -139,7 +137,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
         printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
-        auto res = cacheHelper.get(uuid);
+        auto res = cacheHelper->get(uuid);
         if (!res.second) {
             cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
             return;
@@ -147,7 +145,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
         tuple_t tuple1 = res.first;
 
         //删除
-        cacheHelper.erase(uuid);
+        cacheHelper->erase(uuid);
 
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
@@ -177,6 +175,5 @@ void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) 
 }
 
 void NDNHelper::expressInterest(string name) {
-    Face face("localhost");
     face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
 }

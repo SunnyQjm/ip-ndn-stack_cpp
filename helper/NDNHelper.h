@@ -27,7 +27,7 @@ public:
     NDNHelper();
     void initNDN(string configFilePath);
     void join();
-    void bindCacheHelper(CacheHelper cacheHelper);
+    void bindCacheHelper(CacheHelper* cacheHelper);
     void expressInterest(string name);
 
 public: //回调
@@ -48,7 +48,7 @@ public: //静态变量
     static const string KEY_CONFIG_REGISTER_IP;
 private:
     Face face;
-    CacheHelper cacheHelper;
+    CacheHelper* cacheHelper;
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
 };
