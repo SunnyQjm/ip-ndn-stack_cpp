@@ -47,7 +47,7 @@ public: //静态变量
     static const string PREFIX_REQUEST_DATA;
     static const string KEY_CONFIG_REGISTER_IP;
 private:
-    Face face;
+   // Face face;
     CacheHelper cacheHelper;
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;

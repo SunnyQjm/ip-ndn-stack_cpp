@@ -10,7 +10,7 @@ const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
-NDNHelper::NDNHelper() : face("localhost") {
+NDNHelper::NDNHelper()    {
 }
 
 /**
@@ -20,9 +20,9 @@ NDNHelper::NDNHelper() : face("localhost") {
  */
 void *dealEvent(void *arg) {
     cout << "dealEvent" << endl;
-    Face *face = (Face *) arg;
+    Face face("localhost");
     while (true) {
-        face->processEvents();
+        face.processEvents();
         usleep(50);
     }
 }
@@ -34,24 +34,31 @@ void *dealEvent(void *arg) {
  * @return
  */
 void NDNHelper::initNDN(string configFilePath) {
+    Face face("localhost");
     JSONCPPHelper jsoncppHelper(configFilePath);
     string registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
     cout << "registerIp: " << registerIp << endl;
     // 前缀注册
     KeyChain KeyChain_;
-    this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
-    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + registerIp);
-    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + registerIp);
-    this->face.registerPrefix(register_prefix1,
+    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
+    string register_prefix1_str(PREFIX_PRE_REQUEST);
+    register_prefix1_str.append("/");
+    register_prefix1_str.append(registerIp);
+    string register_prefix2_str(PREFIX_REQUEST_DATA);
+    register_prefix2_str.append("/");
+    register_prefix2_str.append(registerIp);
+    Name register_prefix1("register_prefix1_str");
+    Name register_prefix2("register_prefix2_str");
+    face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
-    this->face.registerPrefix(register_prefix2,
+    face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
 
     //开始循环处理事件
-    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &this->face);    //byj
+    int s = pthread_create(&this->processEventThreadId, NULL, dealEvent, (void *) &face);    //byj
     if (s != 0) {
         LOG_ERR("pthread_create: %s\n", strerror(errno));
         exit(-1);
@@ -104,6 +111,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                                const ptr_lib::shared_ptr<const Interest> &interest, Face &face, bool isPre) {
     string interest_name = interest->getName().toUri();
     KeyChain KeyChain_;
+    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     string pre = "/IP/pre/";
 //    if (interest_name.find(pre, 0) != string::npos) {
     if (isPre) {
@@ -168,5 +176,6 @@ void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) 
 }
 
 void NDNHelper::expressInterest(string name) {
+    Face face("localhost");
     face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1));
 }
