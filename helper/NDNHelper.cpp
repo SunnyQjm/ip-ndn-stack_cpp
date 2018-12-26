@@ -40,7 +40,7 @@ void NDNHelper::initNDN(string configFilePath) {
     cout << "registerIp: " << registerIp << endl;
     // 前缀注册
     KeyChain KeyChain_;
-    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
+    this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     string register_prefix1_str(PREFIX_PRE_REQUEST);
     register_prefix1_str.append("/");
     register_prefix1_str.append(registerIp);
@@ -49,10 +49,10 @@ void NDNHelper::initNDN(string configFilePath) {
     register_prefix2_str.append(registerIp);
     Name register_prefix1(register_prefix1_str);
     Name register_prefix2(register_prefix2_str);
-    face.registerPrefix(register_prefix1,
+    this->face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
-    face.registerPrefix(register_prefix2,
+    this->face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
@@ -111,7 +111,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
                                const ptr_lib::shared_ptr<const Interest> &interest, Face &face, bool isPre) {
     string interest_name = interest->getName().toUri();
     KeyChain KeyChain_;
-    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
+    this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     string pre = "/IP/pre/";
 //    if (interest_name.find(pre, 0) != string::npos) {
     if (isPre) {
@@ -130,10 +130,10 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
 //        Data data(interest_name);
 //        data.setContent((const uint8_t *) empty_content, sizeof(empty_content));
 //        KeyChain_.sign(data);
-//        face.putData(data);
+//        this->face.putData(data);
 
         //发一个正式拉取的请求
-        face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
+        this->face.expressInterest(next_name, bind(&NDNHelper::onData, this, _1, _2),
                              bind(&NDNHelper::onTimeout, this, _1, false));
 //        printf("\n================execute empty onInterest================\n");
     } else {
@@ -151,7 +151,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
         KeyChain_.sign(data);
-        face.putData(data);
+        this->face.putData(data);
 
 //        printf("\n================execute onInterest================\n");
     }
@@ -178,5 +178,5 @@ void NDNHelper::onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix) 
 }
 
 void NDNHelper::expressInterest(string name) {
-    face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, true));
+    this->face.expressInterest(name, bind(&NDNHelper::onData, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, true));
 }
