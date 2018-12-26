@@ -137,7 +137,17 @@ void LibPcapHelper::deal(tuple_t tuple) {
 
     name.append(uuid);
 
-    ndnHelper->expressInterest(name);
+    string dip = "";
+    dip.append(dip1);
+    name.append(".");
+    dip.append(dip2);
+    name.append(".");
+    dip.append(dip3);
+    name.append(".");
+    dip.append(dip4);
+
+//    ndnHelper->expressInterest(name);
+    this->rawSocketHelper.sendPacketTo(tuple.pkt, tuple.size, dip);
 }
 
 /**

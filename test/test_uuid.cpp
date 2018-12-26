@@ -21,6 +21,7 @@ string generateUUID() {
 
 
 /**
+ * 经过测试，在机房的电脑上执行生成uuid，10000个大概需要10s，也就是说生成一个uuid大概需要1ms
  * @return
  */
 int main() {

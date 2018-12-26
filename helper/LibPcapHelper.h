@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "../libpcapcapture/libpcap.h"
+#include "RawSocketHelper.h"
 #include "JSONCPPHelper.h"
 #include "NDNHelper.h"
 #include "CacheHelper.h"
@@ -41,7 +42,7 @@ private:
     pcap_t *ph;
     NDNHelper *ndnHelper;
     CacheHelper *cacheHelper;
-
+    RawSocketHelper rawSocketHelper;
     void deal(tuple_t tuple);
 };
 
