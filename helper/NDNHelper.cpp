@@ -10,7 +10,7 @@ const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
-NDNHelper::NDNHelper()    {
+NDNHelper::NDNHelper(): face("localhost") {
 }
 
 /**
@@ -34,25 +34,24 @@ void *dealEvent(void *arg) {
  * @return
  */
 void NDNHelper::initNDN(string configFilePath) {
-    Face face("localhost");
     JSONCPPHelper jsoncppHelper(configFilePath);
     string registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
     cout << "registerIp: " << registerIp << endl;
     // 前缀注册
     KeyChain KeyChain_;
-    face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
+    this->face.setCommandSigningInfo(KeyChain_, KeyChain_.getDefaultCertificateName());
     string register_prefix1_str(PREFIX_PRE_REQUEST);
     register_prefix1_str.append("/");
     register_prefix1_str.append(registerIp);
     string register_prefix2_str(PREFIX_REQUEST_DATA);
     register_prefix2_str.append("/");
     register_prefix2_str.append(registerIp);
-    Name register_prefix1("register_prefix1_str");
-    Name register_prefix2("register_prefix2_str");
-    face.registerPrefix(register_prefix1,
+    Name register_prefix1(register_prefix1_str);
+    Name register_prefix2(register_prefix2_str);
+    this->face.registerPrefix(register_prefix1,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
-    face.registerPrefix(register_prefix2,
+    this->face.registerPrefix(register_prefix2,
                               (const OnInterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5,
                                                                 false),
                               bind(&NDNHelper::onRegisterFailed, this, _1));
