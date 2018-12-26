@@ -65,7 +65,7 @@ void NDNHelper::initNDN(string configFilePath) {
     }
 
 
-//    cout << "NDN init success" << endl;
+    cout << "NDN init success" << endl;
 }
 
 /**
@@ -88,7 +88,7 @@ void NDNHelper::bindCacheHelper(CacheHelper cacheHelper) {
  * 内部函数，处理onData事件
  * @param data
  */
-void NDNHelper::dealOndata(const ptr_lib::shared_ptr<Data> &data) {
+void NDNHelper::dealOnData(const ptr_lib::shared_ptr<Data> &data) {
     string name = data->getName().toUri();
     string pre = "/IP/pre/";
     if (name.find(pre, 0) != string::npos) {
@@ -158,7 +158,7 @@ void NDNHelper::dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix,
 }
 
 void NDNHelper::onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data) {
-    this->dealOndata(data);
+    this->dealOnData(data);
 }
 
 void NDNHelper::onTimeout(const ptr_lib::shared_ptr<const Interest> &interest) {
