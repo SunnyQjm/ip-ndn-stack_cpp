@@ -8,8 +8,8 @@
 #include <boost/thread.hpp>
 using namespace std;
 
-void dealNDN() {
-
+void dealNDN(const boost::shared_ptr<NDNHelper> ndnHelper) {
+    ndnHelper->start();
 }
 int main(int argc, char *argv[]) {
 
@@ -24,10 +24,12 @@ int main(int argc, char *argv[]) {
 
     ndnHelper.initNDN(argv[1]);
     ndnHelper.start();
+    boost::thread t(dealNDN, &ndnHelper);
     libPcapHelper.initLibPcap(argv[1]);
 
     libPcapHelper.join();
     ndnHelper.join();
+    t.join();
     libPcapHelper.close();
 
 
