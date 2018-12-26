@@ -20,9 +20,10 @@ NDNHelper::NDNHelper(): face("localhost") {
  * @return
  */
 void *dealEvent(void *arg) {
+    Face * face = (Face *) arg;
     cout << "dealEvent" << endl;
     while (true) {
-        face.processEvents();
+        face->processEvents();
         usleep(50);
     }
 }
