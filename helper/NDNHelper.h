@@ -9,38 +9,40 @@
 #include "JSONCPPHelper.h"
 #include "RawSocketHelper.h"
 #include "CacheHelper.h"
-#include <ndn-cpp/face.hpp>
-#include <ndn-cpp/security/key-chain.hpp>
+#include <ndn-cxx/data.hpp>
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/interest.hpp>
+#include <ndn-cxx/name.hpp>
+#include <ndn-cxx/security/key-chain.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
-//#include <boost/thread.hpp>
+
 using namespace ndn;
-using namespace ndn::func_lib;
 using namespace std;
 
 class NDNHelper {
 private:
-    void dealOnData(const ptr_lib::shared_ptr<Data> &data);
-    void dealOnInterest(const ptr_lib::shared_ptr<const Name> &prefix, const ptr_lib::shared_ptr<const Interest> &interest,
-                        Face &face, bool isPre);
+    void dealOnData(const Data &data);
+    void dealOnInterest(const Name &prefix, const Interest &interest, bool isPre);
 public:
     NDNHelper();
     void initNDN(string configFilePath);
+    void start();
     void join();
     void bindCacheHelper(CacheHelper* cacheHelper);
     void expressInterest(string name, bool isPre = true);
 
 public: //回调
-    void onData(const ptr_lib::shared_ptr<const Interest> &interest, const ptr_lib::shared_ptr<Data> &data);
+    void onData(const Interest &interest, const Data &data);
 
-    void onTimeout(const ptr_lib::shared_ptr<const Interest> &interest, bool isPre = false);
+    void onNack(const Interest& interest, const lp::Nack& nack);
+    void onTimeout(const Interest &interest, bool isPre = false);
 
-    void onInterest(const ptr_lib::shared_ptr<const Name> &prefix,
-                    const ptr_lib::shared_ptr<const Interest> &interest, Face &face,
-                    uint64_t interestFilterId,
-                    const ptr_lib::shared_ptr<const InterestFilter> &filter, bool isPre);
+    void onInterest(const Name &prefix,
+                    const InterestFilter &filter,
+                    const Interest &interest, bool isPre);
 
-    void onRegisterFailed(const ptr_lib::shared_ptr<const Name> &prefix);
+    void onRegisterFailed(const Name &prefix);
 
 public: //静态变量
     static const string PREFIX_PRE_REQUEST;
@@ -51,6 +53,8 @@ private:
     CacheHelper* cacheHelper;
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
+    KeyChain KeyChain_;
+    string registerIp;
 };
 
 

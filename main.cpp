@@ -4,8 +4,13 @@
 #include "./helper/NDNHelper.h"
 #include "./helper/JSONCPPHelper.h"
 #include "./helper/LibPcapHelper.h"
+
+#include <boost/thread.hpp>
 using namespace std;
 
+void dealNDN() {
+
+}
 int main(int argc, char *argv[]) {
 
     NDNHelper ndnHelper;
@@ -16,7 +21,9 @@ int main(int argc, char *argv[]) {
     libPcapHelper.bindCacheHelper(&cacheHelper);
     libPcapHelper.bindNDNHelper(&ndnHelper);
 
+
     ndnHelper.initNDN(argv[1]);
+    ndnHelper.start();
     libPcapHelper.initLibPcap(argv[1]);
 
     libPcapHelper.join();
