@@ -11,6 +11,7 @@ const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
 NDNHelper::NDNHelper(): face("localhost") {
+    cout << "NDN Helper constructor" << endl;
 }
 
 /**
