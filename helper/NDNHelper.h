@@ -13,6 +13,7 @@
 #include <ndn-cpp/security/key-chain.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
+#include <boost/thread.hpp>
 using namespace ndn;
 using namespace ndn::func_lib;
 using namespace std;

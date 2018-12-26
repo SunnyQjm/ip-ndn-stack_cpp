@@ -24,7 +24,7 @@ void *dealEvent(void *arg) {
     cout << "dealEvent" << endl;
     while (true) {
         face->processEvents();
-//        usleep(5);
+        boost::this_thread::sleep(boost::posix_time::microsec(5))
     }
 }
 
