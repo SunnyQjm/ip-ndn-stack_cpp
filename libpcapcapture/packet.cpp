@@ -182,7 +182,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
         uint32_t cap_len,
         uint32_t act_len,
         double ts,
-        tuple_t* p) {
+        tuple_p p) {
     struct ether_header* eth_hdr;
     struct ip* ip_hdr;
     struct tcphdr* tcp_hdr;

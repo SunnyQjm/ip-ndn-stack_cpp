@@ -45,7 +45,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     int to_ms = jsoncppHelper.getInt("pcap_to_ms"); //the value of to_ms is the read timeout for pcap handler, in ms
     //init ringbuffer (there are two ringbuffers)
     sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
-    tuple_t t_kern;
+    tuple_p t_kern;
     double pkt_ts;
     memset(&t_kern, 0, sizeof(struct Tuple));
 
@@ -81,7 +81,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         pcap_setfilter(ph, &filter);
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
-        decode(pkt, header->caplen, header->len, pkt_ts, &t_kern);
+        decode(pkt, header->caplen, header->len, pkt_ts, t_kern);
         this->deal(t_kern);
     }
 
@@ -96,7 +96,7 @@ void LibPcapHelper::join() {
 //    pthread_join(this->readRingBufferThreadId, nullptr);
 }
 
-void LibPcapHelper::deal(tuple_t tuple) {
+void LibPcapHelper::deal(tuple_p tuple) {
     string uuid = this->generateUUID();
     auto result = cacheHelper->save(uuid, tuple);
     if (!result) {
@@ -104,8 +104,8 @@ void LibPcapHelper::deal(tuple_t tuple) {
         return;
     }
     //发送兴趣包
-    uint32_t int_sip = ntohl(tuple.key.src_ip);
-    uint32_t int_dip = ntohl(tuple.key.dst_ip);
+    uint32_t int_sip = ntohl(tuple->key.src_ip);
+    uint32_t int_dip = ntohl(tuple->key.dst_ip);
     //cout<<int_sip<<endl;
     string sip1 = to_string((int_sip >> 24) & 0xFF);
     string sip2 = to_string((int_sip >> 16) & 0xFF);

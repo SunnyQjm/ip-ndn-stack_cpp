@@ -44,7 +44,7 @@ void report_final_stat_file(const char* filename);
 void reset_stat();
 void print_tuple_screen(tuple_t* t);
 
-enum PACKET_STATUS decode(const uint8_t* pkt, uint32_t cap_len, uint32_t act_len, double ts, tuple_t* t);
+enum PACKET_STATUS decode(const uint8_t* pkt, uint32_t cap_len, uint32_t act_len, double ts, tuple_p t);
 
 
 void dbl2time(double time,struct timeval * time_new);

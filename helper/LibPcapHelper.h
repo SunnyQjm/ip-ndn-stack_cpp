@@ -43,7 +43,7 @@ private:
     NDNHelper *ndnHelper;
     CacheHelper *cacheHelper;
     RawSocketHelper rawSocketHelper;
-    void deal(tuple_t tuple);
+    void deal(tuple_p tuple);
 };
 
 

@@ -9,7 +9,7 @@
  * @param value
  * @return
  */
-bool CacheHelper::save(string key, tuple_t value) {
+bool CacheHelper::save(string key, tuple_p value) {
     return this->ipPacketCache.insert(make_pair(key, value)).second;
 }
 
@@ -18,7 +18,7 @@ bool CacheHelper::save(string key, tuple_t value) {
  * @param key
  * @return
  */
-pair<tuple_t, bool> CacheHelper::get(string key) {
+pair<tuple_p, bool> CacheHelper::get(string key) {
     auto count = this->ipPacketCache.count(key);
     if(count == 0) {    //缓存中不存在该键值
         return make_pair(this->emptyTuple, false);

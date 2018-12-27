@@ -14,12 +14,12 @@ using namespace std;
 class CacheHelper {
 public:
     CacheHelper(){}
-    bool save(string key, tuple_t value);
-    pair<tuple_t, bool> get(string key);
+    bool save(string key, tuple_p value);
+    pair<tuple_p, bool> get(string key);
     unsigned int erase(string key);
 private:
-    unordered_map<string, tuple_t> ipPacketCache;
-    tuple_t emptyTuple;
+    unordered_map<string, tuple_p> ipPacketCache;
+    tuple_p emptyTuple;
 };
 
 

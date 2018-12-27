@@ -108,13 +108,13 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre) {
             cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
             return;
         }
-        tuple_t tuple1 = res.first;
+        tuple_p tuple1 = res.first;
 
         //删除
         cacheHelper->erase(uuid);
 
         Data data(interest_name);
-        data.setContent(tuple1.pkt, tuple1.size);
+        data.setContent(tuple1->pkt, tuple1->size);
         KeyChain_.sign(data);
         this->face.put(data);
     }

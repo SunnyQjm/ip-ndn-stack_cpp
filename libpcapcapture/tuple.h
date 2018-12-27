@@ -44,6 +44,8 @@ typedef struct Tuple {
     // 8 bytes
     uint64_t size; //inner IP datagram length(header + data)
 	struct Tuple * next ;
-} tuple_t;
+};
+typedef struct Tuple tuple_t;
+typedef struct Tuple* tuple_p;
 
 #endif
