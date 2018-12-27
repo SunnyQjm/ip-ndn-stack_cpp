@@ -174,21 +174,26 @@ void NDNHelper::dealOnInterest(const Name &prefix,
 //        printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
+        cout << "处理uuid=" << uuid << endl;
         auto res = cacheHelper->get(uuid);
         if (!res.second) {
             cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
             return;
+        } else {
+            cout << "成功找到" << endl;
         }
         tuple_t tuple1 = res.first;
 
+        cout << "开始删除" << endl;
         //删除
         cacheHelper->erase(uuid);
 
+        cout << "删除结束" << endl;
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
         KeyChain_.sign(data);
         this->face.put(data);
-
+        cout << "发送数据" << endl;
 //        printf("\n================execute onInterest================\n");
     }
 }
