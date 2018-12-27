@@ -134,7 +134,7 @@ void NDNHelper::dealOnData(const Data &data) {
     } else {        //正式拉取到包的回复
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
-        this->rawSocketHelper.sendPacketTo(data.getContent().getBuffer().get(), data.getContent().size(), fileds[3]);
+        this->rawSocketHelper.sendPacketTo(data.getContent().getBuffer()->get(), data.getContent().size(), fileds[3]);
     }
 }
 
