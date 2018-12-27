@@ -29,7 +29,7 @@ struct Tuple {
 	//struct pcap_pkthdr *header;
     unsigned int index;//uid
 	//pkt
-	const uint8_t *pkt;
+	uint8_t *pkt;
     // 1 byte
     // only used in multi-thread environment
     uint8_t flag;

@@ -190,7 +190,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
     int eth_len = ETH_LEN;
     enum PACKET_STATUS status;
 	//char* date;
-	const uint8_t* date;
+	uint8_t* date;
 
     status = STATUS_VALID; //valid packets
     packet_stat.tot_pkt_cnt++;
@@ -228,7 +228,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
 
     //error checking(IP level)
     ip_hdr = (struct ip*)(pkt + eth_len);
-	date = (const uint8_t*)(pkt + eth_len);
+	date = (uint8_t*)(pkt + eth_len);
     // i) IP header length check
     // LOG_MSG("check 1\n");
     if ((int)len < (ip_hdr->ip_hl << 2)) {
@@ -266,7 +266,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
             status = STATUS_ICMP_NOT_FULL;
         }
     }
-	//date = (char*)((uint8_t*)tcp_hdr + (tcp_hdr->doff << 2))£»
+	//date = (char*)((uint8_t*)tcp_hdr + (tcp_hdr->doff << 2))ï¿½ï¿½
     switch (status) {
         case STATUS_VALID:
             packet_stat.valid_pkt_cnt++;
