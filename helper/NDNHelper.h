@@ -23,7 +23,7 @@ using namespace std;
 class NDNHelper {
 private:
     void dealOnData(const Data &data);
-    void dealOnInterest(const Name &prefix, const Interest &interest, bool isPre);
+    void dealOnInterest(const Interest &interest, bool isPre);
 public:
     NDNHelper();
     void initNDN(string configFilePath);
@@ -38,8 +38,7 @@ public: //回调
     void onNack(const Interest& interest, const lp::Nack& nack);
     void onTimeout(const Interest &interest, bool isPre = false);
 
-    void onInterest(const Name &prefix,
-                    const InterestFilter &filter,
+    void onInterest(const InterestFilter &filter,
                     const Interest &interest, bool isPre);
 
     void onRegisterFailed(const Name &prefix);
