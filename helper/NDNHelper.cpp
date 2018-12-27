@@ -116,9 +116,9 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre) {
         data.setContent(tuple1->pkt, tuple1->size);
         KeyChain_.sign(data);
         this->face.put(data);
-//        cout << "开始delete" << endl;
-//        delete tuple1;
-//        cout << "delete success" << endl;
+        cout << "开始delete" << endl;
+        delete tuple1;
+        cout << "delete success" << endl;
 //        cacheHelper->erase(uuid);
     }
 }
