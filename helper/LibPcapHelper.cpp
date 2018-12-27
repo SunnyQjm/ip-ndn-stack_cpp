@@ -95,6 +95,7 @@ void LibPcapHelper::join() {
 }
 
 void LibPcapHelper::deal(const void *arg1, const void *arg2) {
+    cout << "thread_id" << boost::this_thread::get_id() << endl;
     struct pcap_pkthdr *header = (struct pcap_pkthdr *) arg1;
     const uint8_t *pkt = (const uint8_t *) arg2;
     tuple_p tuple = new tuple_t();
