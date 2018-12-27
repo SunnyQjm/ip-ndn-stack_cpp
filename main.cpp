@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     libPcapHelper.initLibPcap(argv[1]);
 
+    t.join();
     libPcapHelper.join();
     ndnHelper.join();
     libPcapHelper.close();
