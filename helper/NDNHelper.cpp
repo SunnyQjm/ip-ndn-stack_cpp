@@ -117,6 +117,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre) {
         data.setContent(tuple1->pkt, tuple1->size);
         KeyChain_.sign(data);
         this->face.put(data);
+        delete tuple1;
     }
 }
 
