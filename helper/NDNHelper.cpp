@@ -41,8 +41,8 @@ void NDNHelper::start() {
 //    string register_prefix2_str(NDNHelper::PREFIX_REQUEST_DATA);
 //    register_prefix2_str.append("/");
 //    register_prefix2_str.append(registerIp);
-    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + this->registerIp);
-    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + this->registerIp);
+    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + this->registerIp);
+    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + this->registerIp);
 
     Interest::setDefaultCanBePrefix(true);
     try {
