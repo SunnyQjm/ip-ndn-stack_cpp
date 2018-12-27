@@ -9,7 +9,7 @@
 using namespace std;
 
 void dealNDN(void *arg) {
-    NDNHelper *ndnHelper = (NDNHelper *) arg;
+    auto *ndnHelper = (NDNHelper *) arg;
     ndnHelper->start();
 }
 int main(int argc, char *argv[]) {
@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
     ndnHelper.initNDN(argv[1]);
     ndnHelper.start();
     boost::thread t(bind(&dealNDN, &ndnHelper));
+
     libPcapHelper.initLibPcap(argv[1]);
 
     libPcapHelper.join();

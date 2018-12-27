@@ -27,6 +27,7 @@ void LibPcapHelper::bindCacheHelper(CacheHelper* cacheHelper) {
 }
 
 void LibPcapHelper::initLibPcap(string configFilePath) {
+    cout << "init libpcap" << endl;
     JSONCPPHelper jsoncppHelper(configFilePath);
     //    interval_len = conf_common_interval_len(conf);  //the value of interva    l_len is the "upload period" in config.ini, in ms
     char tmp[1024];
