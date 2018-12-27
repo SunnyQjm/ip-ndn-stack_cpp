@@ -49,7 +49,8 @@ void NDNHelper::start() {
         face.setInterestFilter(InterestFilter(register_prefix1), (const InterestCallback &) bind(&NDNHelper::onInterest, this, register_prefix1, _1, _2, true),
                                (const RegisterPrefixFailureCallback&) bind(&NDNHelper::onRegisterFailed, this, _1));
 
-        face.setInterestFilter(InterestFilter(register_prefix2), (const InterestCallback &) bind(&NDNHelper::onInterest, this, register_prefix1, _1, _2, true),
+        face.setInterestFilter(InterestFilter(register_prefix2), (const InterestCallback &) bind(&NDNHelper::onInterest, this, register_prefix1, _1, _2,
+                                                                                                 false),
                                (const RegisterPrefixFailureCallback&) bind(&NDNHelper::onRegisterFailed, this, _1));
 //        face.setInterestFilter(InterestFilter(register_prefix2), bind(&NDNHelper::onInterest, this, _1, _2, _3, _4, _5, true),
 //                               bind(&NDNHelper::onRegisterFailed, this, _1));
