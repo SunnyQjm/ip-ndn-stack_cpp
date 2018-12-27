@@ -10,7 +10,6 @@ using namespace std;
 
 void dealNDN(void *arg) {
     auto *ndnHelper = (NDNHelper *) arg;
-    cout << "threadId： " << boost::this_thread::get_id() << endl;
     ndnHelper->start();
 }
 int main(int argc, char *argv[]) {
@@ -25,8 +24,7 @@ int main(int argc, char *argv[]) {
 
 
     ndnHelper.initNDN(argv[1]);
-//    ndnHelper.start();
-    cout << "threadId： " << boost::this_thread::get_id() << endl;
+
     boost::thread t(bind(&dealNDN, &ndnHelper));
 
     libPcapHelper.initLibPcap(argv[1]);

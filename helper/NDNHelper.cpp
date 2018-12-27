@@ -35,7 +35,6 @@ NDNHelper::NDNHelper(): face("localhost") {
 
 
 void NDNHelper::start() {
-    cout << "start listen" << endl;
 //    string register_prefix1_str(NDNHelper::PREFIX_PRE_REQUEST);
 //    register_prefix1_str.append("/");
 //    register_prefix1_str.append(registerIp);
@@ -45,6 +44,7 @@ void NDNHelper::start() {
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + this->registerIp);
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + this->registerIp);
 
+    Interest::setDefaultCanBePrefix(true);
     try {
         face.setInterestFilter(InterestFilter(register_prefix1), (const InterestCallback &) bind(&NDNHelper::onInterest, this, register_prefix1, _1, _2, true),
                                (const RegisterPrefixFailureCallback&) bind(&NDNHelper::onRegisterFailed, this, _1));
@@ -58,7 +58,6 @@ void NDNHelper::start() {
     } catch (exception &e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
     }
-    cout << "stop listen" << endl;
 }
 
 
@@ -195,6 +194,7 @@ void NDNHelper::dealOnInterest(const Name &prefix,
 }
 
 void NDNHelper::onData(const Interest &interest, const Data &data) {
+    cout << "onData: " << interest.getName().toUri() << endl;
     this->dealOnData(data);
 }
 
@@ -216,6 +216,7 @@ void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
 //}
 
 void NDNHelper::onInterest(const Name &prefix, const InterestFilter &filter, const Interest &interest, bool isPre) {
+    cout << "onInterest: " << prefix.toUri() << endl;
     this->dealOnInterest(prefix, interest, isPre);
 }
 
