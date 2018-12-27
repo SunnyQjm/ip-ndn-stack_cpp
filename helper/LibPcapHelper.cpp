@@ -81,9 +81,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         }
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
 
-        cout << "启动线程" << endl;
         boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
-        cout << "关闭线程" << endl;
     }
 
 }
@@ -98,7 +96,7 @@ void LibPcapHelper::join() {
 }
 
 void LibPcapHelper::deal(const void *arg1, const void *arg2) {
-    cout << "thread_id" << boost::this_thread::get_id() << endl;
+    cout << "启动线程" << boost::this_thread::get_id() << endl;
     struct pcap_pkthdr *header = (struct pcap_pkthdr *) arg1;
     const uint8_t *pkt = (const uint8_t *) arg2;
     tuple_p tuple = new tuple_t();
@@ -150,6 +148,8 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
     name.append(uuid);
 
     ndnHelper->expressInterest(name);
+    cout << "线程结束" << boost::this_thread::get_id() << endl;
+
 }
 
 /**
