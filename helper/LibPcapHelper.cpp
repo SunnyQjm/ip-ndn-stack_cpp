@@ -73,6 +73,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     pcap_compile(ph, &filter, filter_app.c_str(), 0, net);
     pcap_setfilter(ph, &filter);
     //capture packets and copy the packets to the ringbuffer
+    cout << "main thread id: " << boost::this_thread::get_id() << endl;
     while ((res = pcap_next_ex(ph, &header, &pkt)) >=
            0) { //reads the next packet and returns a success/failure indication.
         if (pkt == nullptr || res == 0) {
@@ -81,7 +82,6 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
 
         boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
-        t.join();
     }
 
 }
