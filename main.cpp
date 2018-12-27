@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
 
     ndnHelper.initNDN(argv[1]);
-    ndnHelper.start();
+//    ndnHelper.start();
     cout << "threadId： " << boost::this_thread::get_id() << endl;
     boost::thread t(bind(&dealNDN, &ndnHelper));
 
