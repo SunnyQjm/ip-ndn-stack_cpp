@@ -10,9 +10,9 @@
  * @return
  */
 bool CacheHelper::save(string key, tuple_p value) {
-    mutex.lock();
+    insertMutex.lock();
     auto res = this->ipPacketCache.insert(make_pair(key, value));
-    mutex.unlock();
+    insertMutex.unlock();
     return res.second;
 }
 
@@ -31,5 +31,8 @@ pair<tuple_p, bool> CacheHelper::get(string key) {
 }
 
 unsigned int CacheHelper::erase(string key) {
-    return this->ipPacketCache.erase(key);
+    deleteMutex.lock();
+    auto res = this->ipPacketCache.erase(key);
+    deleteMutex.unlock();
+    return res;
 }

@@ -21,7 +21,8 @@ public:
 private:
     unordered_map<string, tuple_p> ipPacketCache;
     tuple_p emptyTuple;
-    boost::shared_mutex mutex;
+    boost::shared_mutex insertMutex;
+    boost::shared_mutex deleteMutex;
 };
 
 

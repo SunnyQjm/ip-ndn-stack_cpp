@@ -78,9 +78,10 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         if (pkt == nullptr || res == 0) {
             continue;
         }
-        //decode the captured packet
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
+
         boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
+        t.join();
     }
 
 }
@@ -100,7 +101,8 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
     const uint8_t *pkt = (const uint8_t *) arg2;
     tuple_p tuple = new tuple_t();
     double pkt_ts = time2dbl(header->ts); //doubleֵ
-    //
+
+    //decode the captured packet
     decode(pkt, header->caplen, header->len, pkt_ts, tuple);
 
     string uuid = this->generateUUID();
