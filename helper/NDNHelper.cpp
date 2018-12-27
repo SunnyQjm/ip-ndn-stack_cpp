@@ -35,6 +35,7 @@ NDNHelper::NDNHelper(): face("localhost") {
 
 
 void NDNHelper::start() {
+    cout << "start listen" << endl;
 //    string register_prefix1_str(NDNHelper::PREFIX_PRE_REQUEST);
 //    register_prefix1_str.append("/");
 //    register_prefix1_str.append(registerIp);
@@ -57,7 +58,7 @@ void NDNHelper::start() {
     } catch (exception &e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
     }
-
+    cout << "stop listen" << endl;
 }
 
 
