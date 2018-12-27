@@ -69,6 +69,10 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     bpf_u_int32 mask;
     pcap_lookupnet(dev_name.c_str(), &net, &mask, ebuf);
     string filter_app = jsoncppHelper.getString("pcap_dstmac");
+
+    struct bpf_program filter{};
+    pcap_compile(ph, &filter, filter_app.c_str(), 0, net);
+    pcap_setfilter(ph, &filter);
     //capture packets and copy the packets to the ringbuffer
     while ((res = pcap_next_ex(ph, &header, &pkt)) >=
            0) { //reads the next packe    t and returns a success/failure indication.
@@ -77,9 +81,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         }
         //decode the captured packet
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
-        struct bpf_program filter{};
-        pcap_compile(ph, &filter, filter_app.c_str(), 0, net);
-        pcap_setfilter(ph, &filter);
+
         pkt_ts = time2dbl(header->ts); //doubleֵ
         //
         decode(pkt, header->caplen, header->len, pkt_ts, t_kern);
@@ -103,9 +105,8 @@ void LibPcapHelper::deal(tuple_p tuple) {
     if (!result) {
         cout << "插入失败" << endl;
         return;
-    } else {
-        cout << "插入成功" << endl;
     }
+
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple->key.src_ip);
     uint32_t int_dip = ntohl(tuple->key.dst_ip);
