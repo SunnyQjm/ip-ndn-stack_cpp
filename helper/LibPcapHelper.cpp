@@ -81,7 +81,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         }
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
 
+        cout << "启动线程" << endl;
         boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
+        cout << "关闭线程" << endl;
     }
 
 }
