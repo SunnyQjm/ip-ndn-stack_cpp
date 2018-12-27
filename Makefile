@@ -8,7 +8,7 @@ OBJS = main.o
 
 CFLAGS = -Wall -std=c++14 #-fno-omit-frame-pointer
 
-DEFAULT_LINK_LIBS = -lrt -lm  -lpcap -lpthread -lndn-cxx -ljsoncpp -lboost_system
+DEFAULT_LINK_LIBS = -lrt -lm  -lpcap -lpthread -lndn-cxx -ljsoncpp -lboost_system -lboost_thread
 
 #CFLAGS += -D APPROXIMATE
 #CFLAGS += -D TRACE_FILE
