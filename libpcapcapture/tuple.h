@@ -20,7 +20,7 @@ typedef struct __attribute__ ((__packed__)) FlowKey {
 #define TUPLE_START 3
 
 
-typedef struct Tuple {
+struct Tuple {
     /******************
     ** keys
     ******************/
