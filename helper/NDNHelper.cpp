@@ -231,6 +231,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 }
 
 void NDNHelper::expressInterest(string name, bool isPre) {
+    cout << "expressInterest: " << name << endl;
     this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
             bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 //    this->face.processEvents();
