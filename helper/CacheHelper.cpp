@@ -10,7 +10,10 @@
  * @return
  */
 bool CacheHelper::save(string key, tuple_p value) {
-    return this->ipPacketCache.insert(make_pair(key, value)).second;
+    mutex.lock();
+    auto res = this->ipPacketCache.insert(make_pair(key, value));
+    mutex.unlock();
+    return res.second;
 }
 
 /**

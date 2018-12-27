@@ -8,6 +8,7 @@
 #include "../libpcapcapture/libpcap.h"
 #include <unordered_map>
 #include <iostream>
+#include <boost/thread/pthread/shared_mutex.hpp>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 private:
     unordered_map<string, tuple_p> ipPacketCache;
     tuple_p emptyTuple;
+    boost::shared_mutex mutex;
 };
 
 
