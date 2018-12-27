@@ -46,8 +46,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     //init ringbuffer (there are two ringbuffers)
     sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
     tuple_p t_kern;
+    t_kern = new tuple_t();     //动态分配内存
     double pkt_ts;
-    memset(&t_kern, 0, sizeof(struct Tuple));
+    memset(t_kern, 0, sizeof(struct Tuple));
 
     int res;
     //init pcap
@@ -102,6 +103,8 @@ void LibPcapHelper::deal(tuple_p tuple) {
     if (!result) {
         cout << "插入失败" << endl;
         return;
+    } else {
+        cout << "插入成功" << endl;
     }
     //发送兴趣包
     uint32_t int_sip = ntohl(tuple->key.src_ip);
