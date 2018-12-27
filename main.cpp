@@ -5,7 +5,6 @@
 #include "./helper/JSONCPPHelper.h"
 #include "./helper/LibPcapHelper.h"
 
-#include <boost/thread.hpp>
 using namespace std;
 
 void dealNDN(void *arg) {

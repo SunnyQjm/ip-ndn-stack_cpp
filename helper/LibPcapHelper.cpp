@@ -18,11 +18,11 @@ LibPcapHelper::LibPcapHelper() {
 
 }
 
-void LibPcapHelper::bindNDNHelper(NDNHelper* ndnHelper) {
+void LibPcapHelper::bindNDNHelper(NDNHelper *ndnHelper) {
     this->ndnHelper = ndnHelper;
 }
 
-void LibPcapHelper::bindCacheHelper(CacheHelper* cacheHelper) {
+void LibPcapHelper::bindCacheHelper(CacheHelper *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
@@ -34,7 +34,7 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     string dev_name = jsoncppHelper.getString("pcap_if");
 
     //const char *dev_name = pcap_lookupdev(NULL);//the value of dev_name is     the interface used for packet capturing in config.ini
-    struct pcap_pkthdr *header;
+    struct pcap_pkthdr *header = nullptr;
     const uint8_t *pkt = nullptr;
     char ebuf[PCAP_ERRBUF_SIZE];
 
@@ -47,7 +47,6 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     sprintf(tmp, "pub1%02d", 0); //fomat the tmp characters.
     tuple_p t_kern;
     t_kern = new tuple_t();     //动态分配内存
-    double pkt_ts;
     memset(t_kern, 0, sizeof(struct Tuple));
 
     int res;
@@ -75,17 +74,13 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
     pcap_setfilter(ph, &filter);
     //capture packets and copy the packets to the ringbuffer
     while ((res = pcap_next_ex(ph, &header, &pkt)) >=
-           0) { //reads the next packe    t and returns a success/failure indication.
+           0) { //reads the next packet and returns a success/failure indication.
         if (pkt == nullptr || res == 0) {
             continue;
         }
         //decode the captured packet
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
-
-        pkt_ts = time2dbl(header->ts); //doubleֵ
-        //
-        decode(pkt, header->caplen, header->len, pkt_ts, t_kern);
-        this->deal(t_kern);
+        boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
     }
 
 }
@@ -99,7 +94,14 @@ void LibPcapHelper::join() {
 //    pthread_join(this->readRingBufferThreadId, nullptr);
 }
 
-void LibPcapHelper::deal(tuple_p tuple) {
+void LibPcapHelper::deal(const void *arg1, const void *arg2) {
+    struct pcap_pkthdr *header = (struct pcap_pkthdr *) arg1;
+    const uint8_t *pkt = (const uint8_t *) arg2;
+    tuple_p tuple = new tuple_t();
+    double pkt_ts = time2dbl(header->ts); //doubleֵ
+    //
+    decode(pkt, header->caplen, header->len, pkt_ts, tuple);
+
     string uuid = this->generateUUID();
     auto result = cacheHelper->save(uuid, tuple);
     if (!result) {

@@ -18,6 +18,7 @@
 #include <ndn-cpp/face.hpp>
 #include <sys/wait.h>
 #include <errno.h>
+#include <boost/thread.hpp>
 
 using namespace std;
 using namespace ndn;
@@ -43,7 +44,8 @@ private:
     NDNHelper *ndnHelper;
     CacheHelper *cacheHelper;
     RawSocketHelper rawSocketHelper;
-    void deal(tuple_p tuple);
+//    void deal(tuple_p tuple);
+    void deal(const void *arg1, const void *arg2);
 };
 
 
