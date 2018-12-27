@@ -222,8 +222,8 @@ void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
 //}
 
 void NDNHelper::onInterest(const Name &prefix, const InterestFilter &filter, const Interest &interest, bool isPre) {
-    cout << "onInterest: " << filter.getPrefix().toUri() << endl;
-    this->dealOnInterest(filter.getPrefix(), interest, isPre);
+    cout << "onInterest: " << interest.getName().toUri() << endl;
+    this->dealOnInterest(interest.getName(), interest, isPre);
 }
 
 
