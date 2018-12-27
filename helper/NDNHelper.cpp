@@ -175,32 +175,25 @@ void NDNHelper::dealOnInterest(const Name &prefix,
 //        printf("\n================execute empty onInterest================\n");
     } else {
         string uuid = interest_name.substr(28, interest_name.length());
-        cout << "处理uuid=" << uuid << endl;
         auto res = cacheHelper->get(uuid);
         if (!res.second) {
             cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
             return;
-        } else {
-            cout << "成功找到" << endl;
         }
         tuple_t tuple1 = res.first;
 
-        cout << "开始删除" << endl;
         //删除
         cacheHelper->erase(uuid);
 
-        cout << "删除结束" << endl;
         Data data(interest_name);
         data.setContent(tuple1.pkt, tuple1.size);
         KeyChain_.sign(data);
         this->face.put(data);
-        cout << "发送数据" << endl;
 //        printf("\n================execute onInterest================\n");
     }
 }
 
 void NDNHelper::onData(const Interest &interest, const Data &data) {
-    cout << "onData: " << interest.getName().toUri() << endl;
     this->dealOnData(data);
 }
 
@@ -222,7 +215,6 @@ void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
 //}
 
 void NDNHelper::onInterest(const Name &prefix, const InterestFilter &filter, const Interest &interest, bool isPre) {
-    cout << "onInterest: " << interest.getName().toUri() << endl;
     this->dealOnInterest(interest.getName(), interest, isPre);
 }
 
@@ -232,7 +224,6 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 }
 
 void NDNHelper::expressInterest(string name, bool isPre) {
-    cout << "expressInterest: " << name << endl;
     this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
             bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 //    this->face.processEvents();
