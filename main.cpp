@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 
     ndnHelper.bindCacheHelper(&cacheHelper);
     ndnHelper.bindPendingInterestMap(&pendingInterestMap);
+    ndnHelper.bindPrefixGuestTable(&prefixRequestTable);
     libPcapHelper.bindCacheHelper(&cacheHelper);
     libPcapHelper.bindPendingInterestTable(&pendingInterestMap);
     libPcapHelper.bindSequenceTable(&sequenceTable);
