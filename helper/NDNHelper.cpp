@@ -157,4 +157,9 @@ void NDNHelper::expressInterest(string name, bool isPre) {
 }
 
 
-
+void NDNHelper::putData(const string &name, const tuple_p tuple) {
+    Data data(name);
+    data.setContent(tuple->pkt, tuple->size);
+    KeyChain_.sign(data);
+    this->face.put(data);
+}

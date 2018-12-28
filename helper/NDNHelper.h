@@ -54,7 +54,19 @@ public:
      */
     void bindPrefixGuestTable(SetHelper<string> *prefixGuestTable);
 
+    /**
+     * 发送一个数据包
+     * @param name
+     * @param isPre
+     */
     void expressInterest(string name, bool isPre = true);
+
+    /**
+     * 直接发送一个data包，相应一个pending兴趣包
+     * @param name    data包的名字（要响应的兴趣包的名字）
+     * @param tuple
+     */
+    void putData(const string &name, tuple_p tuple);
 
 public: //回调
     void onData(const Interest &interest, const Data &data);
