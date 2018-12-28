@@ -53,20 +53,18 @@ void NDNHelper::join() {
     pthread_join(this->processEventThreadId, nullptr);
 }
 
-/**
- * 绑定一个LibPcapHelper模块实例
- * @param libPcapHelper
- */
+
 void NDNHelper::bindCacheHelper(MapCacheHelper<tuple_p> *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
-/**
- * 绑定一个悬而未决表
- * @param pendingInterestMap
- */
+
 void NDNHelper::bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap) {
     this->pendingInterestMap = pendingInterestMap;
+}
+
+void NDNHelper::bindPrefixGuestTable(SetHelper<string> *prefixGuestTable) {
+    this->prefixGuestTable = prefixGuestTable;
 }
 
 /**
@@ -157,5 +155,6 @@ void NDNHelper::expressInterest(string name, bool isPre) {
     this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
+
 
 

@@ -9,6 +9,7 @@
 #include "JSONCPPHelper.h"
 #include "RawSocketHelper.h"
 #include "MapCacheHelper.h"
+#include "SetHelper.h"
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/interest.hpp>
@@ -35,9 +36,23 @@ public:
 
     void join();
 
+    /**
+     * 绑定一个LibPcapHelper模块实例
+     * @param libPcapHelper
+     */
     void bindCacheHelper(MapCacheHelper<tuple_p > *cacheHelper);
 
+    /**
+     * 绑定一个悬而未决表
+     * @param pendingInterestMap
+     */
     void bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap);
+
+    /**
+     * 绑定一个前缀猜测表
+     * @param prefixGuestTable
+     */
+    void bindPrefixGuestTable(SetHelper<string> *prefixGuestTable);
 
     void expressInterest(string name, bool isPre = true);
 
@@ -61,6 +76,7 @@ private:
     Face face;
     MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
     MapCacheHelper<time_t> *pendingInterestMap;     //悬而未决表
+    SetHelper<string> *prefixGuestTable;            //前缀猜测表
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
     KeyChain KeyChain_;
