@@ -62,7 +62,7 @@ public:
     void expressInterest(string name, bool isPre = true);
 
     /**
-     * 直接发送一个data包，相应一个pending兴趣包
+     * 直接发送一个data包，响应一个pending兴趣包
      * @param name    data包的名字（要响应的兴趣包的名字）
      * @param tuple
      */
