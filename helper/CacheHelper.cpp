@@ -36,3 +36,11 @@ unsigned int CacheHelper::erase(string key) {
     deleteMutex.unlock();
     return res;
 }
+
+unsigned int CacheHelper::erase(string key, tuple_p tuple) {
+    deleteMutex.lock();
+    delete tuple;
+    auto res = this->ipPacketCache.erase(key);
+    deleteMutex.unlock();
+    return res;
+}

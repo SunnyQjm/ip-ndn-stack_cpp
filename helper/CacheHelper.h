@@ -18,6 +18,7 @@ public:
     bool save(string key, tuple_p value);
     pair<tuple_p, bool> get(string key);
     unsigned int erase(string key);
+    unsigned int erase(string key, tuple_p tuple);
 private:
     unordered_map<string, tuple_p> ipPacketCache;
     tuple_p emptyTuple;
