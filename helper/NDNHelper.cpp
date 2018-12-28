@@ -10,7 +10,7 @@ const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
-NDNHelper::NDNHelper(): face("localhost") {
+NDNHelper::NDNHelper() : face("localhost") {
     cout << "NDN Helper constructor" << endl;
 }
 
@@ -21,12 +21,14 @@ void NDNHelper::start() {
 
     Interest::setDefaultCanBePrefix(true);
     try {
-        face.setInterestFilter(InterestFilter(register_prefix1), (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true),
-                               (const RegisterPrefixFailureCallback&) bind(&NDNHelper::onRegisterFailed, this, _1));
+        face.setInterestFilter(InterestFilter(register_prefix1),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true),
+                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
 
-        face.setInterestFilter(InterestFilter(register_prefix2), (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2,
-                                                                                                 false),
-                               (const RegisterPrefixFailureCallback&) bind(&NDNHelper::onRegisterFailed, this, _1));
+        face.setInterestFilter(InterestFilter(register_prefix2),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2,
+                                                               false),
+                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
         face.processEvents();
     } catch (exception &e) {
         std::cerr << "ERROR: " << e.what() << std::endl;
@@ -55,7 +57,7 @@ void NDNHelper::join() {
  * 绑定一个LibPcapHelper模块实例
  * @param libPcapHelper
  */
-void NDNHelper::bindCacheHelper(CacheHelper* cacheHelper) {
+void NDNHelper::bindCacheHelper(MapCacheHelper<tuple_p> *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
@@ -63,7 +65,7 @@ void NDNHelper::bindCacheHelper(CacheHelper* cacheHelper) {
  * 绑定一个悬而未决表
  * @param pendingInterestMap
  */
-void NDNHelper::bindPendingInterestMap(MapCacheHelper * pendingInterestMap) {
+void NDNHelper::bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap) {
     this->pendingInterestMap = pendingInterestMap;
 }
 
@@ -137,7 +139,7 @@ void NDNHelper::onNack(const Interest &, const lp::Nack &) {
 
 
 void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
-    if(!isPre) {
+    if (!isPre) {
         cout << "Timed out: " << interest.getName().toUri() << endl;
     }
 }
@@ -153,7 +155,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 
 void NDNHelper::expressInterest(string name, bool isPre) {
     this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
-            bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
+                               bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
 
 

@@ -22,11 +22,11 @@ void LibPcapHelper::bindNDNHelper(NDNHelper *ndnHelper) {
     this->ndnHelper = ndnHelper;
 }
 
-void LibPcapHelper::bindCacheHelper(CacheHelper *cacheHelper) {
+void LibPcapHelper::bindCacheHelper(MapCacheHelper<tuple_p > *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
-void LibPcapHelper::bindPendingInterestMap(MapCacheHelper *pending) {
+void LibPcapHelper::bindPendingInterestMap(MapCacheHelper<time_t > *pending) {
     this->pendingInterestMap = pending;
 }
 

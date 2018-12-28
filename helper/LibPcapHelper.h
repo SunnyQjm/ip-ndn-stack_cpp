@@ -39,21 +39,21 @@ public:
      * 绑定缓存表
      * @param cacheHelper
      */
-    void bindCacheHelper(MapCacheHelper* cacheHelper);
+    void bindCacheHelper(MapCacheHelper<tuple_p >* cacheHelper);
 
     /**
      * 绑定悬而未决表
      * @param pendingInterestMap
      */
-    void bindPendingInterestMap(MapCacheHelper* pendingInterestMap);
+    void bindPendingInterestMap(MapCacheHelper<time_t >* pendingInterestMap);
 
     void join();
 
 private:
     pcap_t *ph;
     NDNHelper *ndnHelper;
-    MapCacheHelper *cacheHelper;            //缓存表
-    MapCacheHelper *pendingInterestMap;     //悬而未决表
+    MapCacheHelper<tuple_p > *cacheHelper;            //缓存表
+    MapCacheHelper<time_t > *pendingInterestMap;     //悬而未决表
     RawSocketHelper rawSocketHelper;
 //    void deal(tuple_p tuple);
     void deal(const void *arg1, const void *arg2);

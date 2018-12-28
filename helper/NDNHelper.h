@@ -23,20 +23,29 @@ using namespace std;
 class NDNHelper {
 private:
     void dealOnData(const Data &data);
+
     void dealOnInterest(const Interest &interest, bool isPre);
+
 public:
     NDNHelper();
+
     void initNDN(string configFilePath);
+
     void start();
+
     void join();
-    void bindCacheHelper(MapCacheHelper* cacheHelper);
-    void bindPendingInterestMap(MapCacheHelper* pendingInterestMap);
+
+    void bindCacheHelper(MapCacheHelper<tuple_p > *cacheHelper);
+
+    void bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap);
+
     void expressInterest(string name, bool isPre = true);
 
 public: //回调
     void onData(const Interest &interest, const Data &data);
 
-    void onNack(const Interest& interest, const lp::Nack& nack);
+    void onNack(const Interest &interest, const lp::Nack &nack);
+
     void onTimeout(const Interest &interest, bool isPre = false);
 
     void onInterest(const InterestFilter &filter,
@@ -50,16 +59,13 @@ public: //静态变量
     static const string KEY_CONFIG_REGISTER_IP;
 private:
     Face face;
-    MapCacheHelper* cacheHelper;            //缓存表
-    MapCacheHelper* pendingInterestMap;     //悬而未决表
+    MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
+    MapCacheHelper<time_t> *pendingInterestMap;     //悬而未决表
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
     KeyChain KeyChain_;
     string registerIp;
 };
-
-
-
 
 
 #endif //IP_NDN_STACK_CPP_NDNHELPER_H
