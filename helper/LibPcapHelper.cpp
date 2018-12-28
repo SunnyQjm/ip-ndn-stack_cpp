@@ -26,8 +26,12 @@ void LibPcapHelper::bindCacheHelper(MapCacheHelper<tuple_p > *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
-void LibPcapHelper::bindPendingInterestMap(MapCacheHelper<time_t > *pending) {
-    this->pendingInterestMap = pending;
+void LibPcapHelper::bindPendingInterestTable(MapCacheHelper<time_t> *pendingInterestMap) {
+    this->pendingInterestMap = pendingInterestMap;
+}
+
+void LibPcapHelper::bindSequenceTable(MapCacheHelper<int> *sequenceTable) {
+    this->sequenceTable = sequenceTable;
 }
 
 void LibPcapHelper::initLibPcap(string configFilePath) {

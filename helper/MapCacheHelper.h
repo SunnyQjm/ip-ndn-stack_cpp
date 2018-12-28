@@ -21,7 +21,7 @@ public:
     unsigned long erase(string key);
     unsigned long erase(string key, T tuple);
 private:
-    unordered_map<string, tuple_p> ipPacketCache;
+    unordered_map<string, T> ipPacketCache;
     T emptyItem;
     boost::shared_mutex insertMutex;
     boost::shared_mutex deleteMutex;
@@ -73,7 +73,7 @@ unsigned long MapCacheHelper<T>::erase(string key) {
 }
 
 /**
- * 删除一个数据，病释放其内存，只有当T的类型是指针类型的时候才可执行此操作
+ * 删除一个数据，并释放其内存，只有当T的类型是指针类型的时候才可执行此操作
  * @tparam T
  * @param key
  * @param tuple

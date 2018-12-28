@@ -7,5 +7,5 @@ the main function of mwoker is :
 1.capture the packet by pcap
 2.process the raw packet
 3.use hash table to handle the data
-4.save data to redis
+4.saveConcurrence data to redis
 5.send the data to mserver by zmq

@@ -4,6 +4,7 @@
 #include "./helper/NDNHelper.h"
 #include "./helper/JSONCPPHelper.h"
 #include "./helper/LibPcapHelper.h"
+#include "./helper/SetHelper.h"
 
 using namespace std;
 
@@ -16,12 +17,15 @@ int main(int argc, char *argv[]) {
     NDNHelper ndnHelper;
     MapCacheHelper<tuple_p > cacheHelper;
     MapCacheHelper<time_t > pendingInterestMap;
+    MapCacheHelper<int> sequenceTable;
+    SetHelper<string> prefixRequestTable;
     LibPcapHelper libPcapHelper;
 
     ndnHelper.bindCacheHelper(&cacheHelper);
     ndnHelper.bindPendingInterestMap(&pendingInterestMap);
     libPcapHelper.bindCacheHelper(&cacheHelper);
-    libPcapHelper.bindPendingInterestMap(&pendingInterestMap);
+    libPcapHelper.bindPendingInterestTable(&pendingInterestMap);
+    libPcapHelper.bindSequenceTable(&sequenceTable);
     libPcapHelper.bindNDNHelper(&ndnHelper);
 
 
