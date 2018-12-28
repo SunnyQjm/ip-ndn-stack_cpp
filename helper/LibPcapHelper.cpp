@@ -26,6 +26,10 @@ void LibPcapHelper::bindCacheHelper(CacheHelper *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
+void LibPcapHelper::bindPendingInterestMap(MapCacheHelper *pending) {
+    this->pendingInterestMap = pending;
+}
+
 void LibPcapHelper::initLibPcap(string configFilePath) {
     cout << "init libpcap" << endl;
     JSONCPPHelper jsoncppHelper(configFilePath);
@@ -163,8 +167,6 @@ string LibPcapHelper::generateUUID() {
     const string tmp_uuid = boost::uuids::to_string(a_uuid);
     return tmp_uuid;
 }
-
-
 
 
 

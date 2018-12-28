@@ -14,10 +14,12 @@ void dealNDN(void *arg) {
 int main(int argc, char *argv[]) {
 
     NDNHelper ndnHelper;
-    CacheHelper cacheHelper;
+    MapCacheHelper cacheHelper;
+    MapCacheHelper pendingInterestMap;
     LibPcapHelper libPcapHelper;
 
     ndnHelper.bindCacheHelper(&cacheHelper);
+    ndnHelper.bindPendingInterestMap(&pendingInterestMap);
     libPcapHelper.bindCacheHelper(&cacheHelper);
     libPcapHelper.bindNDNHelper(&ndnHelper);
 

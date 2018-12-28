@@ -12,9 +12,9 @@
 
 using namespace std;
 
-class CacheHelper {
+class MapCacheHelper {
 public:
-    CacheHelper(){}
+    MapCacheHelper(){}
     bool save(string key, tuple_p value);
     pair<tuple_p, bool> get(string key);
     unsigned int erase(string key);

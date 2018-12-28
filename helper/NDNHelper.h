@@ -8,7 +8,7 @@
 #include <iostream>
 #include "JSONCPPHelper.h"
 #include "RawSocketHelper.h"
-#include "CacheHelper.h"
+#include "MapCacheHelper.h"
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/interest.hpp>
@@ -29,7 +29,8 @@ public:
     void initNDN(string configFilePath);
     void start();
     void join();
-    void bindCacheHelper(CacheHelper* cacheHelper);
+    void bindCacheHelper(MapCacheHelper* cacheHelper);
+    void bindPendingInterestMap(MapCacheHelper* pendingInterestMap);
     void expressInterest(string name, bool isPre = true);
 
 public: //回调
@@ -49,7 +50,8 @@ public: //静态变量
     static const string KEY_CONFIG_REGISTER_IP;
 private:
     Face face;
-    CacheHelper* cacheHelper;
+    MapCacheHelper* cacheHelper;            //缓存表
+    MapCacheHelper* pendingInterestMap;     //悬而未决表
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
     KeyChain KeyChain_;

@@ -59,6 +59,13 @@ void NDNHelper::bindCacheHelper(CacheHelper* cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
+/**
+ * 绑定一个悬而未决表
+ * @param pendingInterestMap
+ */
+void NDNHelper::bindPendingInterestMap(MapCacheHelper * pendingInterestMap) {
+    this->pendingInterestMap = pendingInterestMap;
+}
 
 /**
  * 内部函数，处理onData事件
@@ -148,4 +155,5 @@ void NDNHelper::expressInterest(string name, bool isPre) {
     this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
             bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
+
 

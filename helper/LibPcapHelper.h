@@ -10,7 +10,7 @@
 #include "RawSocketHelper.h"
 #include "JSONCPPHelper.h"
 #include "NDNHelper.h"
-#include "CacheHelper.h"
+#include "MapCacheHelper.h"
 #include <string>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -35,14 +35,25 @@ public:
 
     void bindNDNHelper(NDNHelper* ndnHelper);
 
-    void bindCacheHelper(CacheHelper* cacheHelper);
+    /**
+     * 绑定缓存表
+     * @param cacheHelper
+     */
+    void bindCacheHelper(MapCacheHelper* cacheHelper);
+
+    /**
+     * 绑定悬而未决表
+     * @param pendingInterestMap
+     */
+    void bindPendingInterestMap(MapCacheHelper* pendingInterestMap);
 
     void join();
 
 private:
     pcap_t *ph;
     NDNHelper *ndnHelper;
-    CacheHelper *cacheHelper;
+    MapCacheHelper *cacheHelper;            //缓存表
+    MapCacheHelper *pendingInterestMap;     //悬而未决表
     RawSocketHelper rawSocketHelper;
 //    void deal(tuple_p tuple);
     void deal(const void *arg1, const void *arg2);
