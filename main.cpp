@@ -4,7 +4,6 @@
 #include "./helper/NDNHelper.h"
 #include "./helper/JSONCPPHelper.h"
 #include "./helper/LibPcapHelper.h"
-#include "./helper/SetHelper.h"
 
 using namespace std;
 
