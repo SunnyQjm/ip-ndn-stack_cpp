@@ -18,6 +18,7 @@ public:
     MapCacheHelper(){}
     bool save(string key, T value);
     pair<T, bool> get(string key);
+    bool getAndIncreaseSequence(string key, tuple_p tuple);
     unsigned long erase(string key);
     unsigned long erase(string key, T tuple);
 private:
@@ -50,11 +51,13 @@ bool MapCacheHelper<T>::save(string key, T value) {
  */
 template<class T>
 pair<T, bool> MapCacheHelper<T>::get(string key) {
+    insertMutex.lock_shared();
     auto count = this->ipPacketCache.count(key);
     if(count == 0) {    //缓存中不存在该键值
         return make_pair(this->emptyItem, false);
     }
     auto result = this->ipPacketCache.find(key);
+    insertMutex.unlock_shared();
     return make_pair(result->second, true);
 }
 
@@ -86,6 +89,16 @@ unsigned long MapCacheHelper<T>::erase(string key, T tuple) {
     auto res = this->ipPacketCache.erase(key);
     deleteMutex.unlock();
     return res;
+}
+
+template<class T>
+bool MapCacheHelper<T>::getAndIncreaseSequence(string key, tuple_p tuple) {
+    auto res = this->get(key);
+    if(!res.second)
+        return false;
+    tuple->index = res.first + 1;
+    save(key, tuple->index);
+    return true;
 }
 
 

@@ -59,9 +59,9 @@ bool SetHelper<T>::save(const T &t) {
  */
 template<class T>
 bool SetHelper<T>::find(const T &t) {
-    insertMutex.lock();
+    insertMutex.lock_shared();
     auto res = (s.find(t) != s.end());
-    insertMutex.unlock();
+    insertMutex.unlock_shared();
     return res;
 }
 
@@ -73,9 +73,9 @@ bool SetHelper<T>::find(const T &t) {
  */
 template<class T>
 bool SetHelper<T>::erase(const T &t) {
-    deleteMutex.lock();
+    insertMutex.lock();
     s.erase(t);
-    deleteMutex.unlock();
+    insertMutex.unlock();
     return false;
 }
 

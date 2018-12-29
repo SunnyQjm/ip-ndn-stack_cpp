@@ -23,7 +23,7 @@ void LibPcapHelper::bindNDNHelper(NDNHelper *ndnHelper) {
     this->ndnHelper = ndnHelper;
 }
 
-void LibPcapHelper::bindCacheHelper(MapCacheHelper<tuple_p > *cacheHelper) {
+void LibPcapHelper::bindCacheHelper(MapCacheHelper<tuple_p> *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
@@ -116,232 +116,75 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
 
     //decode the captured packet
     decode(pkt, header->caplen, header->len, pkt_ts, tuple);
-	if (tuple->key.proto == IPPROTO_TCP) {
-		string key;
-		// 先查找自增序列表
-		uint32_t int_sip = ntohl(tuple->key.src_ip);
-		uint32_t int_dip = ntohl(tuple->key.dst_ip);
-		//cout<<int_sip<<endl;
-		string sip1 = to_string((int_sip >> 24) & 0xFF);
-		string sip2 = to_string((int_sip >> 16) & 0xFF);
-		string sip3 = to_string((int_sip >> 8) & 0xFF);
-		string sip4 = to_string((int_sip) & 0xFF);
-		string dip1 = to_string((int_dip >> 24) & 0xFF);
-		string dip2 = to_string((int_dip >> 16) & 0xFF);
-		string dip3 = to_string((int_dip >> 8) & 0xFF);
-		string dip4 = to_string((int_dip) & 0xFF);
+    if (tuple->key.proto == IPPROTO_TCP) {
+        string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
+                tuple->key.src_port, tuple->key.dst_port);
 
-		key.append(dip1);
-		key.append(".");
-		key.append(dip2);
-		key.append(".");
-		key.append(dip3);
-		key.append(".");
-		key.append(dip4);
-		key.append("/");
+        auto res = sequenceTable->get(key);
 
-		key.append(sip1);
-		key.append(".");
-		key.append(sip2);
-		key.append(".");
-		key.append(sip3);
-		key.append(".");
-		key.append(sip4);
-		key.append("/");
-		uint16_t int_sport = ntohl(tuple->key.src_port);
-		uint16_t int_dport = ntohl(tuple->key.dst_port);
-		string dport = to_string((int_dport >> 16) & 0xFFFF);
-		string sport = to_string((int_sport >> 16) & 0xFFFF);
-	
-		
-		key.append(dport);
-		key.append("/");
-		key.append(sport);
-		key.append("/");
-		
-		auto res = sequenceTable->get(key);
+        if (!res.second) {//若不存在则将index即自增表的value设为1并插入；再存入缓存中
+            tuple->index = 1;
+            auto result_seq = sequenceTable->save(key, tuple->index);
+            if (!result_seq) {
+                cout << "插入失败" << endl;
+                return;
+            }
+            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                   tuple->key.src_port, tuple->key.dst_port, 3, 1);
+            string uuid = prefixUUID.second;
 
-		if (!res.second) {//若不存在则将index即自增表的value设为1并插入；再存入缓存中
-			tuple->index = 1;
-			auto result_seq = sequenceTable->save(key, tuple->index);
-			if (!result_seq) {
-				cout << "插入失败" << endl;
-				return;
-			}
-			//string id = to_string((tuple->index >> 32) & 0xFFFF);
-			string uuid;
-			uuid.append(dport);
-			uuid.append("_");
-			uuid.append(sport);
-			uuid.append("_");
-			uuid.append("1");
-			auto result_cache = cacheHelper->save(uuid, tuple);
-			if (!result_cache) {
-				cout << "插入失败" << endl;
-				return;
-			}
+            auto result_cache = cacheHelper->save(uuid, tuple);
+            if (!result_cache) {
+                cout << "插入失败" << endl;
+                return;
+            }
 
-			//发送预请求兴趣包
+            ndnHelper->expressInterest(prefixUUID.first);
+            return;
+        } else {//若存在则将index的值++，并查找悬而未决表
+            if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
+                return;
+            }
+            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                   tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+            //res.second = tuple->index;
+            string uuid = prefixUUID.second;
+            string formal_name = prefixUUID.first;
 
-			string name = "IP/TCP/pre/";
-			//char * ip = (char*) (&t.key.src_ip);
-			name.append(dip1);
-			name.append(".");
-			name.append(dip2);
-			name.append(".");
-			name.append(dip3);
-			name.append(".");
-			name.append(dip4);
-			name.append("/");
+            auto formal_res = pendingInterestTable->get(formal_name);
+            time_t curTime = std::time(nullptr);
+            if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
+                ndnHelper->putData(formal_name, tuple);
+            } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
+                auto result_cache = cacheHelper->save(uuid, tuple);
+                if (!result_cache) {
+                    cout << "插入失败" << endl;
+                    return;
+                }
 
-			name.append(sip1);
-			name.append(".");
-			name.append(sip2);
-			name.append(".");
-			name.append(sip3);
-			name.append(".");
-			name.append(sip4);
-			name.append("/");
+                //发送预请求兴趣包
+                auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                          tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
 
-			name.append(uuid);
+                ndnHelper->expressInterest(prePrefixUUID.first);
+                pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
+                return;
+            }
+        }
+        //	tuple_p tuple1 = res.first;
+    } else {//为其他协议包用原来的方式传输
+        string uuid = this->generateUUID();
+        auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                               tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
+        auto result = cacheHelper->save(uuid, tuple);
+        if (!result) {
+            cout << "插入失败" << endl;
+            return;
+        }
 
-			ndnHelper->expressInterest(name);
-			return;
-		}
-		else {//若存在则将index的值++，并查找悬而未决表
-			tuple->index++;
-			//res.second = tuple->index;
-			string id1 = to_string((tuple->index >> 32) & 0xFFFF);
-			string id2 = to_string((tuple->index >> 16) & 0xFFFF);
-			string uuid;
-			uuid.append(dport);
-			uuid.append("_");
-			uuid.append(sport);
-			uuid.append("_");
-			uuid.append("id1");
-			uuid.append("id2");
-			string formal_name = "IP/TCP/";
-			//char * ip = (char*) (&t.key.src_ip);
-			formal_name.append(dip1);
-			formal_name.append(".");
-			formal_name.append(dip2);
-			formal_name.append(".");
-			formal_name.append(dip3);
-			formal_name.append(".");
-			formal_name.append(dip4);
-			formal_name.append("/");
+        ndnHelper->expressInterest(prefixUUID.first);
+    }
 
-			formal_name.append(sip1);
-			formal_name.append(".");
-			formal_name.append(sip2);
-			formal_name.append(".");
-			formal_name.append(sip3);
-			formal_name.append(".");
-			formal_name.append(sip4);
-			formal_name.append("/");
-
-			formal_name.append(uuid);
-			auto formal_res = pendingInterestMap->get(formal_name);
-			timespec time1;
-			clock_gettime(CLOCK_MONOTONIC, &time1);
-			if (formal_res.second >= time1.tv_sec * 1000000000LL + time1.tv_nsec) {//如果找到相应表项，若时间在有效期内，则直接发送date包
-				ndnHelper->putData(formal_name, tuple->pkt);//修改
-			}
-			else {//未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
-				string id1 = to_string((tuple->index >> 32) & 0xFFFF);
-				string id2 = to_string((tuple->index >> 16) & 0xFFFF);
-				string uuid;
-				uuid.append(dport);
-				uuid.append("_");
-				uuid.append(sport);
-				uuid.append("_");
-				uuid.append("id1");
-				uuid.append("id2");
-				auto result_cache = cacheHelper->save(uuid, tuple);
-				if (!result_cache) {
-					cout << "插入失败" << endl;
-					return;
-				}
-
-				//发送预请求兴趣包
-
-				string name = "IP/TCP/pre/";
-				//char * ip = (char*) (&t.key.src_ip);
-				name.append(dip1);
-				name.append(".");
-				name.append(dip2);
-				name.append(".");
-				name.append(dip3);
-				name.append(".");
-				name.append(dip4);
-				name.append("/");
-
-				name.append(sip1);
-				name.append(".");
-				name.append(sip2);
-				name.append(".");
-				name.append(sip3);
-				name.append(".");
-				name.append(sip4);
-				name.append("/");
-
-				name.append(uuid);
-
-				ndnHelper->expressInterest(name);
-				pendingInterestMap->erase(formal_name);          //删除相应悬而未决表表项
-				return;
-			}
-		}
-	//	tuple_p tuple1 = res.first;
-	}
-	else {//为其他协议包用原来的方式传输
-		string uuid = this->generateUUID();
-		auto result = cacheHelper->save(uuid, tuple);
-		if (!result) {
-			cout << "插入失败" << endl;
-			return;
-		}
-
-		//发送兴趣包
-		uint32_t int_sip = ntohl(tuple->key.src_ip);
-		uint32_t int_dip = ntohl(tuple->key.dst_ip);
-		//cout<<int_sip<<endl;
-		string sip1 = to_string((int_sip >> 24) & 0xFF);
-		string sip2 = to_string((int_sip >> 16) & 0xFF);
-		string sip3 = to_string((int_sip >> 8) & 0xFF);
-		string sip4 = to_string((int_sip) & 0xFF);
-		string dip1 = to_string((int_dip >> 24) & 0xFF);
-		string dip2 = to_string((int_dip >> 16) & 0xFF);
-		string dip3 = to_string((int_dip >> 8) & 0xFF);
-		string dip4 = to_string((int_dip) & 0xFF);
-
-		string name = "IP/pre/";
-		//char * ip = (char*) (&t.key.src_ip);
-		name.append(dip1);
-		name.append(".");
-		name.append(dip2);
-		name.append(".");
-		name.append(dip3);
-		name.append(".");
-		name.append(dip4);
-		name.append("/");
-
-		name.append(sip1);
-		name.append(".");
-		name.append(sip2);
-		name.append(".");
-		name.append(sip3);
-		name.append(".");
-		name.append(sip4);
-		name.append("/");
-
-		name.append(uuid);
-
-		ndnHelper->expressInterest(name);
-		//    cout << "线程结束" << boost::this_thread::get_id() << endl;
-
-	}
-   
 }
 
 /**

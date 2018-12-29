@@ -4,8 +4,7 @@
  *  Created on: Mar 9, 2018
  *      Author: root
  */
-#include <time.h>
-#include <sys/time.h>
+#include <ctime>
 
 #ifndef TTIME_H_
 #define TTIME_H_

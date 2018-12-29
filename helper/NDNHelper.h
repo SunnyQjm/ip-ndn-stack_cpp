@@ -16,6 +16,7 @@
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/security/key-chain.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include <vector>
 
 using namespace ndn;
@@ -66,7 +67,33 @@ public:
      * @param name    data包的名字（要响应的兴趣包的名字）
      * @param tuple
      */
-    void putData(const string &name, uint8_t *pkt);
+    void putData(const string &name, tuple_p tuple);
+
+
+    /**
+     * 构造前缀
+     * @param sip
+     * @param dip
+     * @param sport
+     * @param dport
+     * @param type
+     *          type = 1    => /IP/pre
+     *          type = 2    => /IP
+     *          type = 3    => /IP/TCP/pre
+     *          type = 4    => /IP/TCP
+     * @return <前缀, uuid>
+     */
+    pair<string, string> buildName(uint32_t sip, uint32_t dip, uint16_t sport, uint16_t dport, int type, int seq = -1, string uid = "");
+
+    /**
+     * 够着四元组组成的key
+     * @param sip
+     * @param dip
+     * @param sport
+     * @param dport
+     * @return
+     */
+    string build4TupleKey(uint32_t sip, uint32_t dip, uint16_t sport, uint16_t dport);
 
 public: //回调
     void onData(const Interest &interest, const Data &data);

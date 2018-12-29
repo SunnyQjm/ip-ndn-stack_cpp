@@ -106,74 +106,76 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
     if (isPre) {
-		if (isTCP) {
-			string next_name = "/IP/TCP";
-		    vector<string> fileds;
-		    boost::split(fileds, interest_name, boost::is_any_of("/"));
+        if (isTCP) {
+            string next_name = "/IP/TCP";
+            vector<string> fileds;
+            boost::split(fileds, interest_name, boost::is_any_of("/"));
 
-		    string sip = fileds[4];
-		    string dip = fileds[5];
-		    string uid = fileds[6];
-		    next_name.append("/" + dip);
-		    next_name.append("/" + sip);
-			string guess_name = next_name;
-		    next_name.append("/" + uid);
-		    this->expressInterest(next_name, false);
-		    //发一个正式拉取的请求
-			this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+            string sip = fileds[4];
+            string dip = fileds[5];
+            string uid = fileds[6];
+            next_name.append("/" + dip);
+            next_name.append("/" + sip);
+            string guess_name = next_name;
 
-			vector<string> uuid_fileds;
-			boost::split(uuid_fileds, uid, boost::is_any_of("-"));
-			int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
-			guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] +"-");
-			for(int i=0; i<NUM_OF_GUEST; i++) {
-				string g_name = guess_name;
-				g_name.append(to_string(++num_of_sequence));
-				this->prefixGuestTable->saveConcurrence(g_name);
-				this->expressInterest(g_name, false);
-			}
+            next_name.append("/" + uid);
 
-		}
-		else {
-		    string next_name = "/IP";
-		    vector<string> fileds;
-		    boost::split(fileds, interest_name, boost::is_any_of("/"));
+            this->expressInterest(next_name, true);
 
-		    string sip = fileds[3];
-		    string dip = fileds[4];
-		    string uid = fileds[5];
-		    next_name.append("/" + dip);
-		    next_name.append("/" + sip);
-		    next_name.append("/" + uid);
+            //发一个正式拉取的请求
+            this->prefixGuestTable->erase(next_name);   //删除已经发送这条
 
-		    //发一个正式拉取的请求
-		    this->expressInterest(next_name, false);
-		}
+            vector<string> uuid_fileds;
+            boost::split(uuid_fileds, uid, boost::is_any_of("-"));
+            int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
+
+            guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
+            for (int i = 0; i < NUM_OF_GUEST; i++) {
+                string g_name = guess_name;
+                g_name.append(to_string(++num_of_sequence));
+                if (this->prefixGuestTable->saveConcurrence(g_name)) {
+                    this->expressInterest(g_name, true);
+                }
+            }
+        } else {
+            string next_name = "/IP";
+            vector<string> fileds;
+            boost::split(fileds, interest_name, boost::is_any_of("/"));
+
+            string sip = fileds[3];
+            string dip = fileds[4];
+            string uid = fileds[5];
+            next_name.append("/" + dip);
+            next_name.append("/" + sip);
+            next_name.append("/" + uid);
+
+            //发一个正式拉取的请求
+            this->expressInterest(next_name, false);
+        }
     } else {
-		if (isTCP) {
-			if()//缓存表里有
-			{}
-			else {
-				this->pendingInterestMap->saveConcurrence(interest_name);
-			}
-		}
-		else {
-		    string uuid = interest_name.substr(28, interest_name.length());
-		    auto res = cacheHelper->get(uuid);
-		    if (!res.second) {
-		        cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
-		        return;
-		    }
-		    tuple_p tuple1 = res.first;
+        if (isTCP) {
+            if (false)//缓存表里有
+            {}
+            else {
+//				this->pendingInterestMap->saveConcurrence(interest_name);
+            }
+        } else {
+            string uuid = interest_name.substr(28, interest_name.length());
+            auto res = cacheHelper->get(uuid);
+            if (!res.second) {
+                cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
+                return;
+            }
+            tuple_p tuple1 = res.first;
 
-		    //删除
-		    cacheHelper->erase(uuid);
+            //删除
+            cacheHelper->erase(uuid);
 
-		    Data data(interest_name);
-		    data.setContent(tuple1->pkt, tuple1->size);
-		    KeyChain_.sign(data);
-		    this->face.put(data);
-		}
+            Data data(interest_name);
+            data.setContent(tuple1->pkt, tuple1->size);
+            KeyChain_.sign(data);
+            this->face.put(data);
+        }
     }
 }
 
@@ -212,4 +214,99 @@ void NDNHelper::putData(const string &name, const tuple_p tuple) {
     data.setContent(tuple->pkt, tuple->size);
     KeyChain_.sign(data);
     this->face.put(data);
+}
+
+/**
+* 构造前缀
+* @param sip
+* @param dip
+* @param sport
+* @param dport
+* @param type
+*          type = 1    => /IP/pre
+*          type = 2    => /IP
+*          type = 3    => /IP/TCP/pre
+*          type = 4    => /IP/TCP
+* @return   <前缀，uuid>
+*/
+pair<string, string>  NDNHelper::buildName(uint32_t sip, uint32_t dip, uint16_t sport, uint16_t dport, int type, int seq,
+                            string uid) {
+
+    //网络字节序转主机字节序
+    sip = ntohl(sip);
+    dip = ntohl(dip);
+    sport = ntohs(sport);
+    dport = ntohs(dport);
+
+    //得到source ip
+    string sourceIP = to_string((sip >> 24) & 0xFF);
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 16) & 0xFF));
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 8) & 0xFF));
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 0) & 0xFF));
+
+    //得到目的 ip
+    string dstIP = to_string((dip >> 24) & 0xFF);
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 16) & 0xFF));
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 8) & 0xFF));
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 0) & 0xFF));
+
+    //得到端口号
+    string sourcePort = to_string(sport);
+    string dstPort = to_string(dport);
+
+
+    switch (type) {
+        case 1:
+            return make_pair(NDNHelper::PREFIX_PRE_REQUEST + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
+        case 2:
+            return make_pair(NDNHelper::PREFIX_REQUEST_DATA + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
+        case 3:
+            uid = sourcePort + "-" + dstIP +
+                  "-" + to_string(seq);
+            return make_pair(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
+        case 4:
+            uid = sourcePort + "-" + dstIP +
+                  "-" + to_string(seq);
+            return make_pair(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
+        default:
+            return make_pair("", "");
+    }
+}
+
+string NDNHelper::build4TupleKey(uint32_t sip, uint32_t dip, uint16_t sport, uint16_t dport) {
+    //网络字节序转主机字节序
+    sip = ntohl(sip);
+    dip = ntohl(dip);
+    sport = ntohs(sport);
+    dport = ntohs(dport);
+
+    //得到source ip
+    string sourceIP = to_string((sip >> 24) & 0xFF);
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 16) & 0xFF));
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 8) & 0xFF));
+    sourceIP.append(".");
+    sourceIP.append(to_string((sip >> 0) & 0xFF));
+
+    //得到目的 ip
+    string dstIP = to_string((dip >> 24) & 0xFF);
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 16) & 0xFF));
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 8) & 0xFF));
+    dstIP.append(".");
+    dstIP.append(to_string((dip >> 0) & 0xFF));
+
+    //得到端口号
+    string sourcePort = to_string(sport);
+    string dstPort = to_string(dport);
+
+    return sourceIP + "/" + dstIP + "/" + sourcePort + "/" + dstPort;
 }
