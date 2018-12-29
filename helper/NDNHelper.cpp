@@ -116,13 +116,21 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 		    string uid = fileds[6];
 		    next_name.append("/" + dip);
 		    next_name.append("/" + sip);
+			string guess_name = next_name;
 		    next_name.append("/" + uid);
-
-		    //发一个正式拉取的请求
 		    this->expressInterest(next_name, false);
-			prefixGuestTable -> erase(//删除已经发送这条)
+		    //发一个正式拉取的请求
+			this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+
+			vector<string> uuid_fileds;
+			boost::split(uuid_fileds, uid, boost::is_any_of("-"));
+			int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
+			guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] +"-");
 			for(int i=0; i<NUM_OF_GUEST; i++) {
-				//前缀猜测表
+				string g_name = guess_name;
+				g_name.append(to_string(++num_of_sequence));
+				this->prefixGuestTable->saveConcurrence(g_name);
+				this->expressInterest(g_name, false);
 			}
 
 		}
@@ -143,7 +151,11 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 		}
     } else {
 		if (isTCP) {
-			//悬而未决表
+			if()//缓存表里有
+			{}
+			else {
+				this->pendingInterestMap->saveConcurrence(interest_name);
+			}
 		}
 		else {
 		    string uuid = interest_name.substr(28, interest_name.length());

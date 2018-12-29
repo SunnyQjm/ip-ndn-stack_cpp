@@ -25,7 +25,7 @@ class NDNHelper {
 private:
     void dealOnData(const Data &data);
 
-    void dealOnInterest(const Interest &interest, bool isPre);
+    void dealOnInterest(const Interest &interest, bool isPre, bool isTCP);
 
 public:
     NDNHelper();
@@ -66,7 +66,7 @@ public:
      * @param name    data包的名字（要响应的兴趣包的名字）
      * @param tuple
      */
-    void putData(const string &name, tuple_p tuple);
+    void putData(const string &name, uint8_t *pkt);
 
 public: //回调
     void onData(const Interest &interest, const Data &data);
@@ -76,7 +76,7 @@ public: //回调
     void onTimeout(const Interest &interest, bool isPre = false);
 
     void onInterest(const InterestFilter &filter,
-                    const Interest &interest, bool isPre);
+                    const Interest &interest, bool isPre, bool isTCP);
 
     void onRegisterFailed(const Name &prefix);
 
