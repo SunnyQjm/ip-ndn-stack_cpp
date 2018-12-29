@@ -121,9 +121,11 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             next_name.append("/" + uid);
 
             this->expressInterest(next_name, true);
-
             //发一个正式拉取的请求
-            this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+
+			if (this->prefixGuestTable->find(next_name)) {
+            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+			}
 
             vector<string> uuid_fileds;
             boost::split(uuid_fileds, uid, boost::is_any_of("-"));
@@ -154,11 +156,8 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
         }
     } else {
         if (isTCP) {
-            if (false)//缓存表里有
-            {}
-            else {
-//				this->pendingInterestMap->saveConcurrence(interest_name);
-            }
+			this->pendingInterestMap->save(interest_name, time(NULL));
+
         } else {
             string uuid = interest_name.substr(28, interest_name.length());
             auto res = cacheHelper->get(uuid);
@@ -204,7 +203,9 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 }
 
 void NDNHelper::expressInterest(string name, bool isPre) {
-    this->face.expressInterest(Interest(name), bind(&NDNHelper::onData, this, _1, _2),
+	Interest interest(name);
+	interest.setInterestLifetime(2_s);	//兴趣报存活时间
+    this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
 
