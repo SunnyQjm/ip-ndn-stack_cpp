@@ -7,6 +7,9 @@
 //前缀
 const string NDNHelper::PREFIX_PRE_REQUEST = "/IP/pre";
 const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
+const string NDNHelper::PREFIX_TCP_PRE_REQUEST = "/IP/TCP/pre";
+const string NDNHelper::PREFIX_TCP_REQUEST_DATA = "/IP/TCP";
+
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
 
@@ -18,16 +21,25 @@ void NDNHelper::start() {
     cout << "registerIp: " << registerIp << endl;
     Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + this->registerIp);
     Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + this->registerIp);
+    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + this->registerIp);
+    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + this->registerIp);
 
     Interest::setDefaultCanBePrefix(true);
     try {
         face.setInterestFilter(InterestFilter(register_prefix1),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, false),
                                (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
 
         face.setInterestFilter(InterestFilter(register_prefix2),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2,
-                                                               false),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, false),
+                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+
+        face.setInterestFilter(InterestFilter(register_prefix3),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, true),
+                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+
+        face.setInterestFilter(InterestFilter(register_prefix4),
+                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, true),
                                (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
         face.processEvents();
     } catch (exception &e) {
@@ -90,40 +102,66 @@ void NDNHelper::dealOnData(const Data &data) {
  * @param face
  * @param isPre 是否是预请求
  */
-void NDNHelper::dealOnInterest(const Interest &interest, bool isPre) {
+void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP) {
     string interest_name = interest.getName().toUri();
-    string pre = "/IP/pre/";
+    //string pre = "/IP/pre/";
     if (isPre) {
-        string next_name = "/IP";
-        vector<string> fileds;
-        boost::split(fileds, interest_name, boost::is_any_of("/"));
+		if (isTCP) {
+			string next_name = "/IP/TCP";
+		    vector<string> fileds;
+		    boost::split(fileds, interest_name, boost::is_any_of("/"));
 
-        string sip = fileds[3];
-        string dip = fileds[4];
-        string uid = fileds[5];
-        next_name.append("/" + dip);
-        next_name.append("/" + sip);
-        next_name.append("/" + uid);
+		    string sip = fileds[4];
+		    string dip = fileds[5];
+		    string uid = fileds[6];
+		    next_name.append("/" + dip);
+		    next_name.append("/" + sip);
+		    next_name.append("/" + uid);
 
+		    //发一个正式拉取的请求
+		    this->expressInterest(next_name, false);
+			prefixGuestTable -> erase(//删除已经发送这条)
+			for(int i=0; i<NUM_OF_GUEST; i++) {
+				//前缀猜测表
+			}
 
-        //发一个正式拉取的请求
-        this->expressInterest(next_name, false);
+		}
+		else {
+		    string next_name = "/IP";
+		    vector<string> fileds;
+		    boost::split(fileds, interest_name, boost::is_any_of("/"));
+
+		    string sip = fileds[3];
+		    string dip = fileds[4];
+		    string uid = fileds[5];
+		    next_name.append("/" + dip);
+		    next_name.append("/" + sip);
+		    next_name.append("/" + uid);
+
+		    //发一个正式拉取的请求
+		    this->expressInterest(next_name, false);
+		}
     } else {
-        string uuid = interest_name.substr(28, interest_name.length());
-        auto res = cacheHelper->get(uuid);
-        if (!res.second) {
-            cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
-            return;
-        }
-        tuple_p tuple1 = res.first;
+		if (isTCP) {
+			//悬而未决表
+		}
+		else {
+		    string uuid = interest_name.substr(28, interest_name.length());
+		    auto res = cacheHelper->get(uuid);
+		    if (!res.second) {
+		        cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
+		        return;
+		    }
+		    tuple_p tuple1 = res.first;
 
-        //删除
-        cacheHelper->erase(uuid);
+		    //删除
+		    cacheHelper->erase(uuid);
 
-        Data data(interest_name);
-        data.setContent(tuple1->pkt, tuple1->size);
-        KeyChain_.sign(data);
-        this->face.put(data);
+		    Data data(interest_name);
+		    data.setContent(tuple1->pkt, tuple1->size);
+		    KeyChain_.sign(data);
+		    this->face.put(data);
+		}
     }
 }
 
@@ -142,8 +180,8 @@ void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
     }
 }
 
-void NDNHelper::onInterest(const InterestFilter &filter, const Interest &interest, bool isPre) {
-    this->dealOnInterest(interest, isPre);
+void NDNHelper::onInterest(const InterestFilter &filter, const Interest &interest, bool isPre, bool isTCP) {
+    this->dealOnInterest(interest, isPre, isTCP);
 }
 
 
