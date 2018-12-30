@@ -52,6 +52,7 @@ bool MapCacheHelper<T>::save(string key, T value) {
 template<class T>
 pair<T, bool> MapCacheHelper<T>::get(string key) {
     insertMutex.lock_shared();
+    cout << "lock share" << endl;
     auto count = this->ipPacketCache.count(key);
     if(count == 0) {    //缓存中不存在该键值
         return make_pair(this->emptyItem, false);
