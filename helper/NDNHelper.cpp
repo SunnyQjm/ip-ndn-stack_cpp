@@ -188,7 +188,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 }
 
 void NDNHelper::onData(const Interest &interest, const Data &data, bool isPre, bool isTCP) {
-    this->dealOnData(data);
+    this->dealOnData(data, isPre, isTCP);
 }
 
 void NDNHelper::onNack(const Interest &, const lp::Nack &) {
