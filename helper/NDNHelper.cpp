@@ -160,16 +160,32 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             this->expressInterest(next_name, false, false);
         }
     } else {
-        vector<string> fileds;
-        boost::split(fileds, interest_name, boost::is_any_of("/"));
-        string uuid = fileds[4];
-        auto res = cacheHelper->get(uuid);
-        if (isTCP && !res.second) {     //是TCP的正式请求包，且未命中缓存
-            cout << "normal tcp" << endl;
-			this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
 
+        if (isTCP) {     //是TCP的正式请求包，且未命中缓存
+            cout << "normal tcp" << endl;
+            vector<string> fileds;
+            boost::split(fileds, interest_name, boost::is_any_of("/"));
+            string uuid = fileds[5];
+            auto res = cacheHelper->get(uuid);
+            if(res.second) {    //命中缓存
+                tuple_p tuple1 = res.first;
+
+                //删除
+                cacheHelper->erase(uuid);
+
+                Data data(interest_name);
+                data.setContent(tuple1->pkt, tuple1->size);
+                KeyChain_.sign(data);
+                this->face.put(data);
+            } else {
+                this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
+            }
         } else {
             cout << "normal other" << endl;
+            vector<string> fileds;
+            boost::split(fileds, interest_name, boost::is_any_of("/"));
+            string uuid = fileds[4];
+            auto res = cacheHelper->get(uuid);
             if (!res.second) {
                 cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
                 return;
