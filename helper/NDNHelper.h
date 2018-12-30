@@ -25,7 +25,7 @@ using namespace std;
 
 class NDNHelper {
 private:
-    void dealOnData(const Data &data);
+    void dealOnData(const Data &data, bool isPre, bool isTCP);
 
     void dealOnInterest(const Interest &interest, bool isPre, bool isTCP);
 
@@ -61,7 +61,7 @@ public:
      * @param name
      * @param isPre
      */
-    void expressInterest(string name, bool isPre = true);
+    void expressInterest(string name, bool isPre = true, bool isTCP = false);
 
     /**
      * 直接发送一个data包，响应一个pending兴趣包
@@ -102,7 +102,7 @@ public:
     long getCurTime();
 
 public: //回调
-    void onData(const Interest &interest, const Data &data);
+    void onData(const Interest &interest, const Data &data, bool isPre, bool isTCP);
 
     void onNack(const Interest &interest, const lp::Nack &nack);
 
