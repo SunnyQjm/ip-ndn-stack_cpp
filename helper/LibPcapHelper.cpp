@@ -166,7 +166,7 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
                 auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
 
-                ndnHelper->expressInterest(prePrefixUUID.first);
+                ndnHelper->expressInterest(prePrefixUUID.first, true);
                 pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
                 return;
             }
