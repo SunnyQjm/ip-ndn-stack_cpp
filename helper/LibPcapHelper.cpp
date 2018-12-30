@@ -148,6 +148,7 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
                 cout << "获取自增序列失败" << endl;
                 return;
             }
+
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
             //res.second = tuple->index;
