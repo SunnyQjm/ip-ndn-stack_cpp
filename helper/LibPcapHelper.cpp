@@ -130,8 +130,6 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
             if (!result_seq) {
                 cout << "插入失败" << endl;
                 return;
-            } else {
-                cout << "插入成功" << endl;
             }
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 3, 1);

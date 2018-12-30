@@ -85,7 +85,7 @@ void NDNHelper::bindPrefixGuestTable(SetHelper<string> *prefixGuestTable) {
  */
 void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
     string name = data.getName().toUri();
-
+    cout << "收到data包： " << name << endl;
     if(!isPre) {
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
