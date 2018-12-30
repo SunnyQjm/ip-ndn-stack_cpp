@@ -91,9 +91,9 @@ void LibPcapHelper::initLibPcap(string configFilePath) {
         }
         //char filter_app[] = "ether dst 00:1e:67:83:0c:0a";
 
-//        boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
+        boost::thread t(bind(&LibPcapHelper::deal, this, header, pkt));
 
-        this->deal(header, pkt);
+//        this->deal(header, pkt);
     }
 
 }
