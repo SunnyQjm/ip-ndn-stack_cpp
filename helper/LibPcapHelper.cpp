@@ -133,13 +133,13 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 3, 1);
             string uuid = prefixUUID.second;
+            cout << prefixUUID.first << endl;
 
             auto result_cache = cacheHelper->save(uuid, tuple);
             if (!result_cache) {
                 cout << "插入失败" << endl;
                 return;
             }
-
             ndnHelper->expressInterest(prefixUUID.first);
             return;
         } else {//若存在则将index的值++，并查找悬而未决表
