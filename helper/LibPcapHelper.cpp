@@ -123,9 +123,7 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
         auto res = sequenceTable->get(key);
 
         if (!res.second) {//若不存在则将index即自增表的value设为1并插入；再存入缓存中
-            cout << "连接的第一个包" << endl;
             tuple->index = 1;
-            cout << "处理自增序列表" << endl;
             auto result_seq = sequenceTable->save(key, tuple->index);
             if (!result_seq) {
                 cout << "插入失败" << endl;
@@ -156,23 +154,19 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
             string formal_name = prefixUUID.first;
 
             auto formal_res = pendingInterestTable->get(formal_name);
+            pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
             long curTime = ndnHelper->getCurTime();
             if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
                 cout << "找到相应表项，若时间在有效期内，则直接发送date包" << endl;
                 ndnHelper->putData(formal_name, tuple);
             } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
-                auto result_cache = cacheHelper->save(uuid, tuple);
-//                if (!result_cache) {
-//                    cout << "插入失败" << endl;
-//                    return;
-//                }
+                cacheHelper->save(uuid, tuple);
 
                 //发送预请求兴趣包
                 auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
 
                 ndnHelper->expressInterest(prePrefixUUID.first, true);
-                pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
                 return;
             }
         }
