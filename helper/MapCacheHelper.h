@@ -100,7 +100,6 @@ bool MapCacheHelper<T>::getAndIncreaseSequence(string key, tuple_p tuple) {
         return false;
     erase(key);
     tuple->index = res.first + 1;
-    cout << "处理自增： " << res.first << endl;
     return save(key, tuple->index);
 }
 
