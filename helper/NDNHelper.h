@@ -18,7 +18,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <vector>
-#include <time.h>
+#include <chrono>
 
 using namespace ndn;
 using namespace std;
@@ -48,7 +48,7 @@ public:
      * 绑定一个悬而未决表
      * @param pendingInterestMap
      */
-    void bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap);
+    void bindPendingInterestMap(MapCacheHelper<long> *pendingInterestMap);
 
     /**
      * 绑定一个前缀猜测表
@@ -96,6 +96,11 @@ public:
      */
     string build4TupleKey(uint32_t sip, uint32_t dip, uint16_t sport, uint16_t dport);
 
+    /**
+     * 获取当前时间戳
+     */
+    long getCurTime();
+
 public: //回调
     void onData(const Interest &interest, const Data &data);
 
@@ -108,6 +113,8 @@ public: //回调
 
     void onRegisterFailed(const Name &prefix);
 
+
+
 public: //静态变量
     static const string PREFIX_PRE_REQUEST;
     static const string PREFIX_REQUEST_DATA;
@@ -118,7 +125,7 @@ public: //静态变量
 private:
     Face face;
     MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
-    MapCacheHelper<time_t> *pendingInterestMap;     //悬而未决表
+    MapCacheHelper<long> *pendingInterestMap;     //悬而未决表
     SetHelper<string> *prefixGuestTable;            //前缀猜测表
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;

@@ -71,7 +71,7 @@ void NDNHelper::bindCacheHelper(MapCacheHelper<tuple_p> *cacheHelper) {
 }
 
 
-void NDNHelper::bindPendingInterestMap(MapCacheHelper<time_t> *pendingInterestMap) {
+void NDNHelper::bindPendingInterestMap(MapCacheHelper<long> *pendingInterestMap) {
     this->pendingInterestMap = pendingInterestMap;
 }
 
@@ -155,12 +155,14 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             this->expressInterest(next_name, false);
         }
     } else {
-        if (isTCP) {
-			this->pendingInterestMap->save(interest_name, time(NULL));
+        vector<string> fileds;
+        boost::split(fileds, interest_name, boost::is_any_of("/"));
+        string uuid = fileds[4];
+        auto res = cacheHelper->get(uuid);
+        if (isTCP && !res.second) {     //是TCP的正式请求包，且未命中缓存
+			this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
 
         } else {
-            string uuid = interest_name.substr(28, interest_name.length());
-            auto res = cacheHelper->get(uuid);
             if (!res.second) {
                 cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
                 return;
@@ -310,4 +312,11 @@ string NDNHelper::build4TupleKey(uint32_t sip, uint32_t dip, uint16_t sport, uin
     string dstPort = to_string(dport);
 
     return sourceIP + "/" + dstIP + "/" + sourcePort + "/" + dstPort;
+}
+
+long NDNHelper::getCurTime() {
+    auto duration_in_ms = chrono::duration_cast<chrono::milliseconds>(
+            chrono::system_clock::now()
+            .time_since_epoch());
+    return duration_in_ms.count();
 }

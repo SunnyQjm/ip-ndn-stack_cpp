@@ -45,7 +45,7 @@ public:
      * 绑定悬而未决表
      * @param pendingInterestMap
      */
-    void bindPendingInterestTable(MapCacheHelper<time_t> *pendingInterestMap);
+    void bindPendingInterestTable(MapCacheHelper<long> *pendingInterestMap);
 
     /**
      * 绑定自增序列号表
@@ -59,7 +59,7 @@ private:
     pcap_t *ph;
     NDNHelper *ndnHelper;
     MapCacheHelper<tuple_p> *cacheHelper;               //缓存表
-    MapCacheHelper<time_t> *pendingInterestTable;       //悬而未决表
+    MapCacheHelper<long> *pendingInterestTable;       //悬而未决表
     /**
      * key -> 四元组
      * value -> 代表最后一次处理的该四元组对应的包的编码

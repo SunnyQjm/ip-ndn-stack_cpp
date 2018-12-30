@@ -27,7 +27,7 @@ void LibPcapHelper::bindCacheHelper(MapCacheHelper<tuple_p> *cacheHelper) {
     this->cacheHelper = cacheHelper;
 }
 
-void LibPcapHelper::bindPendingInterestTable(MapCacheHelper<time_t> *pendingInterestMap) {
+void LibPcapHelper::bindPendingInterestTable(MapCacheHelper<long> *pendingInterestMap) {
     this->pendingInterestTable = pendingInterestMap;
 }
 
@@ -152,7 +152,7 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
             string formal_name = prefixUUID.first;
 
             auto formal_res = pendingInterestTable->get(formal_name);
-            time_t curTime = std::time(nullptr);
+            long curTime = ndnHelper->getCurTime();
             if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
                 ndnHelper->putData(formal_name, tuple);
             } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项

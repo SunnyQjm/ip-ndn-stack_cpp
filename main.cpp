@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     NDNHelper ndnHelper;
     MapCacheHelper<tuple_p > cacheHelper;
-    MapCacheHelper<time_t > pendingInterestMap;
+    MapCacheHelper<long > pendingInterestMap;
     MapCacheHelper<int> sequenceTable;
     SetHelper<string> prefixRequestTable;
     LibPcapHelper libPcapHelper;
