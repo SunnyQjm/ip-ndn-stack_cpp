@@ -107,6 +107,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     //string pre = "/IP/pre/";
     if (isPre) {
         if (isTCP) {
+            cout << "pre tcp" << endl;
             string next_name = "/IP/TCP";
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
@@ -140,6 +141,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
                 }
             }
         } else {
+            cout << "pre other" << endl;
             string next_name = "/IP";
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
@@ -160,9 +162,11 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
         string uuid = fileds[4];
         auto res = cacheHelper->get(uuid);
         if (isTCP && !res.second) {     //是TCP的正式请求包，且未命中缓存
+            cout << "normal tcp" << endl;
 			this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
 
         } else {
+            cout << "normal other" << endl;
             if (!res.second) {
                 cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
                 return;
