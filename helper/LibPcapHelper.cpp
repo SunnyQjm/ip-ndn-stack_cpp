@@ -163,10 +163,10 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
                 ndnHelper->putData(formal_name, tuple);
             } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
                 auto result_cache = cacheHelper->save(uuid, tuple);
-                if (!result_cache) {
-                    cout << "插入失败" << endl;
-                    return;
-                }
+//                if (!result_cache) {
+//                    cout << "插入失败" << endl;
+//                    return;
+//                }
 
                 //发送预请求兴趣包
                 auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
