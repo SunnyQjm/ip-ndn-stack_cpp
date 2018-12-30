@@ -125,10 +125,13 @@ void LibPcapHelper::deal(const void *arg1, const void *arg2) {
         if (!res.second) {//若不存在则将index即自增表的value设为1并插入；再存入缓存中
             cout << "连接的第一个包" << endl;
             tuple->index = 1;
+            cout << "处理自增序列表" << endl;
             auto result_seq = sequenceTable->save(key, tuple->index);
             if (!result_seq) {
                 cout << "插入失败" << endl;
                 return;
+            } else {
+                cout << "插入成功" << endl;
             }
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 3, 1);
