@@ -37,10 +37,11 @@ private:
  */
 template<class T>
 bool MapCacheHelper<T>::save(string key, T value) {
-    insertMutex.lock();
-    auto res = this->ipPacketCache.insert(make_pair(key, value));
-    insertMutex.unlock();
-    return res.second;
+    {
+        boost::unique_lock<boost::shared_mutex> m(insertMutex);
+        auto res = this->ipPacketCache.insert(make_pair(key, value));
+        return res.second;
+    }
 }
 
 /**
@@ -51,15 +52,15 @@ bool MapCacheHelper<T>::save(string key, T value) {
  */
 template<class T>
 pair<T, bool> MapCacheHelper<T>::get(string key) {
-    insertMutex.lock_shared();
-    cout << "lock share" << endl;
-    auto count = this->ipPacketCache.count(key);
-    if(count == 0) {    //缓存中不存在该键值
-        return make_pair(this->emptyItem, false);
+    {
+        boost::shared_lock<boost::shared_mutex> m(insertMutex);
+        auto count = this->ipPacketCache.count(key);
+        if(count == 0) {    //缓存中不存在该键值
+            return make_pair(this->emptyItem, false);
+        }
+        auto result = this->ipPacketCache.find(key);
+        return make_pair(result->second, true);
     }
-    auto result = this->ipPacketCache.find(key);
-    insertMutex.unlock_shared();
-    return make_pair(result->second, true);
 }
 
 /**
