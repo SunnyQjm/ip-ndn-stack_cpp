@@ -32,10 +32,11 @@ private:
  */
 template<class T>
 bool SetHelper<T>::saveConcurrence(const T &t) {
-    insertMutex.lock();
-    auto res = this->s.insert(t);
-    insertMutex.unlock();
-    return res.second;
+    {
+        boost::unique_lock<boost::shared_mutex> m(insertMutex);
+        auto res = this->s.insert(t);
+        return res.second;
+    }
 }
 
 /**
@@ -59,10 +60,11 @@ bool SetHelper<T>::save(const T &t) {
  */
 template<class T>
 bool SetHelper<T>::find(const T &t) {
-    insertMutex.lock_shared();
-    auto res = (s.find(t) != s.end());
-    insertMutex.unlock_shared();
-    return res;
+    {
+        boost::shared_lock<boost::shared_mutex> m(insertMutex);
+        auto res = (s.find(t) != s.end());
+        return res;
+    }
 }
 
 /**
@@ -73,10 +75,11 @@ bool SetHelper<T>::find(const T &t) {
  */
 template<class T>
 bool SetHelper<T>::erase(const T &t) {
-    insertMutex.lock();
-    s.erase(t);
-    insertMutex.unlock();
-    return false;
+    {
+        boost::unique_lock<boost::shared_mutex> m(insertMutex);
+        s.erase(t);
+        return true;
+    }
 }
 
 

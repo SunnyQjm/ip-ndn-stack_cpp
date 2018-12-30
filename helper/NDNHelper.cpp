@@ -276,11 +276,11 @@ pair<string, string>  NDNHelper::buildName(uint32_t sip, uint32_t dip, uint16_t 
         case 2:
             return make_pair(NDNHelper::PREFIX_REQUEST_DATA + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
         case 3:
-            uid = sourcePort + "-" + dstIP +
+            uid = sourcePort + "-" + dstPort +
                   "-" + to_string(seq);
             return make_pair(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + dstIP + "/" + sourceIP + "/" + uid, uid);
         case 4:
-            uid = sourcePort + "-" + dstIP +
+            uid = sourcePort + "-" + dstPort +
                   "-" + to_string(seq);
             return make_pair(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + sourceIP + "/" + dstIP + "/" + uid, uid);
         default:
