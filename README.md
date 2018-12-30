@@ -56,17 +56,17 @@
 - ### 配置nfd静态路由
   - pkun1
     ```bash
-    sudo nfdc route add prefix /IP/pre/192.169.1.1 nexthop <faceid>
-    sudo nfdc route add prefix /IP/192.169.1.1 nexthop <faceid>
-    sudo nfdc route add prefix /IP/TCP/pre/192.169.1.1 nexthop <faceid>
-    sudo nfdc route add prefix /IP/TCP/192.169.1.1 nexthop <faceid>
-    ```
-  - pkun2
-    ```bash
     sudo nfdc route add prefix /IP/pre/192.169.1.4 nexthop <faceid>
     sudo nfdc route add prefix /IP/192.169.1.4 nexthop <faceid>
     sudo nfdc route add prefix /IP/TCP/pre/192.169.1.4 nexthop <faceid>
     sudo nfdc route add prefix /IP/TCP/192.169.1.4 nexthop <faceid>
+    ```
+  - pkun2
+    ```bash
+    sudo nfdc route add prefix /IP/pre/192.169.1.1 nexthop <faceid>
+    sudo nfdc route add prefix /IP/192.169.1.1 nexthop <faceid>
+    sudo nfdc route add prefix /IP/TCP/pre/192.169.1.1 nexthop <faceid>
+    sudo nfdc route add prefix /IP/TCP/192.169.1.1 nexthop <faceid>
     ```
 > ## 参与项目
 
