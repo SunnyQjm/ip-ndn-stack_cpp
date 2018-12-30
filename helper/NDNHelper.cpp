@@ -110,7 +110,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 //    cout << "onInterest: " << interest_name << endl;
     if (isPre) {
         if (isTCP) {
-            cout << "pre tcp" << endl;
+//            cout << "pre tcp" << endl;
             string next_name = "/IP/TCP";
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
@@ -144,7 +144,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
                 }
             }
         } else {
-            cout << "pre other" << endl;
+//            cout << "pre other" << endl;
             string next_name = "/IP";
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
@@ -162,7 +162,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     } else {
 
         if (isTCP) {     //是TCP的正式请求包，且未命中缓存
-            cout << "normal tcp" << endl;
+//            cout << "normal tcp" << endl;
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
             string uuid = fileds[5];
@@ -181,7 +181,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
                 this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
             }
         } else {
-            cout << "normal other" << endl;
+//            cout << "normal other" << endl;
             vector<string> fileds;
             boost::split(fileds, interest_name, boost::is_any_of("/"));
             string uuid = fileds[4];
@@ -230,7 +230,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 void NDNHelper::expressInterest(string name, bool isPre, bool isTCP) {
 	Interest interest(name);
 	interest.setInterestLifetime(2_s);	//兴趣报存活时间
-	cout << "express interest: " << name << endl;
+//	cout << "express interest: " << name << endl;
     this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2, isPre, isTCP),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
