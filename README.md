@@ -3,22 +3,17 @@
 > - 该配置临时生效，电脑重启之后会丢失
 > - pkun3(192.169.1.1) -> pkun1(192.169.1.2) -> pkun2(192.169.1.3) -> hitn1(192.169.1.4)
 
-- ### 确保上述各主机的nfd进程已经启动
+- ### 确保各NDN主机的nfd进程已经启动
+  > 在本最小原型场景下，pkun1和pkun2为NDN主机，pkun3和hitn1为IP主机
+
+  NDN主机的环境配置以及Face创建等，参见[IP_NDN_STACK 部署脚本](https://github.com/SunnyQjm/ip-ndn-stack_cpp/tree/master/deployment)
+
   ```bash
   nfd-status
   
   # 如果没有启动则执行下面的命令启动
   nfd-start
   ```
-  
-- ### 拉取NDNDeployment项目
-  ```bash
-  git clone https://github.com/SunnyQjm/NDNDeployment.git
-  cd NDNDeployment
-  ./eval_deploy.sh deploy
-  ```
-  执行上述脚本之后，对应的face接口会自动生成
-
 - ### 配置ip及网关
   - pkun3
     ```bash
