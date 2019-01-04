@@ -45,6 +45,7 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
         cout << "error: " << error;
         return;
     }
+    cout << "handle read" << endl;
     auto res = mPcap.readNextPacketAfterDecode();
     this->deal(std::get<0>(res));
     asyncRead();
