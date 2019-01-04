@@ -214,6 +214,8 @@ void NDNHelper::onNack(const Interest &, const lp::Nack &) {
 
 void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
     if (!isPre) {
+       // string next_name = interest.getName().toUri();
+       // this->expressInterest(next_name, false, false);
         cout << "Timed out: " << interest.getName().toUri() << endl;
     }
 }
