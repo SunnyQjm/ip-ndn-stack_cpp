@@ -57,6 +57,7 @@ void LibPcapHelper::handleError(const std::string &errorMessage) {
 }
 
 void LibPcapHelper::start() {
+    cout << "start" << endl;
     service.run();
 }
 
