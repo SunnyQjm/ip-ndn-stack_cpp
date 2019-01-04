@@ -14,6 +14,7 @@ LibPcapHelper::LibPcapHelper(const string &configFilePath): mPcap(configFilePath
     } catch (const PcapHelper::Error &e) {
         BOOST_THROW_EXCEPTION(PcapHelper::Error(e.what()));
     }
+    asyncRead();
 }
 
 void LibPcapHelper::bindNDNHelper(NDNHelper *ndnHelper) {
