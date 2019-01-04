@@ -8,6 +8,7 @@
 #include <set>
 #include <boost/thread/pthread/shared_mutex.hpp>
 
+using namespace std;
 template <class T>
 class SetHelper {
 public:

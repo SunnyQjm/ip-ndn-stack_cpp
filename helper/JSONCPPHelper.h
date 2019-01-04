@@ -11,7 +11,7 @@
 using namespace std;
 class JSONCPPHelper {
 public:
-    JSONCPPHelper(string &filePath);
+    JSONCPPHelper(const string &filePath);
     string getString(string key);
     int getInt(string key);
     unsigned long long getull(string key);

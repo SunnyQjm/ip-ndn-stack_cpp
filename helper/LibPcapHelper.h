@@ -6,11 +6,11 @@
 #define IP_NDN_STACK_CPP_LIBPCAPHELPER_H
 
 #include <iostream>
-#include "../libpcapcapture/libpcap.h"
 #include "RawSocketHelper.h"
 #include "JSONCPPHelper.h"
 #include "NDNHelper.h"
 #include "MapCacheHelper.h"
+#include "PcapHelper.h"
 #include <string>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -19,15 +19,25 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <boost/thread.hpp>
+#include <boost/asio.hpp>
 
 using namespace std;
 using namespace ndn;
-
+using namespace IP_NDN_STACK::pcap;
 class LibPcapHelper {
 public:
-    LibPcapHelper();
+    LibPcapHelper(const string &configFilePath);
 
-    void initLibPcap(string configFilePath);
+    void
+    asyncRead();
+
+    void
+    handleRead(const boost::system::error_code &error);
+
+    void
+    handleError(const std::string &errorMessage);
+
+    void start();
 
     void close();
 
@@ -53,10 +63,11 @@ public:
      */
     void bindSequenceTable(MapCacheHelper<int> *sequenceTable);
 
-    void join();
 
 private:
-    pcap_t *ph;
+    PcapHelper mPcap;
+    boost::asio::io_service service;
+    boost::asio::posix::stream_descriptor m_socket;
     NDNHelper *ndnHelper;
     MapCacheHelper<tuple_p> *cacheHelper;               //缓存表
     MapCacheHelper<long> *pendingInterestTable;       //悬而未决表
@@ -68,7 +79,7 @@ private:
     RawSocketHelper rawSocketHelper;
 
 //    void deal(tuple_p tuple);
-    void deal(const void *arg1, const void *arg2);
+    void deal(tuple_p tuple);
 };
 
 

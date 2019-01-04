@@ -1,9 +1,9 @@
 //
 // Created by mingj on 18-12-18.
 //
-#include "./helper/NDNHelper.h"
-#include "./helper/JSONCPPHelper.h"
-#include "./helper/LibPcapHelper.h"
+#include "NDNHelper.h"
+#include "JSONCPPHelper.h"
+#include "LibPcapHelper.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     MapCacheHelper<long > pendingInterestMap;
     MapCacheHelper<int> sequenceTable;
     SetHelper<string> prefixRequestTable;
-    LibPcapHelper libPcapHelper;
+    LibPcapHelper libPcapHelper(argv[1]);
 
     ndnHelper.bindCacheHelper(&cacheHelper);
     ndnHelper.bindPendingInterestMap(&pendingInterestMap);
@@ -33,10 +33,9 @@ int main(int argc, char *argv[]) {
 
     boost::thread t(bind(&dealNDN, &ndnHelper));
 
-    libPcapHelper.initLibPcap(argv[1]);
+    libPcapHelper.start();
 
     t.join();
-    libPcapHelper.join();
     ndnHelper.join();
     libPcapHelper.close();
 

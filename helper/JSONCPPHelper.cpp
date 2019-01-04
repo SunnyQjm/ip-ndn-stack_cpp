@@ -4,7 +4,7 @@
 
 #include "JSONCPPHelper.h"
 
-JSONCPPHelper::JSONCPPHelper(string &filePath) {
+JSONCPPHelper::JSONCPPHelper(const string &filePath) {
     Json::Reader reader;
 
     //读取文件

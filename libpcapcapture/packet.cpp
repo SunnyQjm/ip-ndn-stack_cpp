@@ -364,18 +364,18 @@ void print_tuple(FILE* f, tuple_t* t) {
 
 void print_tuple_screen(tuple_t* t)
 {
-    char ip1[30], ip2[30];
-
-    printf("source ip and port:%s(%u) <->destination ip and port: %s(%u) %u %ld\n",
-            ip2a(t->key.src_ip, ip1), t->key.src_port,
-            ip2a(t->key.dst_ip, ip2), t->key.dst_port,
-            t->key.proto, t->size);
-    formal_time_t temp_time1;
-    struct timeval temp_time2;
-    double time=t->pkt_ts;
-    dbl2time(time,&temp_time2);
-    time_val_to_Time(temp_time2,&temp_time1);
-    printf(" time stamp: year.%d month.%d day.%d hour.%d minute.%d sec.%d m_sec.%d\n",temp_time1.year,temp_time1.month,temp_time1.day,temp_time1.hour,temp_time1.minute,temp_time1.sec,temp_time1.m_sec);
+//    char ip1[30], ip2[30];
+//
+//    printf("source ip and port:%s(%u) <->destination ip and port: %s(%u) %u %ld\n",
+//            ip2a(t->key.src_ip, ip1), t->key.src_port,
+//            ip2a(t->key.dst_ip, ip2), t->key.dst_port,
+//            t->key.proto, t->size);
+//    formal_time_t temp_time1;
+//    struct timeval temp_time2;
+//    double time=t->pkt_ts;
+//    dbl2time(time,&temp_time2);
+////    time_val_to_Time(temp_time2,&temp_time1);
+//    printf(" time stamp: year.%d month.%d day.%d hour.%d minute.%d sec.%d m_sec.%d\n",temp_time1.year,temp_time1.month,temp_time1.day,temp_time1.hour,temp_time1.minute,temp_time1.sec,temp_time1.m_sec);
 }
 
 void read_tuple(char* line, tuple_t* p) {
