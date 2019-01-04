@@ -14,8 +14,6 @@ LibPcapHelper::LibPcapHelper(const string &configFilePath): mPcap(configFilePath
     } catch (const PcapHelper::Error &e) {
         BOOST_THROW_EXCEPTION(PcapHelper::Error(e.what()));
     }
-
-
 }
 
 void LibPcapHelper::bindNDNHelper(NDNHelper *ndnHelper) {
@@ -48,7 +46,7 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
         return;
     }
     auto res = mPcap.readNextPacketAfterDecode();
-    deal(std::get<0>(res));
+    this->deal(std::get<0>(res));
     asyncRead();
 }
 

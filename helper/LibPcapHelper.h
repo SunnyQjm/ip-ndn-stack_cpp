@@ -26,16 +26,8 @@ using namespace ndn;
 using namespace IP_NDN_STACK::pcap;
 class LibPcapHelper {
 public:
+    explicit
     LibPcapHelper(const string &configFilePath);
-
-    void
-    asyncRead();
-
-    void
-    handleRead(const boost::system::error_code &error);
-
-    void
-    handleError(const std::string &errorMessage);
 
     void start();
 
@@ -63,6 +55,15 @@ public:
      */
     void bindSequenceTable(MapCacheHelper<int> *sequenceTable);
 
+protected:
+    void
+    asyncRead();
+
+    void
+    handleRead(const boost::system::error_code &error);
+
+    void
+    handleError(const std::string &errorMessage);
 
 private:
     PcapHelper mPcap;
@@ -78,7 +79,6 @@ private:
     MapCacheHelper<int> *sequenceTable;                 //自增序列号表
     RawSocketHelper rawSocketHelper;
 
-//    void deal(tuple_p tuple);
     void deal(tuple_p tuple);
 };
 

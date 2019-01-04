@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
     ndnHelper.bindPendingInterestMap(&pendingInterestMap);
     ndnHelper.bindPrefixGuestTable(&prefixRequestTable);
     libPcapHelper.bindCacheHelper(&cacheHelper);
+
     libPcapHelper.bindPendingInterestTable(&pendingInterestMap);
     libPcapHelper.bindSequenceTable(&sequenceTable);
     libPcapHelper.bindNDNHelper(&ndnHelper);
@@ -31,8 +32,10 @@ int main(int argc, char *argv[]) {
 
     ndnHelper.initNDN(argv[1]);
 
+    //在另一个线程处理NDN事件
     boost::thread t(bind(&dealNDN, &ndnHelper));
 
+    //开始抓包
     libPcapHelper.start();
 
     t.join();
