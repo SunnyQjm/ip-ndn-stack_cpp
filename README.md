@@ -49,6 +49,8 @@
     ```
 
 - ### 配置nfd静态路由
+    > 静态路由的配置，可以像下面这样手动配置，也可以使用协助脚本，详情参见[IP_NDN_STACK 部署脚本](https://github.com/SunnyQjm/ip-ndn-stack_cpp/tree/master/deployment)
+    
   - pkun1
     ```bash
     sudo nfdc route add prefix /IP/pre/192.169.1.4 nexthop <faceid>

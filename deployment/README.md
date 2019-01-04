@@ -87,3 +87,19 @@
         ```
         其中，`nodeName`为当前节点的标示名（即`lab_topology.json`配置文件中节点的`name`字段）
 
+
+- ## 静态路由配置
+    > 静态路由的配置，可以选择手动，也可以使用协助脚本（协助脚本只是简化工作）
+    
+   ```bash
+   ./static_route_config.sh <ip> <faceId>
+   ```
+   
+   假设ip等于 `192.169.1.4`，faceId为 `256`，则执行 `./static_route_config.sh 192.169.1.4 256` 等效于执行下面几行命令
+   
+   ```bash
+   sudo nfdc route add prefix /IP/pre/192.169.1.4 nexthop 256
+   sudo nfdc route add prefix /IP/192.169.1.4 nexthop 256
+   sudo nfdc route add prefix /IP/TCP/pre/192.169.1.4 nexthop 256
+   sudo nfdc route add prefix /IP/TCP/192.169.1.4 nexthop 256
+   ```
