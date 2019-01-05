@@ -65,6 +65,26 @@
     sudo nfdc route add prefix /IP/TCP/pre/192.169.1.1 nexthop <faceid>
     sudo nfdc route add prefix /IP/TCP/192.169.1.1 nexthop <faceid>
     ```
+
+> ## 编译项目
+
+- ### 首先用cmake生成Makefile
+    进入项目根目录，然后执行下面命令(如果没有安装cmake，请自行安装)
+    ```bash
+    cmake .
+    ```
+- ### 然后编译项目
+    ```bash
+    make
+    ```
+- ### 运行
+    ```bash
+    sudo ./ip_ndn_stack_cpp <config file path>
+
+    # for example
+    sudo ./ip_ndn_stack_cpp ./config/part1.json
+    ```
+
 > ## 参与项目
 
 - ### 拉取项目到本地
