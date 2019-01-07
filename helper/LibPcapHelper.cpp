@@ -50,9 +50,10 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto tuple = std::get<0>(res);
     if (tuple != nullptr) {       //只传小于8000的块
         cout << tuple->ipSize << endl;
-//        if (tuple->size < 8800) {
+        cout << tuple->size << endl;
+        if (tuple->size < 8800) {
             this->deal(tuple);
-//        }
+        }
     }
     asyncRead();
 }
