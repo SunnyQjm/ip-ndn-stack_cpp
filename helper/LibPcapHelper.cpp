@@ -4,7 +4,7 @@
 
 #include "LibPcapHelper.h"
 
-LibPcapHelper::LibPcapHelper(const string &configFilePath): mPcap(configFilePath), m_socket(service) {
+LibPcapHelper::LibPcapHelper(const string &configFilePath) : mPcap(configFilePath), m_socket(service) {
     JSONCPPHelper jsoncppHelper(configFilePath);
     string filter = jsoncppHelper.getString("pcap_dstmac");
     try {
@@ -47,7 +47,9 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
         return;
     }
     auto res = mPcap.readNextPacketAfterDecode();
-    this->deal(std::get<0>(res));
+    auto tuple = std::get<0>(res);
+    if (tuple != nullptr)
+        this->deal(tuple);
     asyncRead();
 }
 
@@ -82,7 +84,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
     cout << "deal: " << (tuple == nullptr) << endl;
     if (tuple->key.proto == IPPROTO_TCP) {
         string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
-                tuple->key.src_port, tuple->key.dst_port);
+                                               tuple->key.src_port, tuple->key.dst_port);
 
         auto res = sequenceTable->get(key);
 
