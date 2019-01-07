@@ -48,8 +48,9 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     }
     auto res = mPcap.readNextPacketAfterDecode();
     auto tuple = std::get<0>(res);
-    if (tuple != nullptr)
+    if (tuple != nullptr && tuple->size < 8000) {       //只传小于8000的块
         this->deal(tuple);
+    }
     asyncRead();
 }
 
