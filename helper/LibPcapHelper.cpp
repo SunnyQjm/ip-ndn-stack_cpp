@@ -51,7 +51,7 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     if (tuple != nullptr) {       //只传小于8000的块
         cout << tuple->ipSize << endl;
         cout << tuple->size << endl;
-        if (tuple->size < 8800) {
+        if (tuple->ipSize < 8800) {
             this->deal(tuple);
         }
     }
