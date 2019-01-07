@@ -230,7 +230,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
     //error checking(IP level)
     ip_hdr = (struct ip*)(pkt + eth_len);
 
-    p->flag = ip_hdr->ip_off;
+    p->flag = ip_hdr->ip_id;
 
     date = (uint8_t*)(pkt + eth_len);
     // i) IP header length check
