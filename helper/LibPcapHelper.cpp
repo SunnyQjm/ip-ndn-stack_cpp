@@ -34,7 +34,6 @@ void LibPcapHelper::bindSequenceTable(MapCacheHelper<int> *sequenceTable) {
     this->sequenceTable = sequenceTable;
 }
 
-sdsd
 
 void LibPcapHelper::asyncRead() {
     m_socket.async_read_some(boost::asio::null_buffers(),

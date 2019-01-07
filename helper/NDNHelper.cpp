@@ -109,7 +109,7 @@ void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
 void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP) {
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
-//    cout << "onInterest: " << interest_name << endl;
+    cout << "onInterest: " << interest_name << endl;
     if (isPre) {
         if (isTCP) {
 //            cout << "pre tcp" << endl;
