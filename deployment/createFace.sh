@@ -11,7 +11,7 @@ function ensureDir() {
     dir=$1
     if [[ ! -d "$dir" ]]; then
         echo "文件夹${dir}不存在，正在创建"
-        mkdir -p $dir
+        mkdir -p ${dir}
     fi
 }
 
@@ -33,7 +33,7 @@ length=`echo ${json} | jq '.|length'`
 length=$(( $length - 1 ))
 
 # 将节点信息和邻居信息输出到temp文件夹
-for index in `seq 0 $length`
+for index in `seq 0 ${length}`
 do
     rName=$(echo ${list} | jq -r ".[$index].name")
     nbs=$(echo ${list} | jq  ".[$index].nbs")
