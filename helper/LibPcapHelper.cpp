@@ -4,12 +4,13 @@
 
 #include "LibPcapHelper.h"
 
+static char bufSrc[50];
+static char bufDst[50];
 char *
-adres (uint32_t ip)
+adres (uint32_t ip, char * buf)
 {
     in_addr addr;
     addr.s_addr = ip;
-    static char buf[50];
     strcpy (buf, inet_ntoa(addr));
     return buf;
 }
@@ -60,7 +61,7 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto tuple = std::get<0>(res);
     if (tuple != nullptr) {       //只传小于8000的块
 //        cout << tuple->ipSize << endl;
-        cout << adres(tuple->key.src_ip) << " -> " << adres(tuple->key.dst_ip) << endl;
+        cout << adres(tuple->key.src_ip, bufSrc) << " -> " << adres(tuple->key.dst_ip, bufDst) << endl;
         cout << tuple->flag << endl;
         if (tuple->ipSize < 8800) {
             this->deal(tuple);
