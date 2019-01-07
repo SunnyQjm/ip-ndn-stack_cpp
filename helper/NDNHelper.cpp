@@ -232,7 +232,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 }
 
 void NDNHelper::expressInterest(string name, bool isPre, bool isTCP) {
-	Interest interest(std::move(name));
+	Interest interest(name);
 	interest.setInterestLifetime(2_s);	//兴趣报存活时间
 	cout << "express interest: " << name << endl;
     this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2, isPre, isTCP),
