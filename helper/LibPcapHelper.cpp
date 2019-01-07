@@ -137,6 +137,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
         //	tuple_p tuple1 = res.first;
     } else {//为其他协议包用原来的方式传输
         string uuid = this->generateUUID();
+        cout << "uuid: " << uuid << endl;
         auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
         auto result = cacheHelper->save(uuid, tuple);
