@@ -176,7 +176,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
                 cacheHelper->erase(uuid);
 
                 Data data(interest_name);
-                data.setContent(tuple1->pkt, tuple1->size);
+                data.setContent(tuple1->pkt, tuple1->ipSize);
                 KeyChain_.sign(data);
                 this->face.put(data);
             } else {
@@ -198,7 +198,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             cacheHelper->erase(uuid);
 
             Data data(interest_name);
-            data.setContent(tuple1->pkt, tuple1->size);
+            data.setContent(tuple1->pkt, tuple1->ipSize);
             KeyChain_.sign(data);
             this->face.put(data);
         }

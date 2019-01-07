@@ -191,7 +191,7 @@ enum PACKET_STATUS decode(const uint8_t* pkt,
     enum PACKET_STATUS status;
 	//char* date;
 	uint8_t* date;
-
+    p->ipSize = cap_len - ETH_LEN;
     status = STATUS_VALID; //valid packets
     packet_stat.tot_pkt_cnt++;
     if (packet_stat.tot_pkt_cnt == 1) {

@@ -43,6 +43,7 @@ struct Tuple {
     uint64_t seq;
     // 8 bytes
     uint64_t size; //inner IP datagram length(header + data)
+    uint64_t ipSize;
 	struct Tuple * next ;
 };
 typedef struct Tuple tuple_t;
