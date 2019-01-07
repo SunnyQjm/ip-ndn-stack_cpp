@@ -79,6 +79,7 @@ void LibPcapHelper::close() {
  * @param tuple
  */
 void LibPcapHelper::deal(tuple_p tuple) {
+    cout << "deal" << endl;
     if (tuple->key.proto == IPPROTO_TCP) {
         string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
                 tuple->key.src_port, tuple->key.dst_port);
