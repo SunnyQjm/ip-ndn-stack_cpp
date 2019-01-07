@@ -73,23 +73,23 @@
     "password": "26035354",
     "nics": [
       {
-        "name": "enp6s0f0",
+        "name": "enp4s0f0",
         "mac": "a0:36:9f:85:c4:9c"
       },
       {
-        "name": "enp6s0f1",
+        "name": "enp4s0f1",
         "mac": "a0:36:9f:85:c4:9d"
       },
       {
-        "name": "enp6s0f2",
+        "name": "enp4s0f2",
         "mac": "a0:36:9f:85:c4:9e"
       },
       {
-        "name": "enp6s0f3",
+        "name": "enp4s0f3",
         "mac": "a0:36:9f:85:c4:9f"
       },
       {
-        "name": "enp4s0",
+        "name": "enp3s0",
         "mac": "40:8d:5c:5f:21:71"
       }
     ],
@@ -101,7 +101,7 @@
         "router": "/pkun3",
         "nicIndex": 2,
         "targetMac": "a0:36:9f:85:c9:dd",
-        "localDev": "enp6s0f2"
+        "localDev": "enp4s0f2"
       },
       {
         "name": "/ndn/edu/pkusz/pkun1",
@@ -110,7 +110,7 @@
         "router": "/pkun1",
         "nicIndex": 3,
         "targetMac": "a0:36:9f:85:bc:8d",
-        "localDev": "enp6s0f3"
+        "localDev": "enp4s0f3"
       },
       {
         "name": "/ndn/edu/pkusz/hitn1",
@@ -119,7 +119,7 @@
         "router": "/hitn1",
         "nicIndex": 1,
         "targetMac": "a0:36:9f:85:bf:31",
-        "localDev": "enp6s0f1"
+        "localDev": "enp4s0f1"
       },
       {
         "name": "/ndn/edu/pkusz/node0",
@@ -128,7 +128,7 @@
         "router": "/node0",
         "nicIndex": 0,
         "targetMac": "00:e0:4c:68:a1:8d",
-        "localDev": "enp6s0f0"
+        "localDev": "enp4s0f0"
       }
     ]
   },

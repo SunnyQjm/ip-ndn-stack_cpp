@@ -67,23 +67,23 @@
         "password":"26035354",
         "nics":[
             {
-                "name":"enp6s0f0",
+                "name":"enp4s0f0",
                 "mac":"a0:36:9f:85:c4:9c"
             },
             {
-                "name":"enp6s0f1",
+                "name":"enp4s0f1",
                 "mac":"a0:36:9f:85:c4:9d"
             },
             {
-                "name":"enp6s0f2",
+                "name":"enp4s0f2",
                 "mac":"a0:36:9f:85:c4:9e"
             },
             {
-                "name":"enp6s0f3",
+                "name":"enp4s0f3",
                 "mac":"a0:36:9f:85:c4:9f"
             },
             {
-                "name":"enp4s0",
+                "name":"enp3s0",
                 "mac":"40:8d:5c:5f:21:71"
             }
         ],
