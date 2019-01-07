@@ -32,7 +32,7 @@ struct Tuple {
 	uint8_t *pkt;
     // 1 byte
     // only used in multi-thread environment
-    uint8_t flag;
+    uint16_t flag;
 
     /******************
     ** values
