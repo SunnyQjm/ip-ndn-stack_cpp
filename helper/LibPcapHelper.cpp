@@ -4,6 +4,16 @@
 
 #include "LibPcapHelper.h"
 
+char *
+adres (uint32_t ip)
+{
+    in_addr addr;
+    addr.s_addr = ip;
+    static char buf[50];
+    strcpy (buf, inet_ntoa(addr));
+    return buf;
+}
+
 LibPcapHelper::LibPcapHelper(const string &configFilePath) : mPcap(configFilePath), m_socket(service) {
     JSONCPPHelper jsoncppHelper(configFilePath);
     string filter = jsoncppHelper.getString("pcap_dstmac");
@@ -50,6 +60,7 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto tuple = std::get<0>(res);
     if (tuple != nullptr) {       //只传小于8000的块
 //        cout << tuple->ipSize << endl;
+        cout << adres(tuple->key.src_ip) << " -> " << adres(tuple->key.dst_ip) << endl;
         cout << tuple->flag << endl;
         if (tuple->ipSize < 8800) {
             this->deal(tuple);
