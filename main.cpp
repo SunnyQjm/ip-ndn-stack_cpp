@@ -4,7 +4,7 @@
 #include "NDNHelper.h"
 #include "JSONCPPHelper.h"
 #include "LibPcapHelper.h"
-
+#include <execinfo.h>
 using namespace std;
 
 void dealNDN(void *arg) {
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     t.join();
     ndnHelper.join();
     libPcapHelper.close();
+
 
 
     return 0;
