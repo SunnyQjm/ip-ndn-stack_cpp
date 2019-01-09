@@ -12,6 +12,18 @@ CHRONO_SYNC_VERSION=0.5.2
 NLSR_VERSION=0.4.4_que
 NDN_TOOLS_VERSION=0.6.2
 DEFAULT_DIR=~/Documents
+
+function ensureDir() {
+    dir=$1
+    if [[ ! -d "$dir" ]]; then
+        echo "文件夹${dir}不存在，正在创建"
+        mkdir -p ${dir}
+    fi
+}
+
+# 确保Documents文件夹存在
+ensureDir ${DEFAULT_DIR}
+
 function cloneOrUpdate() {
     cd ${DEFAULT_DIR}
     name=$1
