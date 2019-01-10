@@ -2,7 +2,7 @@ cmake-build-debug/
 CmakeFiles/
 
 /cmake_install.cmake
-/CmakeCache.txt
+/CMakeCache.txt
 
 /ip_ndn_stack_cpp
 /ip_ndn_stack_cpp.cbp
