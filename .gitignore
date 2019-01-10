@@ -1,5 +1,5 @@
 cmake-build-debug/
-CmakeFiles/
+CMakeFiles/
 .idea/
 
 /cmake_install.cmake
