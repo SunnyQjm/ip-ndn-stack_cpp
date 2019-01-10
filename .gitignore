@@ -1,1 +1,9 @@
-/cmake-build-debug
+cmake-build-debug/
+CmakeFiles/
+
+/cmake_install.cmake
+/CmakeCache.txt
+
+/ip_ndn_stack_cpp
+/ip_ndn_stack_cpp.cbp
+/Makefile
