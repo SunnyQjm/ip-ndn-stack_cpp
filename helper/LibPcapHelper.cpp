@@ -100,9 +100,19 @@ void LibPcapHelper::deal(tuple_p tuple) {
 //                                               tuple->key.src_port, tuple->key.dst_port, 2, -1, uuid);
     string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
                                            tuple->key.src_port, tuple->key.dst_port);
-    if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
-        cout << "获取自增序列失败" << endl;
-        return;
+    auto res = sequenceTable->get(key);
+    if(!res.second) {
+        tuple->index = 1;
+        auto result_seq = sequenceTable->save(key, tuple->index);
+        if (!result_seq) {
+            cout << "插入失败" << endl;
+            return;
+        }
+    } else {
+        if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
+            cout << "获取自增序列失败" << endl;
+            return;
+        }
     }
     auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
