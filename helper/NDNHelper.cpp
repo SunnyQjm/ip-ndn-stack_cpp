@@ -110,7 +110,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
     cout << "onInterest: " << interest_name << endl;
-    return;
+
     if (isPre) {
         if (isTCP) {
 //            cout << "pre tcp" << endl;
@@ -164,6 +164,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
         }
     } else {
 
+        return ;
         if (isTCP) {     //是TCP的正式请求包，且未命中缓存
 //            cout << "normal tcp" << endl;
             vector<string> fileds;
