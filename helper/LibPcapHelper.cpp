@@ -95,7 +95,18 @@ void LibPcapHelper::close() {
  * @param tuple
  */
 void LibPcapHelper::deal(tuple_p tuple) {
-//    cout << "deal: " << (tuple == nullptr) << endl;
+    string uuid = this->generateUUID();
+    auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                               tuple->key.src_port, tuple->key.dst_port, 2, -1, uuid);
+
+    ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+
+    auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                           tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
+    ndnHelper->expressInterest(prefixUUID.first);
+    return;
+
+
     if (tuple->key.proto == IPPROTO_TCP) {
         string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port);

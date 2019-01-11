@@ -112,6 +112,20 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     cout << "onInterest: " << interest_name << endl;
 
     if (isPre) {
+        string next_name = "/IP";
+        vector<string> fileds;
+        boost::split(fileds, interest_name, boost::is_any_of("/"));
+
+        string sip = fileds[3];
+        string dip = fileds[4];
+        string uid = fileds[5];
+        next_name.append("/" + dip);
+        next_name.append("/" + sip);
+        next_name.append("/" + uid);
+
+        //发一个正式拉取的请求
+        this->expressInterest(next_name, false, false);
+        return;
         if (isTCP) {
 //            cout << "pre tcp" << endl;
             string next_name = "/IP/TCP";
