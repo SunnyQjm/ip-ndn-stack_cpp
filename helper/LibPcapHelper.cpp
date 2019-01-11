@@ -111,14 +111,15 @@ void LibPcapHelper::deal(tuple_p tuple) {
             }
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 3, 1);
-            string uuid = prefixUUID.second;
-            cout << prefixUUID.first << endl;
-
-            auto result_cache = cacheHelper->save(uuid, tuple);
-            if (!result_cache) {
-                cout << "插入失败" << endl;
-                return;
-            }
+            ndnHelper->putDataToCache(prefixUUID.first, tuple);
+//            string uuid = prefixUUID.second;
+//            cout << prefixUUID.first << endl;
+//
+//            auto result_cache = cacheHelper->save(uuid, tuple);
+//            if (!result_cache) {
+//                cout << "插入失败" << endl;
+//                return;
+//            }
             ndnHelper->expressInterest(prefixUUID.first);
             return;
         } else {//若存在则将index的值++，并查找悬而未决表
@@ -140,11 +141,12 @@ void LibPcapHelper::deal(tuple_p tuple) {
 //                cout << "找到相应表项，若时间在有效期内，则直接发送date包" << endl;
                 ndnHelper->putData(formal_name, tuple);
             } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
-                cacheHelper->save(uuid, tuple);
-
+//                cacheHelper->save(uuid, tuple);
+//
                 //发送预请求兴趣包
                 auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
+                ndnHelper->putDataToCache(prefixUUID.first, tuple);
 
                 ndnHelper->expressInterest(prePrefixUUID.first, true);
                 return;

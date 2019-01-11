@@ -101,6 +101,13 @@ public:
      */
     long getCurTime();
 
+    /**
+     * 将IP包放到NFD的缓存当中
+     * @param interestName
+     * @param tuple
+     */
+    void putDataToCache(const string &interestName, tuple_p tuple);
+
 public: //回调
     void onData(const Interest &interest, const Data &data, bool isPre, bool isTCP);
 

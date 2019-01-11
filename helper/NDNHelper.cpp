@@ -109,7 +109,8 @@ void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
 void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP) {
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
-//    cout << "onInterest: " << interest_name << endl;
+    cout << "onInterest: " << interest_name << endl;
+    return;
     if (isPre) {
         if (isTCP) {
 //            cout << "pre tcp" << endl;
@@ -347,4 +348,11 @@ long NDNHelper::getCurTime() {
             chrono::system_clock::now()
             .time_since_epoch());
     return duration_in_ms.count();
+}
+
+void NDNHelper::putDataToCache(const string &interestName, tuple_p tuple) {
+    Data data(interestName);
+    data.setContent(tuple->pkt, tuple->ipSize);
+    KeyChain_.sign(data);
+    this->face.put(data);
 }
