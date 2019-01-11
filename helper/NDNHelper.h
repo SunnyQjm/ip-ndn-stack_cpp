@@ -128,7 +128,7 @@ public: //静态变量
     static const string PREFIX_TCP_PRE_REQUEST;
     static const string PREFIX_TCP_REQUEST_DATA;
     static const string KEY_CONFIG_REGISTER_IP;
-	static const int NUM_OF_GUEST = 200;
+	static const int NUM_OF_GUEST = 80;
 private:
     Face face;
     MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
