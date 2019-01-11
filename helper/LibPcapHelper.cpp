@@ -98,7 +98,12 @@ void LibPcapHelper::deal(tuple_p tuple) {
 //    string uuid = this->generateUUID();
 //    auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
 //                                               tuple->key.src_port, tuple->key.dst_port, 2, -1, uuid);
-
+    string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
+                                           tuple->key.src_port, tuple->key.dst_port);
+    if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
+        cout << "获取自增序列失败" << endl;
+        return;
+    }
     auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
 
