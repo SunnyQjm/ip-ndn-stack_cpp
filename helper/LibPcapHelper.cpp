@@ -125,31 +125,31 @@ void LibPcapHelper::deal(tuple_p tuple) {
                 return;
             }
 
-            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                   tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
-            //res.second = tuple->index;
-            string uuid = prefixUUID.second;
-            string formal_name = prefixUUID.first;
+//            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+//                                                   tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+//            //res.second = tuple->index;
+//            string uuid = prefixUUID.second;
+//            string formal_name = prefixUUID.first;
 
-            auto formal_res = pendingInterestTable->get(formal_name);
-            pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
-            long curTime = ndnHelper->getCurTime();
-            if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
-                cout << "命中: " + formal_name << endl;
-//                cout << "找到相应表项，若时间在有效期内，则直接发送date包" << endl;
-                ndnHelper->putData(formal_name, tuple);
-            } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
-                auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                           tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+//            auto formal_res = pendingInterestTable->get(formal_name);
+//            pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
+//            long curTime = ndnHelper->getCurTime();
+//            if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
+//                cout << "命中: " + formal_name << endl;
+////                cout << "找到相应表项，若时间在有效期内，则直接发送date包" << endl;
+//                ndnHelper->putData(formal_name, tuple);
+//            } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
+            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
 
-                ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
 
-                //发送预请求兴趣包
-                auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                          tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
-                ndnHelper->expressInterest(prePrefixUUID.first, true);
-                return;
-            }
+            //发送预请求兴趣包
+            auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                      tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
+            ndnHelper->expressInterest(prePrefixUUID.first, true);
+            return;
+//            }
         }
         //	tuple_p tuple1 = res.first;
     } else {//为其他协议包用原来的方式传输
