@@ -105,7 +105,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
     ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
 
     auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                           tuple->key.src_port, tuple->key.dst_port, 1, 3, tuple->index);
+                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
     ndnHelper->expressInterest(prefixUUID.first);
     return ;
 
