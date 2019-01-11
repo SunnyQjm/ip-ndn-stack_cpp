@@ -109,9 +109,15 @@ void LibPcapHelper::deal(tuple_p tuple) {
                 cout << "插入失败" << endl;
                 return;
             }
+
+            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+
+            cout << "dataPrefixUUID: " << dataPrefixUUID.first << endl;
+            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+
             auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                    tuple->key.src_port, tuple->key.dst_port, 3, 1);
-            ndnHelper->putDataToCache(prefixUUID.first, tuple);
 //            string uuid = prefixUUID.second;
 //            cout << prefixUUID.first << endl;
 //
@@ -143,11 +149,15 @@ void LibPcapHelper::deal(tuple_p tuple) {
             } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
 //                cacheHelper->save(uuid, tuple);
 //
+                auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                                          tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+
+                cout << "dataPrefixUUID: " << dataPrefixUUID.first << endl;
+                ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+
                 //发送预请求兴趣包
                 auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
-                ndnHelper->putDataToCache(prefixUUID.first, tuple);
-
                 ndnHelper->expressInterest(prePrefixUUID.first, true);
                 return;
             }
@@ -156,13 +166,19 @@ void LibPcapHelper::deal(tuple_p tuple) {
     } else {//为其他协议包用原来的方式传输
         string uuid = this->generateUUID();
 //        cout << "uuid: " << uuid << endl;
+        auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                               tuple->key.src_port, tuple->key.dst_port, 2, -1, uuid);
+
+        cout << "dataPrefixUUID: " << dataPrefixUUID.first << endl;
+        ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+
         auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
-        auto result = cacheHelper->save(uuid, tuple);
-        if (!result) {
-            cout << "插入失败" << endl;
-            return;
-        }
+//        auto result = cacheHelper->save(uuid, tuple);
+//        if (!result) {
+//            cout << "插入失败" << endl;
+//            return;
+//        }
 
         ndnHelper->expressInterest(prefixUUID.first);
     }
