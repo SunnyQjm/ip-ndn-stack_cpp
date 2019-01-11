@@ -102,11 +102,13 @@ void LibPcapHelper::deal(tuple_p tuple) {
     auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
 
+    cout << "dataPrefixUUID: " << dataPrefixUUID.first << endl;
     ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
 
-    auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                           tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
-    ndnHelper->expressInterest(prefixUUID.first);
+    //发送预请求兴趣包
+    auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+                                              tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
+    ndnHelper->expressInterest(prePrefixUUID.first, true);
     return ;
 
 
