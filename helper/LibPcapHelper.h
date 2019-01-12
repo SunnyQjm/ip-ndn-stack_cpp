@@ -81,7 +81,7 @@ private:
     MapCacheHelper<int> *sequenceTable;                 //自增序列号表
     RawSocketHelper rawSocketHelper;
 
-    static const int THREAD_POOL_SIZE = 2;
+    static const int THREAD_POOL_SIZE = 1;
 
     ThreadPool threadPool;
 
