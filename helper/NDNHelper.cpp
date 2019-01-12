@@ -110,6 +110,8 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
 //    cout << "onInterest: " << interest_name << endl;
+
+    // 只处理预请求，正式请求
     if (isPre) {
         if (isTCP) {
 //            cout << "pre tcp" << endl;
@@ -161,47 +163,6 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             //发一个正式拉取的请求
             this->expressInterest(next_name, false, false);
         }
-    } else {
-
-        if (isTCP) {     //是TCP的正式请求包，且未命中缓存
-//            cout << "normal tcp" << endl;
-            vector<string> fileds;
-            boost::split(fileds, interest_name, boost::is_any_of("/"));
-            string uuid = fileds[5];
-            auto res = cacheHelper->get(uuid);
-            if(res.second) {    //命中缓存
-                tuple_p tuple1 = res.first;
-
-                //删除
-                cacheHelper->erase(uuid);
-
-                Data data(interest_name);
-                data.setContent(tuple1->pkt, tuple1->ipSize);
-                KeyChain_.sign(data);
-                this->face.put(data);
-            } else {
-                this->pendingInterestMap->save(interest_name, this->getCurTime() + interest.getInterestLifetime().count());
-            }
-        } else {
-//            cout << "normal other" << endl;
-            vector<string> fileds;
-            boost::split(fileds, interest_name, boost::is_any_of("/"));
-            string uuid = fileds[4];
-            auto res = cacheHelper->get(uuid);
-            if (!res.second) {
-                cout << "没有找到uuid = " << uuid << "的数据包" << "(" << interest_name << ")" << endl;
-                return;
-            }
-            tuple_p tuple1 = res.first;
-
-            //删除
-            cacheHelper->erase(uuid);
-
-            Data data(interest_name);
-            data.setContent(tuple1->pkt, tuple1->ipSize);
-            KeyChain_.sign(data);
-            this->face.put(data);
-        }
     }
 }
 
@@ -218,7 +179,7 @@ void NDNHelper::onTimeout(const Interest &interest, bool isPre) {
     if (!isPre) {
        // string next_name = interest.getName().toUri();
        // this->expressInterest(next_name, false, false);
-        cout << "Timed out: " << interest.getName().toUri() << endl;
+//        cout << "Timed out: " << interest.getName().toUri() << endl;
     }
 }
 
@@ -347,4 +308,14 @@ long NDNHelper::getCurTime() {
             chrono::system_clock::now()
             .time_since_epoch());
     return duration_in_ms.count();
+}
+
+void NDNHelper::putDataToCache(const string &interestName, tuple_p tuple) {
+    Data data(interestName);
+    data.setContent(tuple->pkt, tuple->ipSize);
+//    {
+//        boost::unique_lock<boost::shared_mutex> m(signMutex);
+        KeyChain_.sign(data);
+//    }
+    this->face.put(data);
 }

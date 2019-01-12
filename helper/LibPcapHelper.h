@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <boost/thread.hpp>
 #include <boost/asio.hpp>
+#include "ThreadPool.h"
+
 
 using namespace std;
 using namespace ndn;
@@ -79,7 +81,12 @@ private:
     MapCacheHelper<int> *sequenceTable;                 //自增序列号表
     RawSocketHelper rawSocketHelper;
 
+    static const int THREAD_POOL_SIZE = 1;
+
+    ThreadPool threadPool;
+
     void deal(tuple_p tuple);
+
 };
 
 

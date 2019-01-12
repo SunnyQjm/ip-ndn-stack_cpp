@@ -19,6 +19,8 @@
 #include <boost/lexical_cast.hpp>
 #include <vector>
 #include <chrono>
+#include <boost/thread/pthread/shared_mutex.hpp>
+
 
 using namespace ndn;
 using namespace std;
@@ -101,6 +103,13 @@ public:
      */
     long getCurTime();
 
+    /**
+     * 将IP包放到NFD的缓存当中
+     * @param interestName
+     * @param tuple
+     */
+    void putDataToCache(const string &interestName, tuple_p tuple);
+
 public: //回调
     void onData(const Interest &interest, const Data &data, bool isPre, bool isTCP);
 
@@ -121,7 +130,7 @@ public: //静态变量
     static const string PREFIX_TCP_PRE_REQUEST;
     static const string PREFIX_TCP_REQUEST_DATA;
     static const string KEY_CONFIG_REGISTER_IP;
-	static const int NUM_OF_GUEST = 20;
+	static const int NUM_OF_GUEST = 65;
 private:
     Face face;
     MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
@@ -131,6 +140,8 @@ private:
     pthread_t processEventThreadId;
     KeyChain KeyChain_;
     string registerIp;
+    boost::shared_mutex signMutex;
+
 };
 
 
