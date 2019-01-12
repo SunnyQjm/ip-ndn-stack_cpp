@@ -93,10 +93,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
         string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port);
 
-        cout << "key: " << key << endl;
         auto res = sequenceTable->get(key);
-
-        cout << "res: " << res.second << endl;
 
         if (!res.second) {  //若不存在则将index即自增表的value设为1并插入；再存入缓存中
             tuple->index = 1;
