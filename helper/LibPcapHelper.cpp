@@ -53,9 +53,9 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     if (tuple != nullptr && tuple->ipSize < (MAX_NDN_PACKET_SIZE - 40)) {
 
         //放入线程池中执行
-        threadPool.enqueue([this, tuple] {
-            this->deal(tuple);
-        });
+        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
+            libPcapHelper->deal(tuple);
+        }, this);
     }
     asyncRead();
 }
