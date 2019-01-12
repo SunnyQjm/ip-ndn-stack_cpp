@@ -96,6 +96,7 @@ bool MapCacheHelper<T>::getAndIncreaseSequence(string key, tuple_p tuple) {
     if(!res.second)
         return false;
     bool success;
+    cout << "do getAndIncreaseSequence" << endl;
     {
         boost::unique_lock<boost::shared_mutex> m(insertMutex);
         erase(key);
