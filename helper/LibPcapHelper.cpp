@@ -51,11 +51,11 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto res = mPcap.readNextPacketAfterDecode();
     auto tuple = std::get<0>(res);
     if (tuple != nullptr && tuple->ipSize < 8800) {
-        this->deal(tuple);
-//        //放入线程池中执行
-//        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
-//            libPcapHelper->deal(tuple);
-//        }, this);
+//        this->deal(tuple);
+        //放入线程池中执行
+        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
+            libPcapHelper->deal(tuple);
+        }, this);
     }
     asyncRead();
 }
