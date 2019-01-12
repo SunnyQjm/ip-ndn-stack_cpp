@@ -4,18 +4,9 @@
 
 #include "LibPcapHelper.h"
 
-static char bufSrc[50];
-static char bufDst[50];
 
-char *
-adres(uint32_t ip, char *buf) {
-    in_addr addr;
-    addr.s_addr = ip;
-    strcpy(buf, inet_ntoa(addr));
-    return buf;
-}
-
-LibPcapHelper::LibPcapHelper(const string &configFilePath) : mPcap(configFilePath), m_socket(service) {
+LibPcapHelper::LibPcapHelper(const string &configFilePath)
+        : mPcap(configFilePath), m_socket(service), threadPool(THREAD_POOL_SIZE) {
     JSONCPPHelper jsoncppHelper(configFilePath);
     string filter = jsoncppHelper.getString("pcap_dstmac");
     try {
@@ -59,10 +50,12 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     }
     auto res = mPcap.readNextPacketAfterDecode();
     auto tuple = std::get<0>(res);
-    if (tuple != nullptr) {       //只传小于8000的块
-        if (tuple->ipSize < 8800) {
+    if (tuple != nullptr && tuple->ipSize < (MAX_NDN_PACKET_SIZE - 40)) {
+
+        //放入线程池中执行
+        threadPool.enqueue([this, tuple] {
             this->deal(tuple);
-        }
+        });
     }
     asyncRead();
 }
@@ -125,20 +118,6 @@ void LibPcapHelper::deal(tuple_p tuple) {
                 return;
             }
 
-//            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-//                                                   tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
-//            //res.second = tuple->index;
-//            string uuid = prefixUUID.second;
-//            string formal_name = prefixUUID.first;
-
-//            auto formal_res = pendingInterestTable->get(formal_name);
-//            pendingInterestTable->erase(formal_name);          //删除相应悬而未决表表项
-//            long curTime = ndnHelper->getCurTime();
-//            if (formal_res.second && formal_res.first >= curTime) {     //如果找到相应表项，若时间在有效期内，则直接发送date包
-//                cout << "命中: " + formal_name << endl;
-////                cout << "找到相应表项，若时间在有效期内，则直接发送date包" << endl;
-//                ndnHelper->putData(formal_name, tuple);
-//            } else {                                                    //未找到或则时间失效则将数据进行缓存并发送预请求兴趣包并删除相应表项
             auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                        tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
 
@@ -149,7 +128,6 @@ void LibPcapHelper::deal(tuple_p tuple) {
                                                       tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
             ndnHelper->expressInterest(prePrefixUUID.first, true);
             return;
-//            }
         }
         //	tuple_p tuple1 = res.first;
     } else {//为其他协议包用原来的方式传输
