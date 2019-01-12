@@ -25,6 +25,7 @@ private:
     unordered_map<string, T> ipPacketCache;
     T emptyItem;
     boost::shared_mutex insertMutex;
+    boost::shared_mutex getAndIncreaseSequenceMutex;
 };
 
 /**
@@ -92,20 +93,17 @@ unsigned long MapCacheHelper<T>::erase(string key, T tuple) {
 
 template<class T>
 bool MapCacheHelper<T>::getAndIncreaseSequence(string key, tuple_p tuple) {
-    auto res = this->get(key);
-    if(!res.second)
-        return false;
-    bool success;
-    cout << "do getAndIncreaseSequence" << endl;
     {
-        boost::unique_lock<boost::shared_mutex> m(insertMutex);
+        boost::unique_lock<boost::shared_mutex> m(getAndIncreaseSequenceMutex);
+        auto res = this->get(key);
+        if(!res.second)
+            return false;
+        bool success;
         erase(key);
         tuple->index = res.first + 1;
         success = save(key, tuple->index);
+        return success;
     }
-
-
-    return success;
 }
 
 
