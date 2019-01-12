@@ -313,6 +313,9 @@ long NDNHelper::getCurTime() {
 void NDNHelper::putDataToCache(const string &interestName, tuple_p tuple) {
     Data data(interestName);
     data.setContent(tuple->pkt, tuple->ipSize);
-    KeyChain_.sign(data);
+    {
+        boost::unique_lock<boost::shared_mutex> m(signMutex);
+        KeyChain_.sign(data);
+    }
     this->face.put(data);
 }

@@ -19,6 +19,8 @@
 #include <boost/lexical_cast.hpp>
 #include <vector>
 #include <chrono>
+#include <boost/thread/pthread/shared_mutex.hpp>
+
 
 using namespace ndn;
 using namespace std;
@@ -138,6 +140,8 @@ private:
     pthread_t processEventThreadId;
     KeyChain KeyChain_;
     string registerIp;
+    boost::shared_mutex signMutex;
+
 };
 
 

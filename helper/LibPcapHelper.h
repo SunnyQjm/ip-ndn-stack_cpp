@@ -84,6 +84,7 @@ private:
     static const int THREAD_POOL_SIZE = 20;
 
     ThreadPool threadPool;
+
     void deal(tuple_p tuple);
 
 };
