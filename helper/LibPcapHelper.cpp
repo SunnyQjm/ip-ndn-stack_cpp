@@ -116,6 +116,8 @@ void LibPcapHelper::deal(tuple_p tuple) {
             if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
                 cout << "获取自增序列失败" << endl;
                 return;
+            } else {
+                cout << "success" << endl;
             }
 
             auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
