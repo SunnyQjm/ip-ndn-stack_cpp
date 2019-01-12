@@ -51,11 +51,11 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto res = mPcap.readNextPacketAfterDecode();
     auto tuple = std::get<0>(res);
     if (tuple != nullptr && tuple->ipSize < 8800) {
-        this->deal(tuple);
-//        //放入线程池中执行
-//        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
-//            libPcapHelper->deal(tuple);
-//        }, this);
+//        this->deal(tuple);
+        //放入线程池中执行
+        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
+            libPcapHelper->deal(tuple);
+        }, this);
     }
     asyncRead();
 }
@@ -93,9 +93,12 @@ void LibPcapHelper::deal(tuple_p tuple) {
         string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
                                                tuple->key.src_port, tuple->key.dst_port);
 
+        cout << "key: " << key << endl;
         auto res = sequenceTable->get(key);
 
-        if (!res.second) {//若不存在则将index即自增表的value设为1并插入；再存入缓存中
+        cout << "res: " << res.second << endl;
+
+        if (!res.second) {  //若不存在则将index即自增表的value设为1并插入；再存入缓存中
             tuple->index = 1;
             auto result_seq = sequenceTable->save(key, tuple->index);
             if (!result_seq) {
