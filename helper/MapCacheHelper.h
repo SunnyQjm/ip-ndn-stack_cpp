@@ -25,7 +25,6 @@ private:
     unordered_map<string, T> ipPacketCache;
     T emptyItem;
     boost::shared_mutex insertMutex;
-    boost::shared_mutex deleteMutex;
 };
 
 /**
@@ -71,9 +70,8 @@ pair<T, bool> MapCacheHelper<T>::get(string key) {
  */
 template<class T>
 unsigned long MapCacheHelper<T>::erase(string key) {
-    deleteMutex.lock();
+    boost::unique_lock<boost::shared_mutex> m(insertMutex);
     auto res = this->ipPacketCache.erase(key);
-    deleteMutex.unlock();
     return res;
 }
 
@@ -86,10 +84,9 @@ unsigned long MapCacheHelper<T>::erase(string key) {
  */
 template<class T>
 unsigned long MapCacheHelper<T>::erase(string key, T tuple) {
-    deleteMutex.lock();
     delete tuple;
+    boost::unique_lock<boost::shared_mutex> m(insertMutex);
     auto res = this->ipPacketCache.erase(key);
-    deleteMutex.unlock();
     return res;
 }
 
@@ -98,9 +95,16 @@ bool MapCacheHelper<T>::getAndIncreaseSequence(string key, tuple_p tuple) {
     auto res = this->get(key);
     if(!res.second)
         return false;
-    erase(key);
-    tuple->index = res.first + 1;
-    return save(key, tuple->index);
+    bool success;
+    {
+        boost::unique_lock<boost::shared_mutex> m(insertMutex);
+        erase(key);
+        tuple->index = res.first + 1;
+        success = save(key, tuple->index);
+    }
+
+
+    return success;
 }
 
 
