@@ -51,12 +51,11 @@ void LibPcapHelper::handleRead(const boost::system::error_code &error) {
     auto res = mPcap.readNextPacketAfterDecode();
     auto tuple = std::get<0>(res);
     if (tuple != nullptr && tuple->ipSize < 8800) {
-        cout << "tuple->size: " << tuple->ipSize << endl;
-        this->deal(tuple);
-//        //放入线程池中执行
-//        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
-//            libPcapHelper->deal(tuple);
-//        }, this);
+//        this->deal(tuple);
+        //放入线程池中执行
+        threadPool.enqueue([tuple](LibPcapHelper * libPcapHelper) {
+            libPcapHelper->deal(tuple);
+        }, this);
     }
     asyncRead();
 }
@@ -102,8 +101,6 @@ void LibPcapHelper::deal(tuple_p tuple) {
             if (!result_seq) {
                 cout << "插入失败" << endl;
                 return;
-            } else {
-                cout << "插入成功" << endl;
             }
 
             auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
@@ -119,10 +116,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
             if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
                 cout << "获取自增序列失败" << endl;
                 return;
-            } else {
-                cout << "success" << endl;
             }
-
             auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
                                                        tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
 
