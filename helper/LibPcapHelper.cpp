@@ -89,47 +89,47 @@ void LibPcapHelper::close() {
  */
 void LibPcapHelper::deal(tuple_p tuple) {
 
-    if (tuple->key.proto == IPPROTO_TCP || tuple->key.proto == IPPROTO_UDP) {
-        string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
-                                               tuple->key.src_port, tuple->key.dst_port);
-
-        auto res = sequenceTable->get(key);
-
-        if (!res.second) {  //若不存在则将index即自增表的value设为1并插入；再存入缓存中
-            tuple->index = 1;
-            auto result_seq = sequenceTable->save(key, tuple->index);
-            if (!result_seq) {
-                cout << "插入失败" << endl;
-                return;
-            }
-
-            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
-
-            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
-
-            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                   tuple->key.src_port, tuple->key.dst_port, 3, 1);
-            ndnHelper->expressInterest(prefixUUID.first);
-            return;
-        } else {//若存在则将index的值++，并查找悬而未决表
-            if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
-                cout << "获取自增序列失败" << endl;
-                return;
-            }
-            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
-
-            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
-
-            //发送预请求兴趣包
-            auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
-                                                      tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
-            ndnHelper->expressInterest(prePrefixUUID.first, true);
-            return;
-        }
-        //	tuple_p tuple1 = res.first;
-    } else {//为其他协议包用原来的方式传输
+//    if (tuple->key.proto == IPPROTO_TCP || tuple->key.proto == IPPROTO_UDP) {
+//        string key = ndnHelper->build4TupleKey(tuple->key.src_ip, tuple->key.dst_ip,
+//                                               tuple->key.src_port, tuple->key.dst_port);
+//
+//        auto res = sequenceTable->get(key);
+//
+//        if (!res.second) {  //若不存在则将index即自增表的value设为1并插入；再存入缓存中
+//            tuple->index = 1;
+//            auto result_seq = sequenceTable->save(key, tuple->index);
+//            if (!result_seq) {
+//                cout << "插入失败" << endl;
+//                return;
+//            }
+//
+//            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+//                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+//
+//            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+//
+//            auto prefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+//                                                   tuple->key.src_port, tuple->key.dst_port, 3, 1);
+//            ndnHelper->expressInterest(prefixUUID.first);
+//            return;
+//        } else {//若存在则将index的值++，并查找悬而未决表
+//            if (!this->sequenceTable->getAndIncreaseSequence(key, tuple)) {
+//                cout << "获取自增序列失败" << endl;
+//                return;
+//            }
+//            auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+//                                                       tuple->key.src_port, tuple->key.dst_port, 4, tuple->index);
+//
+//            ndnHelper->putDataToCache(dataPrefixUUID.first, tuple);
+//
+//            //发送预请求兴趣包
+//            auto prePrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
+//                                                      tuple->key.src_port, tuple->key.dst_port, 3, tuple->index);
+//            ndnHelper->expressInterest(prePrefixUUID.first, true);
+//            return;
+//        }
+//        //	tuple_p tuple1 = res.first;
+//    } else {//为其他协议包用原来的方式传输
         string uuid = this->generateUUID();
 
         auto dataPrefixUUID = ndnHelper->buildName(tuple->key.src_ip, tuple->key.dst_ip,
@@ -141,7 +141,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
                                                tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
 
         ndnHelper->expressInterest(prefixUUID.first);
-    }
+//    }
 
 }
 
