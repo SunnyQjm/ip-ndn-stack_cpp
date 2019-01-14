@@ -11,14 +11,18 @@ result.forEach(node => {
 });
 
 function findMac(myName, targetName) {
+    // console.log(myName + " -> " + targetName);
     const reverseNb = obj[targetName].nbs.find((nb, index, arr) => {
         return nb.name === myName;
     });
+    if(!reverseNb)
+        return "";
     return obj[targetName].nics[reverseNb.nicIndex].mac;
 }
 
 result.forEach(node => {
     node.nbs.forEach(nb => {
+        // console.log(nb);
         nb.targetMac = findMac(node.name, nb.name);
         nb.localDev = node.nics[nb.nicIndex].name
     })
