@@ -141,7 +141,7 @@ void LibPcapHelper::deal(tuple_p tuple) {
                                                tuple->key.src_port, tuple->key.dst_port, 1, -1, uuid);
 
         ndnHelper->expressInterest(prefixUUID.first);
-//    }
+    }
 
 }
 
