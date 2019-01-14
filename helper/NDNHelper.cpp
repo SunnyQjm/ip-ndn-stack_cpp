@@ -162,7 +162,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 
             //发一个正式拉取的请求
             this->expressInterest(next_name, false, false);
-//        }
+        }
     }
 }
 
