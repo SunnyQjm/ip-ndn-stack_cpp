@@ -35,6 +35,19 @@
     sudo ifconfig eth1 192.169.1.4
     sudo route add -host 192.169.1.3 dev eth1
     sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.3
+  - node6
+    ```bash
+    sudo ifconfig enp1s0f0 192.169.1.5
+    sudo route add -host 192.169.1.6 dev enp1s0f0
+    sudo ifconfig enp1s0f0 mtu 8400
+  - pkusz2
+    ```bash
+    sudo ifconfig eth1 192.169.1.6
+    sudo route add -host 192.169.1.5 dev eth1
+    sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.5
+    sudo ifconfig eth1 mtu 8400
+    sudo ethtool --offload eth1 gro off
+
     ```
   
   - 测试
