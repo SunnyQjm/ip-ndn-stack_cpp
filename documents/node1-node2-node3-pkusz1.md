@@ -50,16 +50,17 @@
 
     ```
   
-  - 测试
-    在pkun1上执行：
-    ```bash
-    ping 192.169.1.2
-    ```
-    在hitn1上执行：
-    ```bash
-    ping 192.169.1.3
-    ```
+- ### 测试
+    - 在pkun1上执行：
+        ```bash
+        ping 192.169.1.2
+        ```
+    - 在hitn1上执行：
+        ```bash
+        ping 192.169.1.3
+        ```
+
+    - 网络拓扑
     
-    -网络拓扑
-    ```bash
-   
+        ![测试网络拓扑](https://raw.githubusercontent.com/SunnyQjm/ip-ndn-stack_cpp/master/documents/pic1.png)
+ 
