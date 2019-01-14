@@ -109,7 +109,7 @@ void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
 void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP) {
     string interest_name = interest.getName().toUri();
     //string pre = "/IP/pre/";
-//    cout << "onInterest: " << interest_name << endl;
+    cout << "onInterest: " << interest_name << endl;
 
     // 只处理预请求，正式请求
     if (isPre) {
@@ -195,7 +195,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 void NDNHelper::expressInterest(string name, bool isPre, bool isTCP) {
 	Interest interest(name);
 	interest.setInterestLifetime(2_s);	//兴趣报存活时间
-//	cout << "express interest: " << name << endl;
+	cout << "express interest: " << name << endl;
     this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2, isPre, isTCP),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
