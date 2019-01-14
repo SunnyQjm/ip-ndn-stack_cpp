@@ -1,7 +1,7 @@
 #!/bin/bash
 name=$1
 
-HOME=.
+HOME="."
 
 killall nlsr
 $HOME/nlsr_configs/generate.sh ${name} $HOME

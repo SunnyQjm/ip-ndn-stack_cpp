@@ -5,7 +5,7 @@ path=$2
 TEMP_DIR=$path/temp
 transName=$(echo ${name//\//.})
 transName=$(echo ${transName#.})
-nbs=$(cat $TEMP_DIR/$transName.nbs)
+nbs=$(cat ${TEMP_DIR}/${transName}.nbs)
 cat << EOF
 neighbors
 {
@@ -45,21 +45,21 @@ neighbors
   ; one block of neighbor command
 EOF
 
-length=`echo $nbs | jq '.|length'`
+length=`echo ${nbs} | jq '.|length'`
 let 'length = length - 1'
 
-for index in `seq 0 $length`
+for index in `seq 0 ${length}`
 do
-    neighbourName=$(echo $nbs | jq -r ".[$index].name")
-    faceUri=ether://[$(echo $nbs | jq -r ".[$index].targetMac")]
+    neighbourName=$(echo ${nbs} | jq -r ".[$index].name")
+    faceUri=ether://[$(echo ${nbs} | jq -r ".[$index].targetMac")]
     linkCost=25
     cat << EOF
     neighbor 
     {
-        name $neighbourName ; name prefix of the neighbor router consists
+        name ${neighbourName} ; name prefix of the neighbor router consists
                             ; of network, site-name and router-name
-        face-uri $faceUri   ; face uri of the face connected to the neighbor
-        link-cost $linkCost ; cost of the connecting link to neighbor
+        face-uri ${faceUri}   ; face uri of the face connected to the neighbor
+        link-cost ${linkCost} ; cost of the connecting link to neighbor
 
     }
 EOF
