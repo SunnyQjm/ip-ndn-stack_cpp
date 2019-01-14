@@ -87,6 +87,13 @@
                 "site":"/edu/pkusz",
                 "router":"/node3",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/pkusz/node6",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node6",
+                "nicIndex":2
             }
         ]
     },
@@ -124,6 +131,13 @@
         ],
         "nbs":[
             {
+                "name":"/ndn/edu/pkusz/node6",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node6",
+                "nicIndex":1
+            },
+            {
                 "name":"/ndn/edu/pkusz/node2",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
@@ -144,6 +158,36 @@
         "network":"/ndn",
         "site":"/edu/pkusz",
         "router":"/pkusz1",
+        "id":0,
+        "ip":"lab.pkusz.qjm253.cn",
+        "mapPort":9604,
+        "username":"pkusz1",
+        "password":"password",
+        "nics":[
+            {
+                "name": "eth0",
+                "mac": "00:1e:67:83:0c:0a"
+            },
+            {
+                "name": "eth1",
+                "mac": "00:1e:67:83:0c:0b"
+            }
+        ],
+        "nbs":[
+            {
+                "name":"/ndn/edu/pkusz/node3",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node3",
+                "nicIndex":1
+            }
+        ]
+    },
+    {
+        "name":"/ndn/edu/pkusz/pkusz2",
+        "network":"/ndn",
+        "site":"/edu/pkusz",
+        "router":"/pkusz2",
         "id":0,
         "ip":"lab.pkusz.qjm253.cn",
         "mapPort":9604,
