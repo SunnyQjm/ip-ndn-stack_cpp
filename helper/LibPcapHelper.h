@@ -15,7 +15,7 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
-#include <ndn-cpp/face.hpp>
+#include <ndn-cxx/face.hpp>
 #include <sys/wait.h>
 #include <errno.h>
 #include <boost/thread.hpp>
