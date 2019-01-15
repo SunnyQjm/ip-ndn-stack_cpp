@@ -86,12 +86,12 @@
         "localDev": "enp1s0f1"
       },
       {
-        "name": "/ndn/edu/pkusz/node6",
+        "name": "/ndn/edu/pkusz/node7",
         "network": "/ndn",
         "site": "/edu/pkusz",
-        "router": "/node6",
+        "router": "/node7",
         "nicIndex": 2,
-        "targetMac": "30:5a:3a:76:0b:88",
+        "targetMac": "00:1b:21:09:09:11",
         "localDev": "enp1s0f2"
       }
     ]
@@ -130,12 +130,12 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/pkusz/node6",
+        "name": "/ndn/edu/pkusz/node7",
         "network": "/ndn",
         "site": "/edu/pkusz",
-        "router": "/node6",
+        "router": "/node7",
         "nicIndex": 1,
-        "targetMac": "00:15:17:52:c9:a1",
+        "targetMac": "00:1b:21:09:09:12",
         "localDev": "enp7s0f1"
       },
       {
@@ -235,6 +235,10 @@
       {
         "name": "enp3s0",
         "mac": "30:5a:3a:76:0b:88"
+      },
+      {
+        "name": "enp2s0",
+        "mac": "30:5a:3a:76:0b:88"
       }
     ],
     "nbs": [
@@ -244,7 +248,7 @@
         "site": "/edu/pkusz",
         "router": "/node2",
         "nicIndex": 2,
-        "targetMac": "00:1b:21:82:11:57",
+        "targetMac": "",
         "localDev": "enp3s0"
       },
       {
@@ -253,8 +257,65 @@
         "site": "/edu/pkusz",
         "router": "/node3",
         "nicIndex": 1,
-        "targetMac": "a0:36:9f:26:06:24",
+        "targetMac": "",
         "localDev": "enp1s0f1"
+      }
+    ]
+  },
+  {
+    "name": "/ndn/edu/pkusz/node7",
+    "network": "/ndn",
+    "site": "/edu/pkusz",
+    "router": "/node7",
+    "id": 5,
+    "ip": "lab.pkusz.qjm253.cn",
+    "mapPort": 9608,
+    "username": "node7",
+    "password": "node7",
+    "nics": [
+      {
+        "name": "enp1s0f0",
+        "mac": "00:1b:21:09:09:10"
+      },
+      {
+        "name": "enp1s0f1",
+        "mac": "00:1b:21:09:09:11"
+      },
+      {
+        "name": "enp1s0f2",
+        "mac": "00:1b:21:09:09:12"
+      },
+      {
+        "name": "enp1s0f3",
+        "mac": "00:1b:21:09:09:13"
+      },
+      {
+        "name": "enp3s0",
+        "mac": "30:5a:3a:76:0b:77"
+      },
+      {
+        "name": "enp4s0",
+        "mac": "30:5a:3a:76:0b:78"
+      }
+    ],
+    "nbs": [
+      {
+        "name": "/ndn/edu/pkusz/node2",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node2",
+        "nicIndex": 1,
+        "targetMac": "00:1b:21:82:11:57",
+        "localDev": "enp1s0f1"
+      },
+      {
+        "name": "/ndn/edu/pkusz/node3",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node3",
+        "nicIndex": 2,
+        "targetMac": "a0:36:9f:26:06:24",
+        "localDev": "enp1s0f2"
       }
     ]
   }
