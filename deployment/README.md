@@ -111,27 +111,33 @@
     该脚本用于安装nfd所需环境、nlsr和进行面向nfd开发的ndn-cxx库。
     
     - 使用
+    
         ```bash
         sudo ./deploy-nfd.sh
         ```
 
 - ## dealLabTopology.js
     - require
+    
         该脚本是nodejs脚本，需要node环境，安装方法详见[Nodejs包管理器安装方法](https://nodejs.org/en/download/package-manager/)
     
     - 用处
+    
         网络拓扑的原始配置在 `lab_topology_raw.json` 中记录，我们不会直接使用这个配置脚本，需要用 `dealLabTopology.js` 进行处理之后得到 `lab_topology.json`。后续只会使用`lab_topology.json`
         
     - 使用
+    
         ```bash
         node dealLabTopology.js lab_topology_raw.json | jq '.' > lab_topology.json
         ```
 
 - ## createFace.sh
     - 用处
+    
         该脚本用于根据`lab_topology.json`创建Face接口（`lab_topology.json`中包含当前节点与其邻居的关系，以及网口名字，MAC地址等）
     
     - 使用
+    
         ```bash
         sudo ./createFace.sh <nodeName>
         ```
@@ -139,9 +145,11 @@
 
 - ## static_route_config.sh
     - 用处
+    
         该脚本用于配置静态NDN路由（需要提前配置好face接口），用于最小原型的测试（在不跑动态路由协议的情况下，可以用静态路由暂且进行测试），静态路由和动态路由则一而选即可。
         
     - 使用
+    
        ```bash
        ./static_route_config.sh <ip> <faceId>
        ```
@@ -157,9 +165,11 @@
  
 - ## start-nlsr.sh
     - 用处
+    
         该脚本会杀死当前nlsr进程（如果存在的话），读取`lab_topology.json`配置文件，生成nlsr配置文件（包含节点信息，以及邻居信息），然后启动nlsr进程。（该脚本启动的是动态路由协议，使用这个脚本就用不上上面的静态路由配置了）
     
     - 使用
+    
         ```bash
         sudo ./start-nlsr.sh <nodeName>
         ```
@@ -167,12 +177,15 @@
 
 - ## nlsr_advertise_helper.sh
     - require
+    
         运行该脚本之前需要先启动nlsr进程
         
     - 用处
+    
         该脚本用于周知全网，本节点要处理IP（指定IP后会生成四个前缀）
         
     - 使用
+    
         ```bash
         sudo ./nlsr_advertise_helper.sh <ip>
     
@@ -189,9 +202,11 @@
        
 - ## easy-ndn.sh
     - require
+    
         执行这个脚本之前需要先启动nfd进程，需要先编译项目，得到`ip_ndn_stack_cpp`可执行文件
         
     - 用处
+    
         该脚本将`createFace.sh`、`start-nlsr.sh` 和 `nlsr_advertise_helper.sh`结合起来使用，执行该脚本完成下面的工作
             1. 创建Face接口
             2. 生成nlsr配置文件，启动nlsr进程
@@ -199,6 +214,7 @@
             4. 启动ip_ndn_stack_cpp进程
             
     - 使用
+    
         ```bash
         sudo ./easy-ndn.sh <nodeName> <ip> <configPath>
         ``` 
