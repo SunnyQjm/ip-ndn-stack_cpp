@@ -113,41 +113,41 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 
     // 只处理预请求，正式请求
     if (isPre) {
-//        if (isTCP) {
-////            cout << "pre tcp" << endl;
-//            string next_name = "/IP/TCP";
-//            vector<string> fileds;
-//            boost::split(fileds, interest_name, boost::is_any_of("/"));
-//
-//            string sip = fileds[4];
-//            string dip = fileds[5];
-//            string uid = fileds[6];
-//            next_name.append("/" + dip);
-//            next_name.append("/" + sip);
-//            string guess_name = next_name;
-//
-//            next_name.append("/" + uid);
-//
-//            //发一个正式拉取的请求
-//            this->expressInterest(next_name, false, true);
-//
-//			if (this->prefixGuestTable->find(next_name)) {
-//            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
-//			}
-//
-//            vector<string> uuid_fileds;
-//            boost::split(uuid_fileds, uid, boost::is_any_of("-"));
-//            int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
-//
-//            guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
-//            for (int i = 0; i < NUM_OF_GUEST; i++) {
-//                string g_name = guess_name;
-//                g_name.append(to_string(++num_of_sequence));
-//                if (this->prefixGuestTable->saveConcurrence(g_name)) {
-//                    this->expressInterest(g_name, false, true);
-//                }
-//            }
-//        } else {
+        if (isTCP) {
+//            cout << "pre tcp" << endl;
+            string next_name = "/IP/TCP";
+            vector<string> fileds;
+            boost::split(fileds, interest_name, boost::is_any_of("/"));
+
+            string sip = fileds[4];
+            string dip = fileds[5];
+            string uid = fileds[6];
+            next_name.append("/" + dip);
+            next_name.append("/" + sip);
+            string guess_name = next_name;
+
+            next_name.append("/" + uid);
+
+            //发一个正式拉取的请求
+            this->expressInterest(next_name, false, true);
+
+			if (this->prefixGuestTable->find(next_name)) {
+            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+			}
+
+            vector<string> uuid_fileds;
+            boost::split(uuid_fileds, uid, boost::is_any_of("-"));
+            int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
+
+            guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
+            for (int i = 0; i < NUM_OF_GUEST; i++) {
+                string g_name = guess_name;
+                g_name.append(to_string(++num_of_sequence));
+                if (this->prefixGuestTable->saveConcurrence(g_name)) {
+                    this->expressInterest(g_name, false, true);
+                }
+            }
+        } else {
 //            cout << "pre other" << endl;
             string next_name = "/IP";
             vector<string> fileds;
@@ -162,7 +162,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 
             //发一个正式拉取的请求
             this->expressInterest(next_name, false, false);
-//        }
+        }
     }
 }
 
@@ -195,7 +195,7 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 void NDNHelper::expressInterest(string name, bool isPre, bool isTCP) {
 	Interest interest(name);
 	interest.setInterestLifetime(2_s);	//兴趣报存活时间
-//	cout << "express interest: " << name << endl;
+	cout << "express interest: " << name << endl;
     this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2, isPre, isTCP),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }
