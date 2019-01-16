@@ -117,6 +117,7 @@
         ```
 
 - ## dealLabTopology.js
+
     - ### require
     
         该脚本是nodejs脚本，需要node环境，安装方法详见[Nodejs包管理器安装方法](https://nodejs.org/en/download/package-manager/)
@@ -132,6 +133,7 @@
         ```
 
 - ## createFace.sh
+
     - ### 用处
     
         该脚本用于根据`lab_topology.json`创建Face接口（`lab_topology.json`中包含当前节点与其邻居的关系，以及网口名字，MAC地址等）
@@ -144,6 +146,7 @@
         其中，`nodeName`为当前节点的标示名（即`lab_topology.json`配置文件中节点的`name`字段（例： `/ndn/edu/pkusz/node6`）
 
 - ## static_route_config.sh
+
     - ### 用处
     
         该脚本用于配置静态NDN路由（需要提前配置好face接口），用于最小原型的测试（在不跑动态路由协议的情况下，可以用静态路由暂且进行测试），静态路由和动态路由则一而选即可。
@@ -164,6 +167,7 @@
        ```
  
 - ## start-nlsr.sh
+
     - ### 用处
     
         该脚本会杀死当前nlsr进程（如果存在的话），读取`lab_topology.json`配置文件，生成nlsr配置文件（包含节点信息，以及邻居信息），然后启动nlsr进程。（该脚本启动的是动态路由协议，使用这个脚本就用不上上面的静态路由配置了）
@@ -176,6 +180,7 @@
         其中，`nodeName`为当前节点的标示名（即`lab_topology.json`配置文件中节点的`name`字段（例： `/ndn/edu/pkusz/node6`）
 
 - ## nlsr_advertise_helper.sh
+
     - ### require
     
         运行该脚本之前需要先启动nlsr进程
@@ -201,6 +206,7 @@
        ```
        
 - ## easy-ndn.sh
+
     - ### require
     
         执行这个脚本之前需要先启动nfd进程，需要先编译项目，得到`ip_ndn_stack_cpp`可执行文件
