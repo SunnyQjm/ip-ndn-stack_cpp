@@ -49,7 +49,7 @@
     sudo ifconfig enp7s0f3 mtu 8400
     ```
     
- - node6
+  - node6
     ```bash
     sudo ethtool --offload enp1s0f3 gro off
     sudo ethtool --offload enp1s0f2 gro off
@@ -61,7 +61,7 @@
     sudo ifconfig enp1s0f1 mtu 8400
     sudo ifconfig enp1s0f2 mtu 8400
     sudo ifconfig enp1s0f3 mtu 8400
-    ```
+    
   - node7
     ```bash
     sudo ethtool --offload enp1s0f3 gro off
@@ -74,7 +74,7 @@
     sudo ifconfig enp1s0f1 mtu 8400
     sudo ifconfig enp1s0f2 mtu 8400
     sudo ifconfig enp1s0f3 mtu 8400
-    ```
+  
   - pkusz1
     ```bash
     sudo ethtool --offload eth1 gro off
@@ -82,7 +82,7 @@
     sudo route add -host 192.169.1.3 dev eth1
     sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.3
     sudo ifconfig eth1 mtu 8400
-    ```
+  
   - pkusz2
     ```bash
     sudo ethtool --offload eth1 gro off
@@ -90,7 +90,7 @@
     sudo route add -host 192.169.1.5 dev eth1
     sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.5
     sudo ifconfig eth1 mtu 8400
-    ```
+
   - pkusz3
     ```bash
     sudo ethtool --offload enp1s0f1 gro off
@@ -99,7 +99,6 @@
     sudo route add -net 192.169.1.0/24 dev enp1s0f1 gw 192.169.1.8
     sudo ifconfig enp1s0f1 mtu 8400
     
-   
 
     ```
   
