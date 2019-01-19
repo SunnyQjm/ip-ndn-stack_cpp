@@ -335,22 +335,22 @@
         "mapPort":9609,
         "username":"node8",
         "password":"node8",
-        "nics":[
+        "nics": [
             {
-                "name": "enp9s0",
-                "mac": "00:e0:4c:68:bb:40"
+                "name": "enp7s0f0",
+                "mac": "00:1b:21:08:14:21"
             },
             {
-                "name": "enp10s0",
-                "mac": "00:e0:4c:68:bb:41"
+                "name": "enp7s0f1",
+                "mac": "00:1b:21:08:14:22"
             },
             {
-                "name": "enp11s0",
-                "mac": "00:e0:4c:68:bb:42"
+                "name": "enp7s0f2",
+                "mac": "00:1b:21:08:14:23"
             },
             {
-                "name": "enp12s0",
-                "mac": "00:e0:4c:68:bb:43"
+                "name": "enp7s0f3",
+                "mac": "00:1b:21:08:14:24"
             }
         ],
         "nbs":[
