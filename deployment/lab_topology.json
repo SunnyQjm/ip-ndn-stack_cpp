@@ -91,7 +91,7 @@
         "site": "/edu/pkusz",
         "router": "/node8",
         "nicIndex": 2,
-        "targetMac": "00:e0:4c:68:bb:41",
+        "targetMac": "00:e0:4c:68:bb:43",
         "localDev": "enp1s0f2"
       },
       {
@@ -144,7 +144,7 @@
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 1,
-        "targetMac": "00:1b:21:09:09:10",
+        "targetMac": "00:1b:21:09:09:12",
         "localDev": "enp7s0f1"
       },
       {
@@ -275,7 +275,7 @@
         "site": "/edu/pkusz",
         "router": "/node8",
         "nicIndex": 0,
-        "targetMac": "00:e0:4c:68:bb:43",
+        "targetMac": "00:e0:4c:68:bb:41",
         "localDev": "enp1s0f0"
       },
       {
@@ -331,9 +331,9 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node3",
-        "nicIndex": 0,
+        "nicIndex": 2,
         "targetMac": "a0:36:9f:26:06:24",
-        "localDev": "enp1s0f0"
+        "localDev": "enp1s0f2"
       },
       {
         "name": "/ndn/edu/pkusz/node6",
@@ -349,9 +349,9 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node8",
-        "nicIndex": 2,
+        "nicIndex": 0,
         "targetMac": "00:e0:4c:68:bb:42",
-        "localDev": "enp1s0f2"
+        "localDev": "enp1s0f0"
       }
     ]
   },
@@ -398,9 +398,9 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node2",
-        "nicIndex": 1,
+        "nicIndex": 3,
         "targetMac": "00:1b:21:82:11:57",
-        "localDev": "enp10s0"
+        "localDev": "enp12s0"
       },
       {
         "name": "/ndn/edu/pkusz/node7",
@@ -408,7 +408,7 @@
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 2,
-        "targetMac": "00:1b:21:09:09:12",
+        "targetMac": "00:1b:21:09:09:10",
         "localDev": "enp11s0"
       },
       {
@@ -416,9 +416,9 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node6",
-        "nicIndex": 3,
+        "nicIndex": 1,
         "targetMac": "00:1b:21:13:13:41",
-        "localDev": "enp12s0"
+        "localDev": "enp10s0"
       }
     ]
   }
