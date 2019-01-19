@@ -21,10 +21,14 @@ NDNHelper::NDNHelper() : face("localhost") {
 
 void NDNHelper::start() {
     cout << "registerIp: " << registerIp << endl;
-    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + this->registerIp);
-    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + this->registerIp);
-    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + this->registerIp);
-    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + this->registerIp);
+//    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + this->registerIp);
+//    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + this->registerIp);
+//    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + this->registerIp);
+//    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + this->registerIp);
+    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST);
+    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA);
+    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST);
+    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA);
 
     Interest::setDefaultCanBePrefix(true);
     try {
