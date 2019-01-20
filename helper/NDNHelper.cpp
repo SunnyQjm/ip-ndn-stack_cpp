@@ -43,11 +43,12 @@ void NDNHelper::start() {
             face.setInterestFilter(InterestFilter(register_prefix4),
                                    (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, true),
                                    (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
-            face.processEvents();
         } catch (exception &e) {
             std::cerr << "ERROR: " << e.what() << std::endl;
         }
     }
+    face.processEvents();
+
 //    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST);
 //    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA);
 //    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST);
