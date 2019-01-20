@@ -89,6 +89,14 @@
                 "site":"/edu/pkusz",
                 "router":"/node3",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/pkusz/node1",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "192.168.1.106"
             }
         ]
     },
@@ -215,6 +223,14 @@
                 "site":"/edu/pkusz",
                 "router":"/node6",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/pkusz/node1",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "192.168.1.106"
             }
         ]
     }

@@ -78,7 +78,7 @@ do
     echo "正在为邻居${neighbourName}创建Face"
     if [[ -z "${localUri}" ]]; then
 #        echo "local uri empty: ${remoteUri}"
-        echo "nfdc face create remote ${remoteUri} local ${localUri}"
+        echo "nfdc face create remote ${remoteUri}"
         nfdc face create remote ${remoteUri}
     fi
 

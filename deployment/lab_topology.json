@@ -95,6 +95,16 @@
         "nicIndex": 1,
         "target": "ether://[a0:36:9f:26:06:25]",
         "local": "dev://enp1s0f1"
+      },
+      {
+        "name": "/ndn/edu/pkusz/node1",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node1",
+        "nicIndex": -1,
+        "ip": "192.168.1.106",
+        "target": "tcp://192.168.1.106",
+        "local": ""
       }
     ]
   },
@@ -227,6 +237,16 @@
         "nicIndex": 1,
         "target": "ether://[00:1b:21:13:13:42]",
         "local": "dev://enp1s0f1"
+      },
+      {
+        "name": "/ndn/edu/pkusz/node1",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node1",
+        "nicIndex": -1,
+        "ip": "192.168.1.106",
+        "target": "tcp://192.168.1.106",
+        "local": ""
       }
     ]
   }
