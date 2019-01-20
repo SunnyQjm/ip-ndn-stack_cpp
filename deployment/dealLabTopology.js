@@ -27,7 +27,7 @@ result.forEach(node => {
             nb.target = `ether://[${findMac(node.name, nb.name)}]`;
             nb.local = `dev://${node.nics[nb.nicIndex].name}`
         } else if(nb.nicIndex === -1) {     //overlay IP
-            nb.target = `tcp://${nb.ip}:6363`;
+            nb.target = `tcp://${nb.ip}`;
             nb.local = '';
         }
     })
