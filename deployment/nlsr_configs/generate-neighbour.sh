@@ -51,7 +51,7 @@ let 'length = length - 1'
 for index in `seq 0 ${length}`
 do
     neighbourName=$(echo ${nbs} | jq -r ".[$index].name")
-    faceUri=ether://[$(echo ${nbs} | jq -r ".[$index].targetMac")]
+    faceUri=$(echo ${nbs} | jq -r ".[$index].target")
     linkCost=25
     cat << EOF
     neighbor 

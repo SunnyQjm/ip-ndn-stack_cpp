@@ -68,14 +68,23 @@ do
     neighbourName=$(echo ${myNbs} | jq -r ".[$i].name")
     myIndex=$(echo ${myNbs} | jq -r ".[$i].nicIndex")
 
-    localUri=dev://$(echo ${myNbs} | jq -r ".[$i].localDev")
-    remoteUri=ether://[$(echo ${myNbs} | jq -r ".[$i].targetMac")]
+    localUri=$(echo ${myNbs} | jq -r ".[$i].local")
+    remoteUri=$(echo ${myNbs} | jq -r ".[$i].target")
 
     # 如果存在Face则删除
     nfdc face destroy ${remoteUri}
 
     # 为该邻居创建Face
     echo "正在为邻居${neighbourName}创建Face"
-    echo "nfdc face create remote ${remoteUri} local ${localUri}"
-    nfdc face create remote ${remoteUri} local ${localUri}
+    if [[ -z "${localUri}" ]]; then
+#        echo "local uri empty: ${remoteUri}"
+        echo "nfdc face create remote ${remoteUri} local ${localUri}"
+        nfdc face create remote ${remoteUri} local ${localUri}
+    fi
+
+    if [[ -n "${localUri}" ]]; then
+#        echo "local uri not empty: ${remoteUri}"
+        echo "nfdc face create remote ${remoteUri} local ${localUri}"
+        nfdc face create remote ${remoteUri} local ${localUri}
+    fi
 done
