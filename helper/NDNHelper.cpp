@@ -20,37 +20,40 @@ NDNHelper::NDNHelper() : face("localhost") {
 }
 
 void NDNHelper::start() {
-    cout << "registerIp: " << registerIp << endl;
-    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + this->registerIp);
-    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + this->registerIp);
-    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + this->registerIp);
-    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + this->registerIp);
+    for(auto &ip : this->registerIp) {
+        cout << "registerIp: " << ip << endl;
+        Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + ip);
+        Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA + "/" + ip);
+        Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST + "/" + ip);
+        Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA + "/" + ip);
+        Interest::setDefaultCanBePrefix(true);
+        try {
+            face.setInterestFilter(InterestFilter(register_prefix1),
+                                   (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, false),
+                                   (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+
+            face.setInterestFilter(InterestFilter(register_prefix2),
+                                   (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, false),
+                                   (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+
+            face.setInterestFilter(InterestFilter(register_prefix3),
+                                   (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, true),
+                                   (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+
+            face.setInterestFilter(InterestFilter(register_prefix4),
+                                   (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, true),
+                                   (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
+            face.processEvents();
+        } catch (exception &e) {
+            std::cerr << "ERROR: " << e.what() << std::endl;
+        }
+    }
 //    Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST);
 //    Name register_prefix2(NDNHelper::PREFIX_REQUEST_DATA);
 //    Name register_prefix3(NDNHelper::PREFIX_TCP_PRE_REQUEST);
 //    Name register_prefix4(NDNHelper::PREFIX_TCP_REQUEST_DATA);
 
-    Interest::setDefaultCanBePrefix(true);
-    try {
-        face.setInterestFilter(InterestFilter(register_prefix1),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, false),
-                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
 
-        face.setInterestFilter(InterestFilter(register_prefix2),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, false),
-                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
-
-        face.setInterestFilter(InterestFilter(register_prefix3),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, true, true),
-                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
-
-        face.setInterestFilter(InterestFilter(register_prefix4),
-                               (const InterestCallback &) bind(&NDNHelper::onInterest, this, _1, _2, false, true),
-                               (const RegisterPrefixFailureCallback &) bind(&NDNHelper::onRegisterFailed, this, _1));
-        face.processEvents();
-    } catch (exception &e) {
-        std::cerr << "ERROR: " << e.what() << std::endl;
-    }
 }
 
 
@@ -61,7 +64,11 @@ void NDNHelper::start() {
  */
 void NDNHelper::initNDN(string configFilePath) {
     JSONCPPHelper jsoncppHelper(configFilePath);
-    this->registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
+    auto ips = jsoncppHelper.get(NDNHelper::KEY_CONFIG_REGISTER_IP);
+    for(int i = 0; i < ips.size(); i++) {
+        this->registerIp.push_back(ips[i].asString());
+    }
+//    this->registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
 }
 
 /**

@@ -42,5 +42,5 @@ double JSONCPPHelper::getDouble(string key) {
 }
 
 Json::Value JSONCPPHelper::get(string key) {
-    return Json::Value();
+    return root[key];
 }

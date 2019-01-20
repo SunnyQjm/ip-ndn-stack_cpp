@@ -139,7 +139,7 @@ private:
     RawSocketHelper rawSocketHelper;
     pthread_t processEventThreadId;
     KeyChain KeyChain_;
-    string registerIp;
+    vector<string> registerIp;
     boost::shared_mutex signMutex;
 
 };

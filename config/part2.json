@@ -6,5 +6,5 @@
   "pcap_snap_len": 65535,
   "pcap_to_ms": 1,
   "pcap_dstmac": "ether proto \\ip",
-  "registerIp": "192.169.1.11"
+  "registerIp": ["192.169.1.11", "192.170.1.4"]
 }
