@@ -79,7 +79,7 @@ do
     if [[ -z "${localUri}" ]]; then
 #        echo "local uri empty: ${remoteUri}"
         echo "nfdc face create remote ${remoteUri} local ${localUri}"
-        nfdc face create remote ${remoteUri} local ${localUri}
+        nfdc face create remote ${remoteUri}
     fi
 
     if [[ -n "${localUri}" ]]; then
