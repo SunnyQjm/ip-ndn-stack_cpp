@@ -1,37 +1,5 @@
 [
   {
-    "name": "/ndn/edu/pkusz/pkusz3",
-    "network": "/ndn",
-    "site": "/edu/pkusz",
-    "router": "/pkusz3",
-    "id": 0,
-    "ip": "lab.pkusz.qjm253.cn",
-    "mapPort": 9601,
-    "username": "pkusz3",
-    "password": "password",
-    "nics": [
-      {
-        "name": "enp1s0f0",
-        "mac": "00:1e:67:83:0a:66"
-      },
-      {
-        "name": "enp1s0f1",
-        "mac": "00:1e:67:83:0a:67"
-      }
-    ],
-    "nbs": [
-      {
-        "name": "/ndn/edu/pkusz/node6",
-        "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/node6",
-        "nicIndex": 1,
-        "target": "ether://[00:1b:21:13:13:43]",
-        "local": "dev://enp1s0f1"
-      }
-    ]
-  },
-  {
     "name": "/ndn/edu/pkusz/node6",
     "network": "/ndn",
     "site": "/edu/pkusz",
@@ -77,15 +45,6 @@
         "nicIndex": 1,
         "target": "ether://[00:1b:21:08:14:21]",
         "local": "dev://enp1s0f1"
-      },
-      {
-        "name": "/ndn/edu/pkusz/pkusz3",
-        "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/pkusz3",
-        "nicIndex": 2,
-        "target": "ether://[00:1e:67:83:0a:67]",
-        "local": "dev://enp1s0f2"
       }
     ]
   },
@@ -136,12 +95,12 @@
         "local": "dev://enp1s0f3"
       },
       {
-        "name": "/ndn/edu/pkusz/node7",
+        "name": "/ndn/edu/pkusz/node8",
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 2,
-        "target": "ether://[00:1b:21:09:09:12]",
+        "target": "ether://[00:1b:21:08:14:22]",
         "local": "dev://enp1s0f2"
       }
     ]
@@ -190,7 +149,7 @@
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 1,
-        "target": "ether://[]",
+        "target": "ether://[00:1b:21:09:09:12]",
         "local": "dev://enp7s0f1"
       }
     ]
