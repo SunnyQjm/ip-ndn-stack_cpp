@@ -19,47 +19,104 @@
     sudo ifconfig enp1s0f0 192.169.1.1
     sudo route add -host 192.169.1.2 dev enp1s0f0
     sudo route add -net 192.169.1.0/24 dev enp1s0f0 gw 192.169.1.2
+    sudo ifconfig enp1s0f0 mtu 8400
     ```
   - node2
     ```bash
+    sudo ethtool --offload enp1s0f3 gro off
+    sudo ethtool --offload enp1s0f2 gro off
+    sudo ethtool --offload enp1s0f1 gro off
+    sudo ethtool --offload enp1s0f0 gro off
     sudo ifconfig enp1s0f0 192.169.1.2
     sudo route add -host 192.169.1.1 dev enp1s0f0
+    sudo ifconfig enp1s0f0 mtu 8400
+    sudo ifconfig enp1s0f1 mtu 8400
+    sudo ifconfig enp1s0f2 mtu 8400
+    sudo ifconfig enp1s0f3 mtu 8400
+    
     ```
   - node3
     ```bash
+    sudo ethtool --offload enp7s0f3 gro off
+    sudo ethtool --offload enp7s0f2 gro off
+    sudo ethtool --offload enp7s0f1 gro off
+    sudo ethtool --offload enp7s0f0 gro off
     sudo ifconfig enp7s0f3 192.169.1.3
     sudo route add -host 192.169.1.4 dev enp7s0f3
+    sudo ifconfig enp7s0f0 mtu 8400
+    sudo ifconfig enp7s0f1 mtu 8400
+    sudo ifconfig enp7s0f2 mtu 8400
+    sudo ifconfig enp7s0f3 mtu 8400
     ```
+    
+  - node6
+    ```bash
+    sudo ethtool --offload enp1s0f3 gro off
+    sudo ethtool --offload enp1s0f2 gro off
+    sudo ethtool --offload enp1s0f1 gro off
+    sudo ethtool --offload enp1s0f0 gro off
+    sudo ifconfig enp1s0f2 192.169.1.8
+    sudo route add -host 192.169.1.9 dev enp1s0f2
+    sudo ifconfig enp1s0f0 mtu 8400
+    sudo ifconfig enp1s0f1 mtu 8400
+    sudo ifconfig enp1s0f2 mtu 8400
+    sudo ifconfig enp1s0f3 mtu 8400
+    
+  - node7
+    ```bash
+    sudo ethtool --offload enp1s0f3 gro off
+    sudo ethtool --offload enp1s0f2 gro off
+    sudo ethtool --offload enp1s0f1 gro off
+    sudo ethtool --offload enp1s0f0 gro off
+    sudo ifconfig enp1s0f3 192.169.1.5
+    sudo route add -host 192.169.1.6 dev enp1s0f3
+    sudo ifconfig enp1s0f0 mtu 8400
+    sudo ifconfig enp1s0f1 mtu 8400
+    sudo ifconfig enp1s0f2 mtu 8400
+    sudo ifconfig enp1s0f3 mtu 8400
+  
   - pkusz1
     ```bash
+    sudo ethtool --offload eth1 gro off
     sudo ifconfig eth1 192.169.1.4
     sudo route add -host 192.169.1.3 dev eth1
     sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.3
-  - node6
-    ```bash
-    sudo ifconfig enp1s0f0 192.169.1.5
-    sudo route add -host 192.169.1.6 dev enp1s0f0
-    sudo ifconfig enp1s0f0 mtu 8400
+    sudo ifconfig eth1 mtu 8400
+  
   - pkusz2
     ```bash
+    sudo ethtool --offload eth1 gro off
     sudo ifconfig eth1 192.169.1.6
     sudo route add -host 192.169.1.5 dev eth1
     sudo route add -net 192.169.1.0/24 dev eth1 gw 192.169.1.5
     sudo ifconfig eth1 mtu 8400
-    sudo ethtool --offload eth1 gro off
+
+  - pkusz3
+    ```bash
+    sudo ethtool --offload enp1s0f1 gro off
+    sudo ifconfig enp1s0f1 192.169.1.9
+    sudo route add -host 192.169.1.8 dev enp1s0f1
+    sudo route add -net 192.169.1.0/24 dev enp1s0f1 gw 192.169.1.8
+    sudo ifconfig enp1s0f1 mtu 8400
+    
 
     ```
   
 - ### 测试
-    - 在pkun1上执行：
-        ```bash
-        ping 192.169.1.2
-        ```
-    - 在hitn1上执行：
+    - 在pkuz1上执行：
         ```bash
         ping 192.169.1.3
         ```
-
+    - 在node1上执行：
+        ```bash
+        ping 192.169.1.2
+        ```
+    - 在pkusz2上执行：
+        ```bash
+        ping 192.169.1.5
+    - 在pkusz3上执行：
+        ```bash
+        ping 192.169.1.8
     - 网络拓扑
     
         ![测试网络拓扑](https://raw.githubusercontent.com/SunnyQjm/ip-ndn-stack_cpp/master/documents/pic1.png)
