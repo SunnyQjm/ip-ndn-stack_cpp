@@ -51,12 +51,12 @@
                 "ip": "ns.qjm253.cn:9999"
             },
             {
-                "name":"/ndn/edu/pkusz/node14",
+                "name":"/ndn/edu/pkusz/node11",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node14",
+                "router":"/node11",
                 "nicIndex":-1,
-                "ip": "219.223.222.84:6363"
+                "ip": "219.223.222.83:6363"
             }
         ]
     },
