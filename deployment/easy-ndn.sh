@@ -9,7 +9,7 @@ sudo ./start-nlsr.sh ${nodeName} &
 sleep 1
 
 
-if [[ ${paramNum} -eq 3 ]]; then
+if [[ ${paramNum} -ge 2 ]]; then
     sudo ./nlsr_advertise_helper.sh ${ip}
 fi
 
