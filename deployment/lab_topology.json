@@ -214,7 +214,7 @@
         "site": "/edu/pkusz",
         "router": "/node8",
         "nicIndex": 3,
-        "target": "ether://[00:1b:21:26:05:74]",
+        "target": "ether://[00:1b:21:08:14:24]",
         "local": "dev://enp1s0f3"
       },
       {
@@ -291,7 +291,7 @@
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 0,
-        "target": "ether://[00:1b:21:26:05:72]",
+        "target": "ether://[00:1b:21:08:14:22]",
         "local": "dev://enp1s0f0"
       }
     ]
@@ -309,19 +309,19 @@
     "nics": [
       {
         "name": "enp7s0f0",
-        "mac": "00:1b:21:26:05:71"
+        "mac": "00:1b:21:08:14:21"
       },
       {
         "name": "enp7s0f1",
-        "mac": "00:1b:21:26:05:72"
+        "mac": "00:1b:21:08:14:22"
       },
       {
         "name": "enp7s0f2",
-        "mac": "00:1b:21:26:05:73"
+        "mac": "00:1b:21:08:14:23"
       },
       {
         "name": "enp7s0f3",
-        "mac": "00:1b:21:26:05:74"
+        "mac": "00:1b:21:08:14:24"
       }
     ],
     "nbs": [
