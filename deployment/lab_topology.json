@@ -62,8 +62,8 @@
         "site": "/edu/pkusz",
         "router": "/node14",
         "nicIndex": -1,
-        "ip": "219.223.222.84:9999",
-        "target": "tcp://219.223.222.84:9999",
+        "ip": "219.223.222.84:6363",
+        "target": "tcp://219.223.222.84:6363",
         "local": ""
       }
     ]
@@ -233,8 +233,8 @@
         "site": "/edu/pkusz",
         "router": "/node14",
         "nicIndex": -1,
-        "ip": "219.223.222.84:9999",
-        "target": "tcp://219.223.222.84:9999",
+        "ip": "219.223.222.84:6363",
+        "target": "tcp://219.223.222.84:6363",
         "local": ""
       }
     ]
@@ -440,6 +440,16 @@
         "nicIndex": 0,
         "target": "ether://[00:1b:21:09:09:14]",
         "local": "dev://enp7s0f0"
+      },
+      {
+        "name": "/ndn/edu/pkusz/node1",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node1",
+        "nicIndex": -1,
+        "ip": "ft.qjm253.cn:9999",
+        "target": "tcp://ft.qjm253.cn:9999",
+        "local": ""
       }
     ]
   },
@@ -489,16 +499,6 @@
         "nicIndex": 2,
         "target": "ether://[00:1b:21:26:05:77]",
         "local": "dev://enp8s0f2"
-      },
-      {
-        "name": "/ndn/edu/pkusz/node1",
-        "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/node1",
-        "nicIndex": -1,
-        "ip": "ft.qjm253.cn:9999",
-        "target": "tcp://ft.qjm253.cn:9999",
-        "local": ""
       },
       {
         "name": "/ndn/edu/pkusz/node6",
