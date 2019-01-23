@@ -33,18 +33,18 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node7",
-        "nicIndex": 0,
-        "target": "ether://[00:1b:21:09:09:13]",
-        "local": "dev://enp1s0f0"
+        "nicIndex": 1,
+        "target": "ether://[00:1b:21:09:09:11]",
+        "local": "dev://enp1s0f1"
       },
       {
         "name": "/ndn/edu/pkusz/node8",
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node7",
-        "nicIndex": 1,
-        "target": "ether://[00:1b:21:08:14:21]",
-        "local": "dev://enp1s0f1"
+        "nicIndex": 3,
+        "target": "ether://[00:1b:21:08:14:24]",
+        "local": "dev://enp1s0f3"
       }
     ]
   },
@@ -90,18 +90,18 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node6",
-        "nicIndex": 3,
-        "target": "ether://[00:1b:21:13:13:41]",
-        "local": "dev://enp1s0f3"
+        "nicIndex": 1,
+        "target": "ether://[00:1b:21:13:13:42]",
+        "local": "dev://enp1s0f1"
       },
       {
         "name": "/ndn/edu/pkusz/node8",
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node7",
-        "nicIndex": 2,
+        "nicIndex": 0,
         "target": "ether://[00:1b:21:08:14:22]",
-        "local": "dev://enp1s0f2"
+        "local": "dev://enp1s0f0"
       }
     ]
   },
@@ -139,9 +139,9 @@
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node6",
-        "nicIndex": 0,
-        "target": "ether://[00:1b:21:13:13:42]",
-        "local": "dev://enp7s0f0"
+        "nicIndex": 3,
+        "target": "ether://[00:1b:21:13:13:44]",
+        "local": "dev://enp7s0f3"
       },
       {
         "name": "/ndn/edu/pkusz/node7",
@@ -149,7 +149,7 @@
         "site": "/edu/pkusz",
         "router": "/node7",
         "nicIndex": 1,
-        "target": "ether://[00:1b:21:09:09:12]",
+        "target": "ether://[00:1b:21:09:09:10]",
         "local": "dev://enp7s0f1"
       }
     ]

@@ -33,14 +33,14 @@
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node7",
-                "nicIndex":0
+                "nicIndex":1
             },
             {
                 "name":"/ndn/edu/pkusz/node8",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node7",
-                "nicIndex":1
+                "nicIndex":3
             }
         ]
     },
@@ -86,14 +86,14 @@
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node6",
-                "nicIndex":3
+                "nicIndex":1
             },
             {
                 "name":"/ndn/edu/pkusz/node8",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node7",
-                "nicIndex":2
+                "nicIndex":0
             }
         ]
     },
@@ -131,7 +131,7 @@
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node6",
-                "nicIndex":0
+                "nicIndex":3
             },
             {
                 "name":"/ndn/edu/pkusz/node7",
