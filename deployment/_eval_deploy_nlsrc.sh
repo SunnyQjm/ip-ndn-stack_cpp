@@ -6,6 +6,7 @@ ip=$3
 routerName=$4
 mapPort=$5
 index=$6
+command=$7
 
 PROJ_DIR=/home/${username}/Documents/ip-ndn-stack_cpp
 DEPLOY_DIR=${PROJ_DIR}/deployment
@@ -15,9 +16,7 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 /usr/bin/expect << EOD
 set timeout -1
 spawn ssh root@${ip} -p${mapPort} "
-cd ${DEPLOY_DIR}
-sudo ./easy-ndn.sh ${routerName}
-echo nlsr finish
+nlsrc ${command}
 "
 expect {
     "(yes/no)?" {

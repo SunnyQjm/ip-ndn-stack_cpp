@@ -2,6 +2,7 @@
 
 command=$1
 ASYNC=$2
+args=$3
 DEBUG=0
 COUNT=0
 
@@ -131,6 +132,13 @@ function deal(){
             ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
         fi
         ;;
+    "nlsrc")
+    if [[ ${ASYNC} -eq 1 ]]; then
+        ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+    else
+        ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+    fi
+    ;;
     "stop")
         if [[ ${ASYNC} -eq 1 ]]; then
             ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
