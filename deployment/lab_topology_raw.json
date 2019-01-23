@@ -400,6 +400,14 @@
                 "site":"/edu/pkusz",
                 "router":"/node14",
                 "nicIndex":0
+            },
+            {
+                "name":"/ndn/edu/pkusz/node1",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "ft.qjm253.cn:9999"
             }
         ]
     },
@@ -440,19 +448,11 @@
                 "nicIndex":0
             },
             {
-                "name":"/ndn/edu/pkusz/node14",
+                "name":"/ndn/edu/pkusz/node10",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node14",
+                "router":"/node10",
                 "nicIndex":2
-            },
-            {
-                "name":"/ndn/edu/pkusz/node1",
-                "network":"/ndn",
-                "site":"/edu/pkusz",
-                "router":"/node1",
-                "nicIndex":-1,
-                "ip": "ft.qjm253.cn:9999"
             },
             {
                 "name":"/ndn/edu/pkusz/node6",

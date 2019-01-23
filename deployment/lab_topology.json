@@ -389,7 +389,7 @@
         "site": "/edu/pkusz",
         "router": "/node14",
         "nicIndex": 2,
-        "target": "ether://[]",
+        "target": "ether://[00:1b:21:09:09:16]",
         "local": "dev://enp7s0f2"
       }
     ]
@@ -482,12 +482,12 @@
         "local": "dev://enp8s0f0"
       },
       {
-        "name": "/ndn/edu/pkusz/node14",
+        "name": "/ndn/edu/pkusz/node10",
         "network": "/ndn",
         "site": "/edu/pkusz",
-        "router": "/node14",
+        "router": "/node10",
         "nicIndex": 2,
-        "target": "ether://[00:1b:21:09:09:16]",
+        "target": "ether://[00:1b:21:26:05:77]",
         "local": "dev://enp8s0f2"
       },
       {
