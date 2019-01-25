@@ -62,8 +62,8 @@
         "site": "/edu/pkusz",
         "router": "/node11",
         "nicIndex": -1,
-        "ip": "219.223.222.83:6363",
-        "target": "tcp://219.223.222.83:6363",
+        "ip": "121.15.171.84:6363",
+        "target": "tcp://121.15.171.84:6363",
         "local": ""
       }
     ]
@@ -233,8 +233,8 @@
         "site": "/edu/pkusz",
         "router": "/node14",
         "nicIndex": -1,
-        "ip": "219.223.222.84:6363",
-        "target": "tcp://219.223.222.84:6363",
+        "ip": "121.15.171.85:6363",
+        "target": "tcp://121.15.171.85:6363",
         "local": ""
       }
     ]
@@ -351,7 +351,7 @@
     "site": "/edu/pkusz",
     "router": "/node10",
     "id": 5,
-    "ip": "219.223.222.82",
+    "ip": "121.15.171.83",
     "mapPort": 22,
     "username": "node10",
     "password": "node10",
@@ -400,7 +400,7 @@
     "site": "/edu/pkusz",
     "router": "/node11",
     "id": 5,
-    "ip": "219.223.222.83",
+    "ip": "121.15.171.84",
     "mapPort": 22,
     "username": "node11",
     "password": "node11",
@@ -459,7 +459,7 @@
     "site": "/edu/pkusz",
     "router": "/node14",
     "id": 5,
-    "ip": "219.223.222.84",
+    "ip": "121.15.171.85",
     "mapPort": 22,
     "username": "node14",
     "password": "node14",

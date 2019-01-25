@@ -104,7 +104,7 @@ void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
         if(isTCP) {
-            this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[4]);
+tgyxc  s            this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[4]);
         } else {
             this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[3]);
         }
@@ -140,12 +140,12 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 
             next_name.append("/" + uid);
 
-            //发一个正式拉取的请求
-            this->expressInterest(next_name, false, true);
-
-			if (this->prefixGuestTable->find(next_name)) {
-            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
-			}
+//            //发一个正式拉取的请求
+//            this->expressInterest(next_name, false, true);
+//
+//			if (this->prefixGuestTable->find(next_name)) {
+//            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+//			}
 
             vector<string> uuid_fileds;
             boost::split(uuid_fileds, uid, boost::is_any_of("-"));
@@ -154,7 +154,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
             for (int i = 0; i < NUM_OF_GUEST; i++) {
                 string g_name = guess_name;
-                g_name.append(to_string(++num_of_sequence));
+                g_name.append(to_string(num_of_sequence++));
                 if (this->prefixGuestTable->saveConcurrence(g_name)) {
                     this->expressInterest(g_name, false, true);
                 }
