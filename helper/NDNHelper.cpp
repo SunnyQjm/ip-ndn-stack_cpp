@@ -154,7 +154,7 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
             guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
             for (int i = 0; i < NUM_OF_GUEST; i++) {
                 string g_name = guess_name;
-                g_name.append(to_string(num_of_sequence++));
+                g_name.append(to_string(++num_of_sequence));
                 if (this->prefixGuestTable->saveConcurrence(g_name)) {
                     this->expressInterest(g_name, false, true);
                 }
