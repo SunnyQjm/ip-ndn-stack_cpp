@@ -104,7 +104,7 @@ void NDNHelper::dealOnData(const Data &data, bool isPre, bool isTCP) {
         vector<string> fileds;
         boost::split(fileds, name, boost::is_any_of("/"));
         if(isTCP) {
-tgyxc  s            this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[4]);
+            this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[4]);
         } else {
             this->rawSocketHelper.sendPacketTo(data.getContent().value(), data.getContent().value_size(), fileds[3]);
         }
