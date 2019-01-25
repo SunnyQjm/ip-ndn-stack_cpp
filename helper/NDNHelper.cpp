@@ -140,19 +140,19 @@ void NDNHelper::dealOnInterest(const Interest &interest, bool isPre, bool isTCP)
 
             next_name.append("/" + uid);
 
-//            //发一个正式拉取的请求
-//            this->expressInterest(next_name, false, true);
+            //发一个正式拉取的请求
+            this->expressInterest(next_name, false, true);
 
-//			if (this->prefixGuestTable->find(next_name)) {
-//            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
-//			}
+			if (this->prefixGuestTable->find(next_name)) {
+            	this->prefixGuestTable->erase(next_name);   //删除已经发送这条
+			}
 
             vector<string> uuid_fileds;
             boost::split(uuid_fileds, uid, boost::is_any_of("-"));
-            int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]) - 1;
+            int num_of_sequence = boost::lexical_cast<int>(uuid_fileds[2]);
 
             guess_name.append("/" + uuid_fileds[0] + "-" + uuid_fileds[1] + "-");
-            for (int i = 0; i < NUM_OF_GUEST + 1; i++) {
+            for (int i = 0; i < NUM_OF_GUEST; i++) {
                 string g_name = guess_name;
                 g_name.append(to_string(num_of_sequence++));
                 if (this->prefixGuestTable->saveConcurrence(g_name)) {
