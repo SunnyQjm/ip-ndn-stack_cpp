@@ -5,8 +5,8 @@
     "site": "/edu/pkusz",
     "router": "/node1",
     "id": 0,
-    "ip": "ft.qjm253.cn",
-    "mapPort": 9601,
+    "ip": "183.47.54.13",
+    "mapPort": 22,
     "username": "node1",
     "password": "node1",
     "nics": [
@@ -62,8 +62,8 @@
         "site": "/edu/pkusz",
         "router": "/node11",
         "nicIndex": -1,
-        "ip": "121.15.171.84:6363",
-        "target": "tcp://121.15.171.84:6363",
+        "ip": "125.218.56.13:6363",
+        "target": "tcp://125.218.56.13:6363",
         "local": ""
       }
     ]
@@ -228,7 +228,7 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/pkusz/node14",
+        "name": "sd",
         "network": "/ndn",
         "site": "/edu/pkusz",
         "router": "/node14",
