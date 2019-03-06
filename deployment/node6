@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+set timeout 2
+set password node6
+spawn ssh node6@119.145.41.204 
+
+expect {
+    "(yes/no)?" {
+        send "yes\r";
+        expect "password:";
+        send "${password}\r";
+        exp_continue;
+    }
+    "password:" {
+        send "${password}\r";
+        exp_continue;
+    }
+}
+interact

@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+set timeout 2
+set password node2
+spawn ssh node2@ft.qjm253.cn -p 9602
+
+expect {
+    "(yes/no)?" {
+        send "yes\r";
+        expect "password:";
+        send "${password}\r";
+        exp_continue;
+    }
+    "password:" {
+        send "${password}\r";
+        exp_continue;
+    }
+}
+interact

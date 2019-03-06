@@ -48,7 +48,7 @@
                 "site":"/edu/pkusz",
                 "router":"/node6",
                 "nicIndex":-1,
-                "ip": "ns.qjm253.cn:9999"
+                "ip": "119.145.41.204:6363"
             },
             {
                 "name":"/ndn/edu/pkusz/node11",
@@ -160,8 +160,8 @@
         "site":"/edu/pkusz",
         "router":"/node6",
         "id":5,
-        "ip":"ns.qjm253.cn",
-        "mapPort":9606,
+        "ip":"119.145.41.204",
+        "mapPort":22,
         "username":"node6",
         "password":"node6",
         "nics":[
@@ -203,15 +203,15 @@
                 "site":"/edu/pkusz",
                 "router":"/node1",
                 "nicIndex":-1,
-                "ip": "ft.qjm253.cn:9999"
+                "ip": "183.47.54.13:6363"
             },
             {
-                "name":"sd",
+                "name":"/ndn/edu/pkusz/node14",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
                 "router":"/node14",
                 "nicIndex":-1,
-                "ip": "121.15.171.85:6363"
+                "ip": "125.218.56.14:6363"
             }
         ]
     },
@@ -319,7 +319,7 @@
         "site":"/edu/pkusz",
         "router":"/node10",
         "id":5,
-        "ip":"121.15.171.83",
+        "ip":"125.218.56.2",
         "mapPort":22,
         "username":"node10",
         "password":"node10",
@@ -364,7 +364,7 @@
         "site":"/edu/pkusz",
         "router":"/node11",
         "id":5,
-        "ip":"121.15.171.84",
+        "ip":"125.218.56.13",
         "mapPort":22,
         "username":"node11",
         "password":"node11",
@@ -407,7 +407,7 @@
                 "site":"/edu/pkusz",
                 "router":"/node1",
                 "nicIndex":-1,
-                "ip": "ft.qjm253.cn:9999"
+                "ip": "183.47.54.13:6363"
             }
         ]
     },
@@ -417,7 +417,7 @@
         "site":"/edu/pkusz",
         "router":"/node14",
         "id":5,
-        "ip":"121.15.171.85",
+        "ip":"125.218.56.14",
         "mapPort":22,
         "username":"node14",
         "password":"node14",
@@ -460,7 +460,7 @@
                 "site":"/edu/pkusz",
                 "router":"/node6",
                 "nicIndex":-1,
-                "ip": "ns.qjm253.cn:9999"
+                "ip": "119.145.41.204:6363"
             }
         ]
     }
