@@ -68,6 +68,7 @@ void NDNHelper::initNDN(string configFilePath) {
     auto ips = jsoncppHelper.get(NDNHelper::KEY_CONFIG_REGISTER_IP);
     for(int i = 0; i < ips.size(); i++) {
         this->registerIp.push_back(ips[i].asString());
+        cout << "register" << ips[i] << endl;
     }
 //    this->registerIp = jsoncppHelper.getString(NDNHelper::KEY_CONFIG_REGISTER_IP);
 }
