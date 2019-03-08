@@ -115,32 +115,32 @@
 
  - node10
     ```bash
-    sudo ethtool --offload enp1s0f3 gro off
-    sudo ethtool --offload enp1s0f2 gro off
-    sudo ethtool --offload enp1s0f1 gro off
-    sudo ethtool --offload enp1s0f0 gro off
-    sudo ifconfig enp1s0f0 mtu 8400
-    sudo ifconfig enp1s0f1 mtu 8400
-    sudo ifconfig enp1s0f2 mtu 8400
-    sudo ifconfig enp1s0f3 mtu 8400
-    sudo ifconfig enp1s0f0 192.171.1.3
-    sudo route add -host 192.171.1.4 dev enp1s0f0 
+    sudo ethtool --offload enp7s0f3 gro off
+    sudo ethtool --offload enp7s0f2 gro off
+    sudo ethtool --offload enp7s0f1 gro off
+    sudo ethtool --offload enp7s0f0 gro off
+    sudo ifconfig enp7s0f0 mtu 8400
+    sudo ifconfig enp7s0f1 mtu 8400
+    sudo ifconfig enp7s0f2 mtu 8400
+    sudo ifconfig enp7s0f3 mtu 8400
+    sudo ifconfig enp7s0f0 192.171.1.3
+    sudo route add -host 192.171.1.4 dev enp7s0f0 
    
   - node9
     ```bash
-    sudo ethtool --offload enp1s0f3 gro off
-    sudo ethtool --offload enp1s0f2 gro off
-    sudo ethtool --offload enp1s0f1 gro off
-    sudo ethtool --offload enp1s0f0 gro off
-    sudo ifconfig enp1s0f0 mtu 8400
-    sudo ifconfig enp1s0f1 mtu 8400
-    sudo ifconfig enp1s0f2 mtu 8400
-    sudo ifconfig enp1s0f3 mtu 8400
-    sudo ifconfig enp1s0f0 192.171.1.4
-    sudo route add -host 192.171.1.3 dev enp1s0f0
-    sudo route add -net 192.169.1.0/24 dev eth1 gw 192.171.1.3
-    sudo route add -net 192.170.1.0/24 dev eth1 gw 192.171.1.3
-    sudo route add -net 192.171.1.0/24 dev eth1 gw 192.171.1.3
+    sudo ethtool --offload enp7s0f3 gro off
+    sudo ethtool --offload enp7s0f2 gro off
+    sudo ethtool --offload enp7s0f1 gro off
+    sudo ethtool --offload enp7s0f0 gro off
+    sudo ifconfig enp7s0f0 mtu 8400
+    sudo ifconfig enp7s0f1 mtu 8400
+    sudo ifconfig enp7s0f2 mtu 8400
+    sudo ifconfig enp7s0f3 mtu 8400
+    sudo ifconfig enp7s0f0 192.171.1.4
+    sudo route add -host 192.171.1.3 dev enp7s0f0
+    sudo route add -net 192.169.1.0/24 dev enp7s0f0 gw 192.171.1.3
+    sudo route add -net 192.170.1.0/24 dev enp7s0f0 gw 192.171.1.3
+    sudo route add -net 192.171.1.0/24 dev enp7s0f0 gw 192.171.1.3
 
     ```
   - node11
