@@ -185,5 +185,5 @@
         ping 192.169.1.8
     - 网络拓扑
     
-        ![测试网络拓扑](https://raw.githubusercontent.com/SunnyQjm/ip-ndn-stack_cpp/master/documents/pic1.png)
+        ![测试网络拓扑](https://raw.githubusercontent.com/SunnyQjm/ip-ndn-stack_cpp/master/documents/topology.png)
  
