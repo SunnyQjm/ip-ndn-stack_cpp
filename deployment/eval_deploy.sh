@@ -133,12 +133,19 @@ function deal(){
         fi
         ;;
     "nlsrc")
-    if [[ ${ASYNC} -eq 1 ]]; then
-        ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
-    else
-        ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
-    fi
-    ;;
+        if [[ ${ASYNC} -eq 1 ]]; then
+            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+        else
+            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+        fi
+        ;;
+    "branch")
+        if [[ ${ASYNC} -eq 1 ]]; then
+            ./_eval_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+        else
+            ./_eval_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+        fi
+        ;;
     "stop")
         if [[ ${ASYNC} -eq 1 ]]; then
             ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
