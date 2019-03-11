@@ -127,9 +127,9 @@ function deal(){
         ;;
     "nlsr")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router} &
         else
-            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router}
         fi
         ;;
     "nlsrc")
