@@ -502,14 +502,14 @@
                 "network":"/ndn",
                 "site":"/edu/scut",
                 "router":"/hnlg2",
-                "nicIndex":2
+                "nicIndex":1
             },
             {
                 "name":"/ndn/edu/scut/hnlg3",
                 "network":"/ndn",
                 "site":"/edu/scut",
                 "router":"/hnlg3",
-                "nicIndex":1
+                "nicIndex":2
             }
         ]
     },
