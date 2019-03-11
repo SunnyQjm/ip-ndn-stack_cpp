@@ -139,11 +139,18 @@ function deal(){
             ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
         fi
         ;;
+    "nfdc")
+        if [[ ${ASYNC} -eq 1 ]]; then
+            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+        else
+            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+        fi
+        ;;
     "branch")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
         else
-            ./_eval_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
         fi
         ;;
     "stop")
