@@ -511,5 +511,148 @@
         "local": ""
       }
     ]
+  },
+  {
+    "name": "/ndn/edu/scut/hnlg1",
+    "network": "/ndn",
+    "site": "/edu/scut",
+    "router": "/hnlg1",
+    "id": 5,
+    "ip": "59.42.210.186",
+    "mapPort": 22,
+    "username": "usr",
+    "password": "123",
+    "nics": [
+      {
+        "name": "enp2s0f0",
+        "mac": "a0:36:9f:09:42:d2"
+      },
+      {
+        "name": "enp2s0f1",
+        "mac": "a0:36:9f:09:42:d3"
+      },
+      {
+        "name": "enp5s0f0",
+        "mac": "a0:36:9f:09:40:bc"
+      }
+    ],
+    "nbs": [
+      {
+        "name": "/ndn/edu/scut/hnlg2",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg2",
+        "nicIndex": 1,
+        "target": "ether://[00:1b:21:09:14:45]",
+        "local": "dev://enp2s0f1"
+      },
+      {
+        "name": "/ndn/edu/scut/hnlg3",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg3",
+        "nicIndex": 2,
+        "target": "ether://[00:1b:21:09:10:84]",
+        "local": "dev://enp5s0f0"
+      }
+    ]
+  },
+  {
+    "name": "/ndn/edu/scut/hnlg2",
+    "network": "/ndn",
+    "site": "/edu/scut",
+    "router": "/hnlg2",
+    "id": 5,
+    "ip": "59.42.210.187",
+    "mapPort": 22,
+    "username": "usr",
+    "password": "123",
+    "nics": [
+      {
+        "name": "enp4s0f0",
+        "mac": "00:1b:21:09:14:44"
+      },
+      {
+        "name": "enp4s0f1",
+        "mac": "00:1b:21:09:14:45"
+      },
+      {
+        "name": "enp4s0f2",
+        "mac": "00:1b:21:09:14:46"
+      },
+      {
+        "name": "enp4s0f3",
+        "mac": "00:1b:21:09:14:47"
+      }
+    ],
+    "nbs": [
+      {
+        "name": "/ndn/edu/scut/hnlg1",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg1",
+        "nicIndex": 1,
+        "target": "ether://[a0:36:9f:09:42:d3]",
+        "local": "dev://enp4s0f1"
+      },
+      {
+        "name": "/ndn/edu/scut/hnlg3",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg3",
+        "nicIndex": 2,
+        "target": "ether://[00:1b:21:09:10:85]",
+        "local": "dev://enp4s0f2"
+      }
+    ]
+  },
+  {
+    "name": "/ndn/edu/scut/hnlg3",
+    "network": "/ndn",
+    "site": "/edu/scut",
+    "router": "/hnlg3",
+    "id": 5,
+    "ip": "59.42.210.189",
+    "mapPort": 22,
+    "username": "usr",
+    "password": "123",
+    "nics": [
+      {
+        "name": "enp3s0f0",
+        "mac": "00:1b:21:09:10:83"
+      },
+      {
+        "name": "enp3s0f1",
+        "mac": "00:1b:21:09:10:84"
+      },
+      {
+        "name": "enp3s0f2",
+        "mac": "00:1b:21:09:10:85"
+      },
+      {
+        "name": "enp3s0f3",
+        "mac": "00:1b:21:09:10:86"
+      }
+    ],
+    "nbs": [
+      {
+        "name": "/ndn/edu/scut/hnlg2",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg2",
+        "nicIndex": 2,
+        "target": "ether://[00:1b:21:09:14:46]",
+        "local": "dev://enp3s0f2"
+      },
+      {
+        "name": "/ndn/edu/scut/hnlg1",
+        "network": "/ndn",
+        "site": "/edu/scut",
+        "router": "/hnlg1",
+        "nicIndex": 1,
+        "target": "ether://[a0:36:9f:09:40:bc]",
+        "local": "dev://enp3s0f1"
+      }
+    ]
   }
 ]
