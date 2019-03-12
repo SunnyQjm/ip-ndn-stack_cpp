@@ -784,5 +784,132 @@
                 "ip": "119.145.41.204:6363"
             }
         ]
+    },
+    {
+        "name":"/ndn/edu/must/node2",
+        "network":"/ndn",
+        "site":"/edu/must",
+        "router":"/node2",
+        "id":5,
+        "ip":"202.175.46.170",
+        "mapPort":1022,
+        "username":"gbtest",
+        "password":"a3HpEX&c",
+        "nics":[
+            {
+                "name": "ens160",
+                "mac": "00:0c:29:c8:b1:b7"
+            },
+            {
+                "name": "ens192",
+                "mac": "00:0c:29:c8:b1:c1"
+            },
+            {
+                "name": "ens224",
+                "mac": "00:0c:29:c8:b1:cb"
+            },
+            {
+                "name": "ens256",
+                "mac": "00:0c:29:c8:b1:d5"
+            }
+        ],
+        "nbs":[
+            {
+                "name":"/ndn/edu/must/node3",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node3",
+                "nicIndex":2
+            },
+            {
+                "name":"/ndn/edu/must/node4",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node4",
+                "nicIndex":1
+            }
+        ]
+    },
+    {
+        "name":"/ndn/edu/must/node3",
+        "network":"/ndn",
+        "site":"/edu/must",
+        "router":"/node3",
+        "id":5,
+        "ip":"202.175.46.170",
+        "mapPort":2022,
+        "username":"gbtest",
+        "password":"a3HpEX&c",
+        "nics":[
+            {
+                "name": "ens160",
+                "mac": "00:0c:29:ca:46:bd"
+            },
+            {
+                "name": "ens192",
+                "mac": "00:0c:29:ca:46:c7"
+            },
+            {
+                "name": "ens256",
+                "mac": "00:0c:29:ca:46:db"
+            }
+        ],
+        "nbs":[
+            {
+                "name":"/ndn/edu/must/node2",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node2",
+                "nicIndex":0
+            },
+            {
+                "name":"/ndn/edu/must/node4",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node4",
+                "nicIndex":1
+            }
+        ]
+    },
+    {
+        "name":"/ndn/edu/must/node4",
+        "network":"/ndn",
+        "site":"/edu/must",
+        "router":"/node4",
+        "id":5,
+        "ip":"202.175.46.170",
+        "mapPort":3022,
+        "username":"gbtest",
+        "password":"a3HpEX&c",
+        "nics":[
+            {
+                "name": "ens160",
+                "mac": "00:0c:29:0e:4f:02"
+            },
+            {
+                "name": "ens192",
+                "mac": "00:0c:29:0e:4f:0c"
+            },
+            {
+                "name": "ens256",
+                "mac": "00:0c:29:0e:4f:20"
+            }
+        ],
+        "nbs":[
+            {
+                "name":"/ndn/edu/must/node2",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node2",
+                "nicIndex":0
+            },
+            {
+                "name":"/ndn/edu/must/node3",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node3",
+                "nicIndex":1
+            }
+        ]
     }
 ]
