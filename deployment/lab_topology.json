@@ -236,6 +236,16 @@
         "ip": "121.15.171.85:6363",
         "target": "tcp://121.15.171.85:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/hkust/node1",
+        "network": "/ndn",
+        "site": "/edu/hkust",
+        "router": "/node1",
+        "nicIndex": -1,
+        "ip": "143.89.47.74:6363",
+        "target": "tcp://143.89.47.74:6363",
+        "local": ""
       }
     ]
   },
@@ -671,6 +681,47 @@
         "nicIndex": -1,
         "ip": "121.15.171.83:6363",
         "target": "tcp://121.15.171.83:6363",
+        "local": ""
+      }
+    ]
+  },
+  {
+    "name": "/ndn/edu/hkust/node1",
+    "network": "/ndn",
+    "site": "/edu/hkust",
+    "router": "/node1",
+    "id": 5,
+    "ip": "143.89.47.74",
+    "mapPort": 22,
+    "username": "eeuser",
+    "password": "dspLab31169102",
+    "nics": [
+      {
+        "name": "enp2s0f0",
+        "mac": "00:1b:21:a7:78:14"
+      },
+      {
+        "name": "enp2s0f1",
+        "mac": "00:1b:21:a7:78:15"
+      },
+      {
+        "name": "enp2s0f2",
+        "mac": "00:1b:21:a7:78:16"
+      },
+      {
+        "name": "enp2s0f3",
+        "mac": "00:1b:21:a7:78:17"
+      }
+    ],
+    "nbs": [
+      {
+        "name": "/ndn/edu/pkusz/node6",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node6",
+        "nicIndex": -1,
+        "ip": "119.145.41.204:6363",
+        "target": "tcp://119.145.41.204:6363",
         "local": ""
       }
     ]
