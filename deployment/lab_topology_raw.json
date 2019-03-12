@@ -228,6 +228,14 @@
                 "router":"/node3",
                 "nicIndex":-1,
                 "ip": "110.43.33.228:6363"
+            },
+            {
+                "name":"/ndn/edu/js/node3",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node3",
+                "nicIndex":-1,
+                "ip": "202.175.46.170:26363"
             }
         ]
     },
@@ -909,6 +917,14 @@
                 "site":"/edu/must",
                 "router":"/node3",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/pkusz/node6",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node6",
+                "nicIndex":-1,
+                "ip": "119.145.41.204:6363"
             }
         ]
     }
