@@ -258,10 +258,10 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/must/node4",
         "network": "/ndn",
-        "site": "/edu/js",
-        "router": "/node3",
+        "site": "/edu/must",
+        "router": "/node4",
         "nicIndex": -1,
         "ip": "202.175.46.170:26363",
         "target": "tcp://202.175.46.170:26363",
