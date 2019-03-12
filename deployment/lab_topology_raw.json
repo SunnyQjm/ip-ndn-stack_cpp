@@ -758,14 +758,14 @@
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node2",
-                "nicIndex":0
+                "nicIndex":1
             },
             {
                 "name":"/ndn/edu/js/node1",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node1",
-                "nicIndex":1
+                "nicIndex":0
             }
         ]
     }

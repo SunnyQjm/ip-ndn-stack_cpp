@@ -762,7 +762,7 @@
         "site": "/edu/js",
         "router": "/node3",
         "nicIndex": 1,
-        "target": "ether://[fa:16:3e:6f:73:42]",
+        "target": "ether://[fa:16:3e:0e:74:3c]",
         "local": "dev://eth1"
       }
     ]
@@ -803,7 +803,7 @@
         "site": "/edu/js",
         "router": "/node3",
         "nicIndex": 1,
-        "target": "ether://[fa:16:3e:0e:74:3c]",
+        "target": "ether://[fa:16:3e:6f:73:42]",
         "local": "dev://eth1"
       }
     ]
@@ -834,18 +834,18 @@
         "network": "/ndn",
         "site": "/edu/js",
         "router": "/node2",
-        "nicIndex": 0,
+        "nicIndex": 1,
         "target": "ether://[fa:16:3e:4f:ee:0b]",
-        "local": "dev://eth0"
+        "local": "dev://eth1"
       },
       {
         "name": "/ndn/edu/js/node1",
         "network": "/ndn",
         "site": "/edu/js",
         "router": "/node1",
-        "nicIndex": 1,
+        "nicIndex": 0,
         "target": "ether://[fa:16:3e:32:69:87]",
-        "local": "dev://eth1"
+        "local": "dev://eth0"
       }
     ]
   }
