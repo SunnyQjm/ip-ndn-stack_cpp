@@ -7,6 +7,7 @@ routerName=$4
 mapPort=$5
 index=$6
 command=$7
+sshArgs=$8
 
 PROJ_DIR=/home/${username}/Documents/ip-ndn-stack_cpp
 DEPLOY_DIR=${PROJ_DIR}/deployment
@@ -15,7 +16,7 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 #exit
 /usr/bin/expect << EOD
 set timeout -1
-spawn ssh root@${ip} -p${mapPort} "
+spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
 nlsrc ${command}
 "
 expect {

@@ -1,18 +1,21 @@
 #!/bin/bash
 nodeName=$1
-ip=$2
-configPath=$3
+network=$2
+site=$3
+router=$4
+ip=$5
+configPath=$6
 paramNum=$#
 
 sudo ./createFace.sh ${nodeName}
-sudo ./start-nlsr.sh ${nodeName} &
+sudo ./start-nlsr.sh ${nodeName} ${network} ${site} ${router} &
 sleep 1
 
 
-if [[ ${paramNum} -ge 2 ]]; then
+if [[ ${paramNum} -ge 5 ]]; then
     sudo ./nlsr_advertise_helper.sh ${ip}
 fi
 
-if [[ ${paramNum} -eq 3 ]]; then
+if [[ ${paramNum} -eq 6 ]]; then
     sudo ../ip_ndn_stack_cpp ${configPath}
 fi

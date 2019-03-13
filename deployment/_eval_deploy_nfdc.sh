@@ -6,7 +6,8 @@ ip=$3
 routerName=$4
 mapPort=$5
 index=$6
-sshArgs=$7
+command=$7
+sshArgs=$8
 
 PROJ_DIR=/home/${username}/Documents/ip-ndn-stack_cpp
 DEPLOY_DIR=${PROJ_DIR}/deployment
@@ -16,8 +17,7 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 /usr/bin/expect << EOD
 set timeout -1
 spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
-nfd-stop
-sudo nfd-start >/dev/null 2>&1 &
+nfdc ${command}
 "
 expect {
     "(yes/no)?" {
