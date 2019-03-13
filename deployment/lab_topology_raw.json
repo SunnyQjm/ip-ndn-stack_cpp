@@ -865,7 +865,7 @@
         "mapPort":2022,
         "args": "-i ~/.ssh/must",
         "username":"gbtest",
-        "password":"",
+        "password":"111",
         "nics":[
             {
                 "name": "ens160",
@@ -907,7 +907,7 @@
         "mapPort":3022,
         "args": "-i ~/.ssh/must",
         "username":"gbtest",
-        "password":"",
+        "password":"111",
         "nics":[
             {
                 "name": "ens160",
