@@ -696,7 +696,7 @@
         "ip":"110.43.33.93",
         "mapPort":22,
         "args": "-i ~/.ssh/js_id_rsa",
-        "username":"root",
+        "username":"ubuntu",
         "password":"123",
         "nics":[
             {
@@ -734,7 +734,7 @@
         "ip":"110.43.33.15",
         "mapPort":22,
         "args": "-i ~/.ssh/js_id_rsa",
-        "username":"root",
+        "username":"ubuntu",
         "password":"123",
         "nics":[
             {
@@ -772,7 +772,7 @@
         "ip":"110.43.33.228",
         "mapPort":22,
         "args": "-i ~/.ssh/js_id_rsa",
-        "username":"root",
+        "username":"ubuntu",
         "password":"123",
         "nics":[
             {
