@@ -181,9 +181,9 @@
     "id": 5,
     "ip": "119.145.41.204",
     "mapPort": 22,
-    "args": "",
+    "args": "-i ~/.ssh/telecom",
     "username": "node6",
-    "password": "node6",
+    "password": "",
     "nics": [
       {
         "name": "enp1s0f0",
@@ -281,9 +281,9 @@
     "id": 5,
     "ip": "ns.qjm253.cn",
     "mapPort": 9607,
-    "args": "",
+    "args": "-i ~/.ssh/telecom",
     "username": "node7",
-    "password": "node7",
+    "password": "",
     "nics": [
       {
         "name": "enp1s0f0",
@@ -339,9 +339,9 @@
     "id": 5,
     "ip": "ns.qjm253.cn",
     "mapPort": 9608,
-    "args": "",
+    "args": "-i ~/.ssh/telecom",
     "username": "node8",
-    "password": "node8",
+    "password": "",
     "nics": [
       {
         "name": "enp7s0f0",
