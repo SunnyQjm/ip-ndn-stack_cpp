@@ -513,9 +513,9 @@
         "id":5,
         "ip":"59.42.210.186",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/scut",
         "username":"usr",
-        "password":"123",
+        "password":"111",
         "nics":[
             {
                 "name": "enp2s0f0",
@@ -555,9 +555,9 @@
         "id":5,
         "ip":"59.42.210.187",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/scut",
         "username":"usr",
-        "password":"123",
+        "password":"111",
         "nics":[
             {
                 "name": "enp4s0f0",
@@ -601,9 +601,9 @@
         "id":5,
         "ip":"59.42.210.189",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/scut",
         "username":"usr",
-        "password":"123",
+        "password":"111",
         "nics":[
             {
                 "name": "enp3s0f0",
@@ -817,9 +817,9 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":1022,
-        "args": "",
+        "args": "-i ~/.ssh/must",
         "username":"gbtest",
-        "password":"a3HpEX&c",
+        "password":"111",
         "nics":[
             {
                 "name": "ens160",
@@ -863,9 +863,9 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":2022,
-        "args": "",
+        "args": "-i ~/.ssh/must",
         "username":"gbtest",
-        "password":"a3HpEX&c",
+        "password":"",
         "nics":[
             {
                 "name": "ens160",
@@ -905,9 +905,9 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":3022,
-        "args": "",
+        "args": "-i ~/.ssh/must",
         "username":"gbtest",
-        "password":"a3HpEX&c",
+        "password":"",
         "nics":[
             {
                 "name": "ens160",
