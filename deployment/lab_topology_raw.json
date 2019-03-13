@@ -167,7 +167,7 @@
         "mapPort":22,
         "args": "-i ~/.ssh/telecom",
         "username":"node6",
-        "password":"",
+        "password":"111",
         "nics":[
             {
                 "name": "enp1s0f0",
@@ -253,7 +253,7 @@
         "mapPort":9607,
         "args": "-i ~/.ssh/telecom",
         "username":"node7",
-        "password":"",
+        "password":"111",
         "nics":[
             {
                 "name": "enp1s0f0",
@@ -307,7 +307,7 @@
         "mapPort":9608,
         "args": "-i ~/.ssh/telecom",
         "username":"node8",
-        "password":"",
+        "password":"111",
         "nics":[
             {
                 "name": "enp7s0f0",
