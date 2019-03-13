@@ -351,9 +351,9 @@
         "id":5,
         "ip":"121.15.171.83",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/pkusz",
         "username":"node10",
-        "password":"node10",
+        "password":"111",
         "nics":[
             {
                 "name": "enp7s0f0",
@@ -405,9 +405,9 @@
         "id":5,
         "ip":"121.15.171.84",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/pkusz",
         "username":"node11",
-        "password":"node11",
+        "password":"111",
         "nics":[
             {
                 "name": "enp7s0f0",
@@ -459,9 +459,9 @@
         "id":5,
         "ip":"121.15.171.85",
         "mapPort":22,
-        "args": "",
+        "args": "-i ~/.ssh/pkusz",
         "username":"node14",
-        "password":"node14",
+        "password":"111",
         "nics":[
             {
                 "name": "enp8s0f0",
