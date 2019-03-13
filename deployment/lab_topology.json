@@ -7,6 +7,7 @@
     "id": 0,
     "ip": "183.47.54.13",
     "mapPort": 22,
+    "args": "",
     "username": "node1",
     "password": "node1",
     "nics": [
@@ -76,6 +77,7 @@
     "id": 1,
     "ip": "ft.qjm253.cn",
     "mapPort": 9602,
+    "args": "",
     "username": "node2",
     "password": "node2",
     "nics": [
@@ -129,6 +131,7 @@
     "id": 2,
     "ip": "ft.qjm253.cn",
     "mapPort": 9603,
+    "args": "",
     "username": "node3",
     "password": "node3",
     "nics": [
@@ -178,6 +181,7 @@
     "id": 5,
     "ip": "119.145.41.204",
     "mapPort": 22,
+    "args": "",
     "username": "node6",
     "password": "node6",
     "nics": [
@@ -277,6 +281,7 @@
     "id": 5,
     "ip": "ns.qjm253.cn",
     "mapPort": 9607,
+    "args": "",
     "username": "node7",
     "password": "node7",
     "nics": [
@@ -334,6 +339,7 @@
     "id": 5,
     "ip": "ns.qjm253.cn",
     "mapPort": 9608,
+    "args": "",
     "username": "node8",
     "password": "node8",
     "nics": [
@@ -383,6 +389,7 @@
     "id": 5,
     "ip": "121.15.171.83",
     "mapPort": 22,
+    "args": "",
     "username": "node10",
     "password": "node10",
     "nics": [
@@ -442,6 +449,7 @@
     "id": 5,
     "ip": "121.15.171.84",
     "mapPort": 22,
+    "args": "",
     "username": "node11",
     "password": "node11",
     "nics": [
@@ -501,6 +509,7 @@
     "id": 5,
     "ip": "121.15.171.85",
     "mapPort": 22,
+    "args": "",
     "username": "node14",
     "password": "node14",
     "nics": [
@@ -560,6 +569,7 @@
     "id": 5,
     "ip": "59.42.210.186",
     "mapPort": 22,
+    "args": "",
     "username": "usr",
     "password": "123",
     "nics": [
@@ -605,6 +615,7 @@
     "id": 5,
     "ip": "59.42.210.187",
     "mapPort": 22,
+    "args": "",
     "username": "usr",
     "password": "123",
     "nics": [
@@ -654,6 +665,7 @@
     "id": 5,
     "ip": "59.42.210.189",
     "mapPort": 22,
+    "args": "",
     "username": "usr",
     "password": "123",
     "nics": [
@@ -713,6 +725,7 @@
     "id": 5,
     "ip": "143.89.47.74",
     "mapPort": 22,
+    "args": "",
     "username": "eeuser",
     "password": "dspLab31169102",
     "nics": [
@@ -754,6 +767,7 @@
     "id": 5,
     "ip": "110.43.33.93",
     "mapPort": 22,
+    "args": "-i ~/.ssh/js_id_rsa",
     "username": "root",
     "password": "123",
     "nics": [
@@ -795,6 +809,7 @@
     "id": 5,
     "ip": "110.43.33.15",
     "mapPort": 22,
+    "args": "-i ~/.ssh/js_id_rsa",
     "username": "root",
     "password": "123",
     "nics": [
@@ -836,6 +851,7 @@
     "id": 5,
     "ip": "110.43.33.228",
     "mapPort": 22,
+    "args": "-i ~/.ssh/js_id_rsa",
     "username": "root",
     "password": "123",
     "nics": [
@@ -887,6 +903,7 @@
     "id": 5,
     "ip": "202.175.46.170",
     "mapPort": 1022,
+    "args": "",
     "username": "gbtest",
     "password": "a3HpEX&c",
     "nics": [
@@ -936,6 +953,7 @@
     "id": 5,
     "ip": "202.175.46.170",
     "mapPort": 2022,
+    "args": "",
     "username": "gbtest",
     "password": "a3HpEX&c",
     "nics": [
@@ -981,6 +999,7 @@
     "id": 5,
     "ip": "202.175.46.170",
     "mapPort": 3022,
+    "args": "",
     "username": "gbtest",
     "password": "a3HpEX&c",
     "nics": [

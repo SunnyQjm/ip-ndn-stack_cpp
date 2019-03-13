@@ -61,6 +61,7 @@ function deal(){
     ip=$(echo ${list} | jq -r ".[$index].ip")
     username=$(echo ${list} | jq -r ".[$index].username")
     password=$(echo ${list} | jq -r ".[$index].password")
+    sshArgs=$(echo ${list} | jq -r ".[$index].args")
 
     nics=$(echo ${list} | jq ".[$index].nics")
     nbs=$(echo ${list} | jq  ".[$index].nbs")
@@ -92,72 +93,72 @@ function deal(){
     case ${command} in
     "prepare")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_prepare.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_prepare.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_prepare.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_prepare.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     "update")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_update.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_update.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_update.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_update.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     "clone")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_clone.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_clone.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_clone.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_clone.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     "ifconfig")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_ifconfig.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_ifconfig.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_ifconfig.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_ifconfig.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     "nfd")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_nfd.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_nfd.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_nfd.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_nfd.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     "nlsr")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router} &
+            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router} ${sshArgs} &
         else
-            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router}
+            ./_eval_deploy_nlsr.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${network} ${site} ${router} ${sshArgs}
         fi
         ;;
     "nlsrc")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs} &
         else
-            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+            ./_eval_deploy_nlsrc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs}
         fi
         ;;
     "nfdc")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs} &
         else
-            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+            ./_eval_deploy_nfdc.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs}
         fi
         ;;
     "branch")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} &
+            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs} &
         else
-            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args}
+            ./_eval_deploy_change_branch.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${args} ${sshArgs}
         fi
         ;;
     "stop")
         if [[ ${ASYNC} -eq 1 ]]; then
-            ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} &
+            ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs} &
         else
-            ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index}
+            ./_eval_deploy_stop.sh ${username} ${password} ${ip} ${routerName} ${mapPort} ${index} ${sshArgs}
         fi
         ;;
     esac
