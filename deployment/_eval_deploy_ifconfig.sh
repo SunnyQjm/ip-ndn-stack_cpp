@@ -15,8 +15,8 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 #exit
 /usr/bin/expect << EOD
 set timeout -1
-spawn ssh root@${ip} -p${mapPort} ${sshArgs}"
-ifconfig
+spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
+pwd
 "
 expect {
     "(yes/no)?" {

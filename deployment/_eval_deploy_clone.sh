@@ -15,7 +15,7 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 #exit
 /usr/bin/expect << EOD
 set timeout -1
-spawn ssh root@${ip} -p${mapPort} ${sshArgs}"
+spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
 cd /home/${username}/Documents
 sudo git clone https://github.com/SunnyQjm/ip-ndn-stack_cpp.git
 "

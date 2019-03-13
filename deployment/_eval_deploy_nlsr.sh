@@ -18,7 +18,7 @@ DEPLOY_DIR=${PROJ_DIR}/deployment
 #exit
 /usr/bin/expect << EOD
 set timeout -1
-spawn ssh root@${ip} -p${mapPort} ${sshArgs}"
+spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
 cd ${DEPLOY_DIR}
 sudo ./easy-ndn.sh ${routerName} ${network} ${site} ${router}
 echo nlsr finish
