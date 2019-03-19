@@ -57,7 +57,7 @@
         "site": "/edu/gdcni",
         "router": "/gdcni13",
         "nicIndex": 2,
-        "target": "ether://[b4:96:91:4a:52:4f]",
+        "target": "ether://[b4:96:91:4a:52:55]",
         "local": "dev://ens2f2"
       }
     ]
@@ -120,7 +120,7 @@
         "site": "/edu/gdcni",
         "router": "/gdcni13",
         "nicIndex": 3,
-        "target": "ether://[b4:96:91:4a:52:55]",
+        "target": "ether://[b4:96:91:4a:52:4f]",
         "local": "dev://ens2f3"
       }
     ]
@@ -183,7 +183,7 @@
         "site": "/edu/gdcni",
         "router": "/gdcni13",
         "nicIndex": 2,
-        "target": "ether://[b4:96:91:4a:52:54]",
+        "target": "ether://[b4:96:91:4a:52:4e]",
         "local": "dev://ens1f0"
       }
     ]
@@ -264,20 +264,20 @@
     "password": "111",
     "nics": [
       {
-        "name": "ens6f0",
-        "mac": "b4:96:91:4a:52:4e"
-      },
-      {
-        "name": "ens6f1",
-        "mac": "b4:96:91:4a:52:4f"
-      },
-      {
         "name": "ens5f0",
         "mac": "b4:96:91:4a:52:54"
       },
       {
         "name": "ens5f1",
         "mac": "b4:96:91:4a:52:55"
+      },
+      {
+        "name": "ens6f0",
+        "mac": "b4:96:91:4a:52:4e"
+      },
+      {
+        "name": "ens6f1",
+        "mac": "b4:96:91:4a:52:4f"
       },
       {
         "name": "eno3",
@@ -292,7 +292,7 @@
         "router": "/gdcni3",
         "nicIndex": 1,
         "target": "ether://[b4:96:91:45:f5:32]",
-        "local": "dev://ens6f1"
+        "local": "dev://ens5f1"
       },
       {
         "name": "/ndn/edu/gdcni/gdcni4",
@@ -301,7 +301,7 @@
         "router": "/gdcni4",
         "nicIndex": 3,
         "target": "ether://[b4:96:91:45:f5:3b]",
-        "local": "dev://ens5f1"
+        "local": "dev://ens6f1"
       },
       {
         "name": "/ndn/edu/gdcni/gdcni11",
@@ -310,7 +310,7 @@
         "router": "/gdcni11",
         "nicIndex": 2,
         "target": "ether://[b4:96:91:4a:51:8a]",
-        "local": "dev://ens5f0"
+        "local": "dev://ens6f0"
       },
       {
         "name": "/ndn/edu/gdcni/gdcni12",
