@@ -325,7 +325,7 @@
                 "mac": "28:7b:09:cb:2e:ae"
             }
         ],
-        "nbs":[
+        "nbs": [
             {
                 "name":"/ndn/edu/gdcni/gdcni8",
                 "network":"/ndn",
@@ -346,6 +346,14 @@
                 "site":"/edu/gdcni",
                 "router":"/gdcni14",
                 "nicIndex":2
+            },
+            {
+                "name":"/ndn/edu/js/node1",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "110.43.33.93:6363"
             }
         ]
     },

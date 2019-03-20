@@ -383,6 +383,16 @@
         "nicIndex": 2,
         "target": "ether://[b4:96:91:4a:57:61]",
         "local": "dev://ens2f2"
+      },
+      {
+        "name": "/ndn/edu/js/node1",
+        "network": "/ndn",
+        "site": "/edu/js",
+        "router": "/node1",
+        "nicIndex": -1,
+        "ip": "110.43.33.93:6363",
+        "target": "tcp://110.43.33.93:6363",
+        "local": ""
       }
     ]
   },
