@@ -21,6 +21,7 @@ set timeout -1
 spawn ssh root@${ip} -p${mapPort} ${sshArgs} "
 cd ${DEPLOY_DIR}
 sudo ./easy-ndn.sh ${routerName} ${network} ${site} ${router}
+sleep 0.5
 echo nlsr finish
 "
 expect {
