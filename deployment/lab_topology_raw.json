@@ -226,7 +226,7 @@
                 "ip": "121.15.171.85:6363"
             },
             {
-                "name":"/ndn/edu/js/node3",
+                "name":"/ndn/edu/js/node2",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node3",
@@ -512,7 +512,7 @@
                 "ip": "119.145.41.204:6363"
             },
             {
-                "name":"/ndn/edu/js/node4",
+                "name":"/ndn/edu/js/node3",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node4",
@@ -662,7 +662,7 @@
                 "ip": "121.15.171.83:6363"
             },
             {
-                "name":"/ndn/edu/js/node3",
+                "name":"/ndn/edu/js/node2",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node3",
@@ -672,10 +672,10 @@
         ]
     },
     {
-        "name":"/ndn/edu/js/node2",
+        "name":"/ndn/edu/js/node1",
         "network":"/ndn",
         "site":"/edu/js",
-        "router":"/node2",
+        "router":"/node1",
         "id":5,
         "ip":"110.43.33.93",
         "mapPort":22,
@@ -694,26 +694,26 @@
         ],
         "nbs":[
             {
+                "name":"/ndn/edu/js/node2",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node2",
+                "nicIndex":0
+            },
+            {
                 "name":"/ndn/edu/js/node3",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node3",
-                "nicIndex":0
-            },
-            {
-                "name":"/ndn/edu/js/node4",
-                "network":"/ndn",
-                "site":"/edu/js",
-                "router":"/node4",
                 "nicIndex":1
             }
         ]
     },
     {
-        "name":"/ndn/edu/js/node3",
+        "name":"/ndn/edu/js/node2",
         "network":"/ndn",
         "site":"/edu/js",
-        "router":"/node3",
+        "router":"/node2",
         "id":5,
         "ip":"110.43.33.15",
         "mapPort":22,
@@ -732,23 +732,23 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/js/node2",
+                "name":"/ndn/edu/js/node1",
                 "network":"/ndn",
                 "site":"/edu/js",
-                "router":"/node2",
+                "router":"/node1",
                 "nicIndex":0
             },
             {
-                "name":"/ndn/edu/js/node4",
+                "name":"/ndn/edu/js/node3",
                 "network":"/ndn",
                 "site":"/edu/js",
-                "router":"/node4",
+                "router":"/node3",
                 "nicIndex":1
             }
         ]
     },
     {
-        "name":"/ndn/edu/js/node4",
+        "name":"/ndn/edu/js/node3",
         "network":"/ndn",
         "site":"/edu/js",
         "router":"/node4",
@@ -770,17 +770,17 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/js/node3",
-                "network":"/ndn",
-                "site":"/edu/js",
-                "router":"/node3",
-                "nicIndex":1
-            },
-            {
                 "name":"/ndn/edu/js/node2",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node2",
+                "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/js/node1",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node1",
                 "nicIndex":0
             },
             {

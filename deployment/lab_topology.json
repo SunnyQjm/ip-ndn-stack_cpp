@@ -252,7 +252,7 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
         "router": "/node3",
@@ -570,7 +570,7 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/js/node4",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
         "router": "/node4",
@@ -736,7 +736,7 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
         "router": "/node3",
@@ -748,10 +748,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/js/node2",
+    "name": "/ndn/edu/js/node1",
     "network": "/ndn",
     "site": "/edu/js",
-    "router": "/node2",
+    "router": "/node1",
     "id": 5,
     "ip": "110.43.33.93",
     "mapPort": 22,
@@ -770,19 +770,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node3",
+        "router": "/node2",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:62:8b:79]",
         "local": "dev://eth0"
       },
       {
-        "name": "/ndn/edu/js/node4",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node4",
+        "router": "/node3",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:0e:74:3c]",
         "local": "dev://eth1"
@@ -790,10 +790,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/js/node3",
+    "name": "/ndn/edu/js/node2",
     "network": "/ndn",
     "site": "/edu/js",
-    "router": "/node3",
+    "router": "/node2",
     "id": 5,
     "ip": "110.43.33.15",
     "mapPort": 22,
@@ -812,19 +812,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node2",
+        "name": "/ndn/edu/js/node1",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node2",
+        "router": "/node1",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:5e:35:b5]",
         "local": "dev://eth0"
       },
       {
-        "name": "/ndn/edu/js/node4",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node4",
+        "router": "/node3",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:6f:73:42]",
         "local": "dev://eth1"
@@ -832,7 +832,7 @@
     ]
   },
   {
-    "name": "/ndn/edu/js/node4",
+    "name": "/ndn/edu/js/node3",
     "network": "/ndn",
     "site": "/edu/js",
     "router": "/node4",
@@ -854,19 +854,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node3",
+        "router": "/node2",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:4f:ee:0b]",
         "local": "dev://eth1"
       },
       {
-        "name": "/ndn/edu/js/node2",
+        "name": "/ndn/edu/js/node1",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node2",
+        "router": "/node1",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:32:69:87]",
         "local": "dev://eth0"
