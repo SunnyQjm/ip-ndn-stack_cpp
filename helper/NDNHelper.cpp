@@ -21,7 +21,6 @@ NDNHelper::NDNHelper() : face("localhost") {
 }
 
 void NDNHelper::start() {
-    ndn::nfd::Controller
     for(auto &ip : this->registerIp) {
         cout << "registerIp: " << ip << endl;
         Name register_prefix1(NDNHelper::PREFIX_PRE_REQUEST + "/" + ip);
