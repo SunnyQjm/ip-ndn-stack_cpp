@@ -759,7 +759,7 @@
         "name":"/ndn/edu/js/node3",
         "network":"/ndn",
         "site":"/edu/js",
-        "router":"/node4",
+        "router":"/node3",
         "id":5,
         "ip":"110.43.33.228",
         "mapPort":22,
