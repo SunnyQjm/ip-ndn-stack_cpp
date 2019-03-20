@@ -573,10 +573,10 @@
         "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node4",
+        "router": "/node3",
         "nicIndex": -1,
-        "ip": "110.43.33.71:6363",
-        "target": "tcp://110.43.33.71:6363",
+        "ip": "110.43.33.228:6363",
+        "target": "tcp://110.43.33.228:6363",
         "local": ""
       }
     ]
@@ -736,13 +736,13 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/js/node2",
+        "name": "/ndn/edu/js/node1",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node3",
+        "router": "/node1",
         "nicIndex": -1,
-        "ip": "110.43.33.228:6363",
-        "target": "tcp://110.43.33.228:6363",
+        "ip": "110.43.33.93:6363",
+        "target": "tcp://110.43.33.93:6363",
         "local": ""
       }
     ]
