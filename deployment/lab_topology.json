@@ -900,6 +900,16 @@
         "ip": "121.15.171.85:6363",
         "target": "tcp://121.15.171.85:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni9",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni9",
+        "nicIndex": -1,
+        "ip": "183.6.152.123:6309",
+        "target": "tcp://183.6.152.123:6309",
+        "local": ""
       }
     ]
   },

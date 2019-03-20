@@ -806,6 +806,14 @@
                 "router":"/node14",
                 "nicIndex":-1,
                 "ip": "121.15.171.85:6363"
+            },
+            {
+                "name":"/ndn/edu/gdcni/gdcni9",
+                "network":"/ndn",
+                "site":"/edu/gdcni",
+                "router":"/gdcni9",
+                "nicIndex":-1,
+                "ip": "183.6.152.123:6309"
             }
         ]
     },
