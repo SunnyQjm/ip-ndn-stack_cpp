@@ -706,6 +706,14 @@
                 "site":"/edu/js",
                 "router":"/node3",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/scut/hnlg4",
+                "network":"/ndn",
+                "site":"/edu/scut",
+                "router":"/hnlg4",
+                "nicIndex":-1,
+                "ip": "59.42.210.189:6363"
             }
         ]
     },
