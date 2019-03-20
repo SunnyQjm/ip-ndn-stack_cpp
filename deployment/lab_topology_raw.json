@@ -714,6 +714,14 @@
                 "router":"/hnlg4",
                 "nicIndex":-1,
                 "ip": "59.42.210.189:6363"
+            },
+            {
+                "name":"/ndn/edu/gdcni/gdcni7",
+                "network":"/ndn",
+                "site":"/edu/gdcni",
+                "router":"/gdcni7",
+                "nicIndex":-1,
+                "ip": "183.6.152.123:6307"
             }
         ]
     },
