@@ -66,6 +66,16 @@
         "ip": "121.15.171.84:6363",
         "target": "tcp://121.15.171.84:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/must/node4",
+        "network": "/ndn",
+        "site": "/edu/must",
+        "router": "/node4",
+        "nicIndex": -1,
+        "ip": "202.175.46.170:26363",
+        "target": "tcp://202.175.46.170:26363",
+        "local": ""
       }
     ]
   },
@@ -242,16 +252,6 @@
         "local": ""
       },
       {
-        "name": "/ndn/edu/hkust/node1",
-        "network": "/ndn",
-        "site": "/edu/hkust",
-        "router": "/node1",
-        "nicIndex": -1,
-        "ip": "143.89.47.74:6363",
-        "target": "tcp://143.89.47.74:6363",
-        "local": ""
-      },
-      {
         "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
@@ -259,16 +259,6 @@
         "nicIndex": -1,
         "ip": "110.43.33.228:6363",
         "target": "tcp://110.43.33.228:6363",
-        "local": ""
-      },
-      {
-        "name": "/ndn/edu/must/node4",
-        "network": "/ndn",
-        "site": "/edu/must",
-        "router": "/node4",
-        "nicIndex": -1,
-        "ip": "202.175.46.170:26363",
-        "target": "tcp://202.175.46.170:26363",
         "local": ""
       }
     ]
@@ -430,13 +420,23 @@
         "local": "dev://enp7s0f2"
       },
       {
-        "name": "/ndn/edu/scut/hnlg3",
+        "name": "/ndn/edu/scut/hnlg4",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg3",
+        "router": "/hnlg4",
         "nicIndex": -1,
         "ip": "59.42.210.189:6363",
         "target": "tcp://59.42.210.189:6363",
+        "local": ""
+      },
+      {
+        "name": "/ndn/edu/pkusz/gdcni11",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/gdcni11",
+        "nicIndex": -1,
+        "ip": "121.15.171.87:6363",
+        "target": "tcp://121.15.171.87:6363",
         "local": ""
       }
     ]
@@ -498,6 +498,16 @@
         "ip": "183.47.54.13:6363",
         "target": "tcp://183.47.54.13:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/must/node4",
+        "network": "/ndn",
+        "site": "/edu/must",
+        "router": "/node4",
+        "nicIndex": -1,
+        "ip": "202.175.46.170:26363",
+        "target": "tcp://202.175.46.170:26363",
+        "local": ""
       }
     ]
   },
@@ -558,14 +568,24 @@
         "ip": "119.145.41.204:6363",
         "target": "tcp://119.145.41.204:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/js/node4",
+        "network": "/ndn",
+        "site": "/edu/js",
+        "router": "/node4",
+        "nicIndex": -1,
+        "ip": "110.43.33.71:6363",
+        "target": "tcp://110.43.33.71:6363",
+        "local": ""
       }
     ]
   },
   {
-    "name": "/ndn/edu/scut/hnlg1",
+    "name": "/ndn/edu/scut/hnlg2",
     "network": "/ndn",
     "site": "/edu/scut",
-    "router": "/hnlg1",
+    "router": "/hnlg2",
     "id": 5,
     "ip": "59.42.210.186",
     "mapPort": 22,
@@ -588,19 +608,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/scut/hnlg2",
+        "name": "/ndn/edu/scut/hnlg3",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg2",
+        "router": "/hnlg3",
         "nicIndex": 1,
         "target": "ether://[00:1b:21:09:14:45]",
         "local": "dev://enp2s0f1"
       },
       {
-        "name": "/ndn/edu/scut/hnlg3",
+        "name": "/ndn/edu/scut/hnlg4",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg3",
+        "router": "/hnlg4",
         "nicIndex": 2,
         "target": "ether://[00:1b:21:09:10:84]",
         "local": "dev://enp5s0f0"
@@ -608,10 +628,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/scut/hnlg2",
+    "name": "/ndn/edu/scut/hnlg3",
     "network": "/ndn",
     "site": "/edu/scut",
-    "router": "/hnlg2",
+    "router": "/hnlg3",
     "id": 5,
     "ip": "59.42.210.187",
     "mapPort": 22,
@@ -638,19 +658,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/scut/hnlg1",
+        "name": "/ndn/edu/scut/hnlg2",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg1",
+        "router": "/hnlg2",
         "nicIndex": 1,
         "target": "ether://[a0:36:9f:09:42:d3]",
         "local": "dev://enp4s0f1"
       },
       {
-        "name": "/ndn/edu/scut/hnlg3",
+        "name": "/ndn/edu/scut/hnlg4",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg3",
+        "router": "/hnlg4",
         "nicIndex": 2,
         "target": "ether://[00:1b:21:09:10:85]",
         "local": "dev://enp4s0f2"
@@ -658,10 +678,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/scut/hnlg3",
+    "name": "/ndn/edu/scut/hnlg4",
     "network": "/ndn",
     "site": "/edu/scut",
-    "router": "/hnlg3",
+    "router": "/hnlg4",
     "id": 5,
     "ip": "59.42.210.189",
     "mapPort": 22,
@@ -688,19 +708,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/scut/hnlg2",
+        "name": "/ndn/edu/scut/hnlg3",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg2",
+        "router": "/hnlg3",
         "nicIndex": 2,
         "target": "ether://[00:1b:21:09:14:46]",
         "local": "dev://enp3s0f2"
       },
       {
-        "name": "/ndn/edu/scut/hnlg1",
+        "name": "/ndn/edu/scut/hnlg2",
         "network": "/ndn",
         "site": "/edu/scut",
-        "router": "/hnlg1",
+        "router": "/hnlg2",
         "nicIndex": 1,
         "target": "ether://[a0:36:9f:09:40:bc]",
         "local": "dev://enp3s0f1"
@@ -714,56 +734,24 @@
         "ip": "121.15.171.83:6363",
         "target": "tcp://121.15.171.83:6363",
         "local": ""
-      }
-    ]
-  },
-  {
-    "name": "/ndn/edu/hkust/node1",
-    "network": "/ndn",
-    "site": "/edu/hkust",
-    "router": "/node1",
-    "id": 5,
-    "ip": "143.89.47.74",
-    "mapPort": 22,
-    "args": "",
-    "username": "eeuser",
-    "password": "dspLab31169102",
-    "nics": [
-      {
-        "name": "enp2s0f0",
-        "mac": "00:1b:21:a7:78:14"
       },
       {
-        "name": "enp2s0f1",
-        "mac": "00:1b:21:a7:78:15"
-      },
-      {
-        "name": "enp2s0f2",
-        "mac": "00:1b:21:a7:78:16"
-      },
-      {
-        "name": "enp2s0f3",
-        "mac": "00:1b:21:a7:78:17"
-      }
-    ],
-    "nbs": [
-      {
-        "name": "/ndn/edu/pkusz/node6",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/node6",
+        "site": "/edu/js",
+        "router": "/node3",
         "nicIndex": -1,
-        "ip": "119.145.41.204:6363",
-        "target": "tcp://119.145.41.204:6363",
+        "ip": "110.43.33.228:6363",
+        "target": "tcp://110.43.33.228:6363",
         "local": ""
       }
     ]
   },
   {
-    "name": "/ndn/edu/js/node1",
+    "name": "/ndn/edu/js/node2",
     "network": "/ndn",
     "site": "/edu/js",
-    "router": "/node1",
+    "router": "/node2",
     "id": 5,
     "ip": "110.43.33.93",
     "mapPort": 22,
@@ -782,19 +770,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node2",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node2",
+        "router": "/node3",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:62:8b:79]",
         "local": "dev://eth0"
       },
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node4",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node3",
+        "router": "/node4",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:0e:74:3c]",
         "local": "dev://eth1"
@@ -802,10 +790,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/js/node2",
+    "name": "/ndn/edu/js/node3",
     "network": "/ndn",
     "site": "/edu/js",
-    "router": "/node2",
+    "router": "/node3",
     "id": 5,
     "ip": "110.43.33.15",
     "mapPort": 22,
@@ -824,19 +812,19 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node1",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node1",
+        "router": "/node2",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:5e:35:b5]",
         "local": "dev://eth0"
       },
       {
-        "name": "/ndn/edu/js/node3",
+        "name": "/ndn/edu/js/node4",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node3",
+        "router": "/node4",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:6f:73:42]",
         "local": "dev://eth1"
@@ -844,10 +832,10 @@
     ]
   },
   {
-    "name": "/ndn/edu/js/node3",
+    "name": "/ndn/edu/js/node4",
     "network": "/ndn",
     "site": "/edu/js",
-    "router": "/node3",
+    "router": "/node4",
     "id": 5,
     "ip": "110.43.33.228",
     "mapPort": 22,
@@ -866,31 +854,31 @@
     ],
     "nbs": [
       {
-        "name": "/ndn/edu/js/node2",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node2",
+        "router": "/node3",
         "nicIndex": 1,
         "target": "ether://[fa:16:3e:4f:ee:0b]",
         "local": "dev://eth1"
       },
       {
-        "name": "/ndn/edu/js/node1",
+        "name": "/ndn/edu/js/node2",
         "network": "/ndn",
         "site": "/edu/js",
-        "router": "/node1",
+        "router": "/node2",
         "nicIndex": 0,
         "target": "ether://[fa:16:3e:32:69:87]",
         "local": "dev://eth0"
       },
       {
-        "name": "/ndn/edu/pkusz/node6",
+        "name": "/ndn/edu/pkusz/node14",
         "network": "/ndn",
         "site": "/edu/pkusz",
-        "router": "/node6",
+        "router": "/node14",
         "nicIndex": -1,
-        "ip": "119.145.41.204:6363",
-        "target": "tcp://119.145.41.204:6363",
+        "ip": "121.15.171.85:6363",
+        "target": "tcp://121.15.171.85:6363",
         "local": ""
       }
     ]
@@ -1043,6 +1031,16 @@
         "nicIndex": -1,
         "ip": "119.145.41.204:6363",
         "target": "tcp://119.145.41.204:6363",
+        "local": ""
+      },
+      {
+        "name": "/ndn/edu/pkusz/node11",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node11",
+        "nicIndex": -1,
+        "ip": "121.15.171.84:6363",
+        "target": "tcp://121.15.171.84:6363",
         "local": ""
       }
     ]
