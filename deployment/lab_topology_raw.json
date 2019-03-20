@@ -327,20 +327,6 @@
         ],
         "nbs": [
             {
-                "name":"/ndn/edu/gdcni/gdcni8",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni8",
-                "nicIndex":1
-            },
-            {
-                "name":"/ndn/edu/gdcni/gdcni9",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni9",
-                "nicIndex":4
-            },
-            {
                 "name":"/ndn/edu/gdcni/gdcni14",
                 "network":"/ndn",
                 "site":"/edu/gdcni",
@@ -392,20 +378,6 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/gdcni/gdcni7",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni7",
-                "nicIndex":1
-            },
-            {
-                "name":"/ndn/edu/gdcni/gdcni10",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni10",
-                "nicIndex":2
-            },
-            {
                 "name":"/ndn/edu/gdcni/gdcni14",
                 "network":"/ndn",
                 "site":"/edu/gdcni",
@@ -449,20 +421,6 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/gdcni/gdcni7",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni7",
-                "nicIndex":4
-            },
-            {
-                "name":"/ndn/edu/gdcni/gdcni10",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni10",
-                "nicIndex":3
-            },
-            {
                 "name":"/ndn/edu/gdcni/gdcni14",
                 "network":"/ndn",
                 "site":"/edu/gdcni",
@@ -505,20 +463,6 @@
             }
         ],
         "nbs":[
-            {
-                "name":"/ndn/edu/gdcni/gdcni8",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni8",
-                "nicIndex":2
-            },
-            {
-                "name":"/ndn/edu/gdcni/gdcni9",
-                "network":"/ndn",
-                "site":"/edu/gdcni",
-                "router":"/gdcni9",
-                "nicIndex":3
-            },
             {
                 "name":"/ndn/edu/gdcni/gdcni14",
                 "network":"/ndn",
