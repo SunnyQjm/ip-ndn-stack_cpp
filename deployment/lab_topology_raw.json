@@ -468,6 +468,14 @@
                 "site":"/edu/gdcni",
                 "router":"/gdcni14",
                 "nicIndex":2
+            },
+            {
+                "name":"/ndn/edu/js/node1",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "110.43.33.228:6363"
             }
         ]
     },
