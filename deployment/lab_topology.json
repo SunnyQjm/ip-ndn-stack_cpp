@@ -358,6 +358,24 @@
     ],
     "nbs": [
       {
+        "name": "/ndn/edu/gdcni/gdcni8",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni8",
+        "nicIndex": 1,
+        "target": "ether://[b4:96:91:45:f5:2d]",
+        "local": "dev://ens2f1"
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni9",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni9",
+        "nicIndex": 4,
+        "target": "ether://[28:7b:09:cb:2b:0e]",
+        "local": "dev://eno3"
+      },
+      {
         "name": "/ndn/edu/gdcni/gdcni14",
         "network": "/ndn",
         "site": "/edu/gdcni",
@@ -413,6 +431,24 @@
     ],
     "nbs": [
       {
+        "name": "/ndn/edu/gdcni/gdcni7",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni7",
+        "nicIndex": 1,
+        "target": "ether://[b4:96:91:45:f3:b5]",
+        "local": "dev://ens2f1"
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni10",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni10",
+        "nicIndex": 2,
+        "target": "ether://[b4:96:91:4a:52:4c]",
+        "local": "dev://ens2f2"
+      },
+      {
         "name": "/ndn/edu/gdcni/gdcni14",
         "network": "/ndn",
         "site": "/edu/gdcni",
@@ -457,6 +493,24 @@
       }
     ],
     "nbs": [
+      {
+        "name": "/ndn/edu/gdcni/gdcni7",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni7",
+        "nicIndex": 4,
+        "target": "ether://[28:7b:09:cb:2e:ae]",
+        "local": "dev://eno3"
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni10",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni10",
+        "nicIndex": 3,
+        "target": "ether://[b4:96:91:4a:52:4d]",
+        "local": "dev://ens1f1"
+      },
       {
         "name": "/ndn/edu/gdcni/gdcni14",
         "network": "/ndn",
@@ -503,6 +557,24 @@
     ],
     "nbs": [
       {
+        "name": "/ndn/edu/gdcni/gdcni8",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni8",
+        "nicIndex": 2,
+        "target": "ether://[b4:96:91:45:f5:2e]",
+        "local": "dev://ens1f0"
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni9",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni9",
+        "nicIndex": 3,
+        "target": "ether://[b4:96:91:4a:57:ab]",
+        "local": "dev://ens1f1"
+      },
+      {
         "name": "/ndn/edu/gdcni/gdcni14",
         "network": "/ndn",
         "site": "/edu/gdcni",
@@ -510,6 +582,16 @@
         "nicIndex": 4,
         "target": "ether://[28:7b:09:c1:7a:3a]",
         "local": "dev://eno3"
+      },
+      {
+        "name": "/ndn/edu/js/node3",
+        "network": "/ndn",
+        "site": "/edu/js",
+        "router": "/node3",
+        "nicIndex": -1,
+        "ip": "110.43.33.228:6363",
+        "target": "tcp://110.43.33.228:6363",
+        "local": ""
       }
     ]
   },
