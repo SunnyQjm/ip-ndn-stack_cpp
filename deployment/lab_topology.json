@@ -511,13 +511,13 @@
         "local": "dev://ens1f0"
       },
       {
-        "name": "/ndn/edu/pkusz/node10",
+        "name": "/ndn/edu/js/node3",
         "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/node10",
+        "site": "/edu/js",
+        "router": "/node3",
         "nicIndex": -1,
-        "ip": "121.15.171.83:6363",
-        "target": "tcp://121.15.171.83:6363",
+        "ip": "110.43.33.228:6363",
+        "target": "tcp://110.43.33.228:6363",
         "local": ""
       }
     ]
@@ -582,16 +582,6 @@
         "nicIndex": 4,
         "target": "ether://[28:7b:09:c1:7a:3a]",
         "local": "dev://eno3"
-      },
-      {
-        "name": "/ndn/edu/js/node3",
-        "network": "/ndn",
-        "site": "/edu/js",
-        "router": "/node3",
-        "nicIndex": -1,
-        "ip": "110.43.33.228:6363",
-        "target": "tcp://110.43.33.228:6363",
-        "local": ""
       }
     ]
   },
