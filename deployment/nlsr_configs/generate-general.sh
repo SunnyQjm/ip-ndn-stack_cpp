@@ -21,7 +21,7 @@ general
                              ; than lsa-refresh-time
 
   ; InterestLifetime (in seconds) for LSA fetching
-  lsa-interest-lifetime 4    ; default value 4. Valid values 1-60
+  lsa-interest-lifetime 20    ; default value 4. Valid values 1-60
 
   ; sync interest lifetime of ChronoSync in milliseconds
   sync-interest-lifetime 60000  ; default value 60000. Valid values 1000-120,000

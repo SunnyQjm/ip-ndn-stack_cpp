@@ -15,10 +15,10 @@ neighbors
    hello-retries 3                     ; interest retries number in integer. Default value 3
                                        ; valid values 1-10
 
-   hello-timeout 1                    ; interest time out value in integer. Default value 1
+   hello-timeout 5                    ; interest time out value in integer. Default value 1
                                        ; Valid values 1-15
 
-   hello-interval  60                  ; interest sending interval in seconds. Default value 60
+   hello-interval  30                  ; interest sending interval in seconds. Default value 60
                                        ; valid values 30-90
 
   ; adj-lsa-build-interval is the time to wait in seconds after an Adjacency LSA build is scheduled
