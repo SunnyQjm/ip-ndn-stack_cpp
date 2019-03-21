@@ -44,12 +44,12 @@
                 "nicIndex":2
             },
             {
-                "name": "/ndn/edu/gdcni/gdcni3",
+                "name": "/ndn/edu/gdcni/gdcni11",
                 "network": "/ndn",
                 "site": "/edu/gdcni",
-                "router": "/gdcni3",
+                "router": "/gdcni11",
                 "nicIndex": -1,
-                "ip": "183.6.152.122:6303"
+                "ip": "183.6.152.122:6311"
             }
         ]
     },
