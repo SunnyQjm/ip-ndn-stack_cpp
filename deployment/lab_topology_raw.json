@@ -53,6 +53,14 @@
                 "site":"/edu/gdcni",
                 "router":"/gdcni13",
                 "nicIndex":2
+            },
+            {
+                "name":"/ndn/edu/pkusz/node1",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node1",
+                "nicIndex":-1,
+                "ip": "183.47.54.13:6363"
             }
         ]
     },
