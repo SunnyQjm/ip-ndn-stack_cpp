@@ -59,16 +59,6 @@
         "nicIndex": 2,
         "target": "ether://[b4:96:91:4a:52:55]",
         "local": "dev://ens2f2"
-      },
-      {
-        "name": "/ndn/edu/pkusz/node14",
-        "network": "/ndn",
-        "site": "/edu/pkusz",
-        "router": "/node14",
-        "nicIndex": -1,
-        "ip": "121.15.171.85:6363",
-        "target": "tcp://121.15.171.85:6363",
-        "local": ""
       }
     ]
   },
@@ -195,6 +185,16 @@
         "nicIndex": 2,
         "target": "ether://[b4:96:91:4a:52:4e]",
         "local": "dev://ens1f0"
+      },
+      {
+        "name": "/ndn/edu/pkusz/node14",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node14",
+        "nicIndex": -1,
+        "ip": "121.15.171.85:6363",
+        "target": "tcp://121.15.171.85:6363",
+        "local": ""
       }
     ]
   },

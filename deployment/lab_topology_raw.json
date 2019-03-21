@@ -53,14 +53,6 @@
                 "site":"/edu/gdcni",
                 "router":"/gdcni13",
                 "nicIndex":2
-            },
-            {
-                "name":"/ndn/edu/pkusz/node14",
-                "network":"/ndn",
-                "site":"/edu/pkusz",
-                "router":"/node14",
-                "nicIndex":-1,
-                "ip": "121.15.171.85:6363"
             }
         ]
     },
@@ -175,6 +167,14 @@
                 "site":"/edu/gdcni",
                 "router":"/gdcni13",
                 "nicIndex":2
+            },
+            {
+                "name":"/ndn/edu/pkusz/node14",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node14",
+                "nicIndex":-1,
+                "ip": "121.15.171.85:6363"
             }
         ]
     },
