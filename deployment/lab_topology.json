@@ -46,6 +46,16 @@
         "nicIndex": 2,
         "target": "ether://[00:1b:21:09:09:16]",
         "local": "dev://enp7s0f2"
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni3",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni3",
+        "nicIndex": -1,
+        "ip": "183.6.152.122:6303",
+        "target": "tcp://183.6.152.122:6303",
+        "local": ""
       }
     ]
   },
@@ -146,16 +156,6 @@
         "nicIndex": 2,
         "target": "ether://[00:1b:21:26:05:77]",
         "local": "dev://enp8s0f2"
-      },
-      {
-        "name": "/ndn/edu/gdcni/gdcni3",
-        "network": "/ndn",
-        "site": "/edu/gdcni",
-        "router": "/gdcni3",
-        "nicIndex": -1,
-        "ip": "183.6.152.122:6303",
-        "target": "tcp://183.6.152.122:6303",
-        "local": ""
       }
     ]
   }
