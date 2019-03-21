@@ -61,13 +61,13 @@
         "local": "dev://ens2f2"
       },
       {
-        "name": "/ndn/edu/pkusz/node1",
+        "name": "/ndn/edu/pkusz/node9",
         "network": "/ndn",
         "site": "/edu/pkusz",
-        "router": "/node1",
+        "router": "/node9",
         "nicIndex": -1,
-        "ip": "183.47.54.13:6363",
-        "target": "tcp://183.47.54.13:6363",
+        "ip": "121.15.171.86:6363",
+        "target": "tcp://121.15.171.86:6363",
         "local": ""
       }
     ]
