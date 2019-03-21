@@ -56,6 +56,26 @@
         "ip": "119.145.41.204:6363",
         "target": "tcp://119.145.41.204:6363",
         "local": ""
+      },
+      {
+        "name": "/ndn/edu/pkusz/node6",
+        "network": "/ndn",
+        "site": "/edu/pkusz",
+        "router": "/node6",
+        "nicIndex": -1,
+        "ip": "119.145.41.204:6363",
+        "target": "tcp://119.145.41.204:6363",
+        "local": ""
+      },
+      {
+        "name": "/ndn/edu/gdcni/gdcni3",
+        "network": "/ndn",
+        "site": "/edu/gdcni",
+        "router": "/gdcni3",
+        "nicIndex": -1,
+        "ip": "183.6.152.122:6303",
+        "target": "tcp://183.6.152.122:6303",
+        "local": ""
       }
     ]
   },
