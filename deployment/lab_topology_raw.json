@@ -169,12 +169,12 @@
                 "nicIndex":2
             },
             {
-                "name":"/ndn/edu/pkusz/node14",
+                "name":"/ndn/edu/pkusz/node10",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node14",
+                "router":"/node10",
                 "nicIndex":-1,
-                "ip": "121.15.171.85:6363"
+                "ip": "121.15.171.83:6363"
             }
         ]
     },
