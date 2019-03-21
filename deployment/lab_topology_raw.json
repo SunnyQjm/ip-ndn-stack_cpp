@@ -55,12 +55,12 @@
                 "nicIndex":2
             },
             {
-                "name":"/ndn/edu/pkusz/node9",
+                "name":"/ndn/edu/pkusz/node14",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node9",
+                "router":"/node14",
                 "nicIndex":-1,
-                "ip": "121.15.171.86:6363"
+                "ip": "121.15.171.85:6363"
             }
         ]
     },
