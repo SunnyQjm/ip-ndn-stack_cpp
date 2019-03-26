@@ -5,6 +5,7 @@
 //
 
 #include "NDNHelper.h"
+#include <ndn-cxx/mgmt/nfd/controller.hpp>
 
 //前缀
 const string NDNHelper::PREFIX_PRE_REQUEST = "/IP/pre";

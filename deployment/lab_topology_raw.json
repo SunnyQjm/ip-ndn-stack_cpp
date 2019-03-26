@@ -58,6 +58,14 @@
                 "router":"/node11",
                 "nicIndex":-1,
                 "ip": "121.15.171.84:6363"
+            },
+            {
+                "name":"/ndn/edu/must/node4",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node4",
+                "nicIndex":-1,
+                "ip": "202.175.46.170:26363"
             }
         ]
     },
@@ -165,7 +173,7 @@
         "id":5,
         "ip":"119.145.41.204",
         "mapPort":22,
-        "args": "-i ~/.ssh/telecom",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node6",
         "password":"111",
         "nics":[
@@ -218,28 +226,12 @@
                 "ip": "121.15.171.85:6363"
             },
             {
-                "name":"/ndn/edu/hkust/node1",
-                "network":"/ndn",
-                "site":"/edu/hkust",
-                "router":"/node1",
-                "nicIndex":-1,
-                "ip": "143.89.47.74:6363"
-            },
-            {
-                "name":"/ndn/edu/js/node3",
+                "name":"/ndn/edu/js/node2",
                 "network":"/ndn",
                 "site":"/edu/js",
                 "router":"/node3",
                 "nicIndex":-1,
                 "ip": "110.43.33.228:6363"
-            },
-            {
-                "name":"/ndn/edu/must/node4",
-                "network":"/ndn",
-                "site":"/edu/must",
-                "router":"/node4",
-                "nicIndex":-1,
-                "ip": "202.175.46.170:26363"
             }
         ]
     },
@@ -251,7 +243,7 @@
         "id":5,
         "ip":"ns.qjm253.cn",
         "mapPort":9607,
-        "args": "-i ~/.ssh/telecom",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node7",
         "password":"111",
         "nics":[
@@ -305,7 +297,7 @@
         "id":5,
         "ip":"ns.qjm253.cn",
         "mapPort":9608,
-        "args": "-i ~/.ssh/telecom",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node8",
         "password":"111",
         "nics":[
@@ -351,7 +343,7 @@
         "id":5,
         "ip":"121.15.171.83",
         "mapPort":22,
-        "args": "-i ~/.ssh/pkusz",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node10",
         "password":"111",
         "nics":[
@@ -388,12 +380,28 @@
                 "nicIndex":2
             },
             {
-                "name":"/ndn/edu/scut/hnlg3",
+                "name":"/ndn/edu/scut/hnlg4",
                 "network":"/ndn",
                 "site":"/edu/scut",
-                "router":"/hnlg3",
+                "router":"/hnlg4",
                 "nicIndex":-1,
                 "ip": "59.42.210.189:6363"
+            },
+            {
+                "name":"/ndn/edu/pkusz/gdcni11",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/gdcni11",
+                "nicIndex":-1,
+                "ip": "121.15.171.87:6363"
+            },
+            {
+                "name":"/ndn/edu/gdcni/gdcni9",
+                "network":"/ndn",
+                "site":"/edu/gdcni",
+                "router":"/gdcni9",
+                "nicIndex":-1,
+                "ip": "183.6.152.123:6309"
             }
         ]
     },
@@ -405,7 +413,7 @@
         "id":5,
         "ip":"121.15.171.84",
         "mapPort":22,
-        "args": "-i ~/.ssh/pkusz",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node11",
         "password":"111",
         "nics":[
@@ -448,6 +456,14 @@
                 "router":"/node1",
                 "nicIndex":-1,
                 "ip": "183.47.54.13:6363"
+            },
+            {
+                "name":"/ndn/edu/must/node4",
+                "network":"/ndn",
+                "site":"/edu/must",
+                "router":"/node4",
+                "nicIndex":-1,
+                "ip": "202.175.46.170:26363"
             }
         ]
     },
@@ -459,7 +475,7 @@
         "id":5,
         "ip":"121.15.171.85",
         "mapPort":22,
-        "args": "-i ~/.ssh/pkusz",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"node14",
         "password":"111",
         "nics":[
@@ -502,18 +518,26 @@
                 "router":"/node6",
                 "nicIndex":-1,
                 "ip": "119.145.41.204:6363"
+            },
+            {
+                "name":"/ndn/edu/js/node3",
+                "network":"/ndn",
+                "site":"/edu/js",
+                "router":"/node3",
+                "nicIndex":-1,
+                "ip": "110.43.33.228:6363"
             }
         ]
     },
     {
-        "name":"/ndn/edu/scut/hnlg1",
+        "name":"/ndn/edu/scut/hnlg2",
         "network":"/ndn",
         "site":"/edu/scut",
-        "router":"/hnlg1",
+        "router":"/hnlg2",
         "id":5,
         "ip":"59.42.210.186",
         "mapPort":22,
-        "args": "-i ~/.ssh/scut",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"usr",
         "password":"111",
         "nics":[
@@ -532,30 +556,30 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/scut/hnlg2",
-                "network":"/ndn",
-                "site":"/edu/scut",
-                "router":"/hnlg2",
-                "nicIndex":1
-            },
-            {
                 "name":"/ndn/edu/scut/hnlg3",
                 "network":"/ndn",
                 "site":"/edu/scut",
                 "router":"/hnlg3",
+                "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/scut/hnlg4",
+                "network":"/ndn",
+                "site":"/edu/scut",
+                "router":"/hnlg4",
                 "nicIndex":2
             }
         ]
     },
     {
-        "name":"/ndn/edu/scut/hnlg2",
+        "name":"/ndn/edu/scut/hnlg3",
         "network":"/ndn",
         "site":"/edu/scut",
-        "router":"/hnlg2",
+        "router":"/hnlg3",
         "id":5,
         "ip":"59.42.210.187",
         "mapPort":22,
-        "args": "-i ~/.ssh/scut",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"usr",
         "password":"111",
         "nics":[
@@ -578,30 +602,30 @@
         ],
         "nbs":[
             {
-                "name":"/ndn/edu/scut/hnlg1",
+                "name":"/ndn/edu/scut/hnlg2",
                 "network":"/ndn",
                 "site":"/edu/scut",
-                "router":"/hnlg1",
+                "router":"/hnlg2",
                 "nicIndex":1
             },
             {
-                "name":"/ndn/edu/scut/hnlg3",
+                "name":"/ndn/edu/scut/hnlg4",
                 "network":"/ndn",
                 "site":"/edu/scut",
-                "router":"/hnlg3",
+                "router":"/hnlg4",
                 "nicIndex":2
             }
         ]
     },
     {
-        "name":"/ndn/edu/scut/hnlg3",
+        "name":"/ndn/edu/scut/hnlg4",
         "network":"/ndn",
         "site":"/edu/scut",
-        "router":"/hnlg3",
+        "router":"/hnlg4",
         "id":5,
         "ip":"59.42.210.189",
         "mapPort":22,
-        "args": "-i ~/.ssh/scut",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"usr",
         "password":"111",
         "nics":[
@@ -624,17 +648,17 @@
         ],
         "nbs":[
             {
+                "name":"/ndn/edu/scut/hnlg3",
+                "network":"/ndn",
+                "site":"/edu/scut",
+                "router":"/hnlg3",
+                "nicIndex":2
+            },
+            {
                 "name":"/ndn/edu/scut/hnlg2",
                 "network":"/ndn",
                 "site":"/edu/scut",
                 "router":"/hnlg2",
-                "nicIndex":2
-            },
-            {
-                "name":"/ndn/edu/scut/hnlg1",
-                "network":"/ndn",
-                "site":"/edu/scut",
-                "router":"/hnlg1",
                 "nicIndex":1
             },
             {
@@ -644,46 +668,14 @@
                 "router":"/node10",
                 "nicIndex":-1,
                 "ip": "121.15.171.83:6363"
-            }
-        ]
-    },
-    {
-        "name":"/ndn/edu/hkust/node1",
-        "network":"/ndn",
-        "site":"/edu/hkust",
-        "router":"/node1",
-        "id":5,
-        "ip":"143.89.47.74",
-        "mapPort":22,
-        "args": "",
-        "username":"eeuser",
-        "password":"dspLab31169102",
-        "nics":[
-            {
-                "name": "enp2s0f0",
-                "mac": "00:1b:21:a7:78:14"
             },
             {
-                "name": "enp2s0f1",
-                "mac": "00:1b:21:a7:78:15"
-            },
-            {
-                "name": "enp2s0f2",
-                "mac": "00:1b:21:a7:78:16"
-            },
-            {
-                "name": "enp2s0f3",
-                "mac": "00:1b:21:a7:78:17"
-            }
-        ],
-        "nbs":[
-            {
-                "name":"/ndn/edu/pkusz/node6",
+                "name":"/ndn/edu/js/node1",
                 "network":"/ndn",
-                "site":"/edu/pkusz",
-                "router":"/node6",
+                "site":"/edu/js",
+                "router":"/node1",
                 "nicIndex":-1,
-                "ip": "119.145.41.204:6363"
+                "ip": "110.43.33.93:6363"
             }
         ]
     },
@@ -722,6 +714,14 @@
                 "site":"/edu/js",
                 "router":"/node3",
                 "nicIndex":1
+            },
+            {
+                "name":"/ndn/edu/scut/hnlg4",
+                "network":"/ndn",
+                "site":"/edu/scut",
+                "router":"/hnlg4",
+                "nicIndex":-1,
+                "ip": "59.42.210.189:6363"
             }
         ]
     },
@@ -800,12 +800,20 @@
                 "nicIndex":0
             },
             {
-                "name":"/ndn/edu/pkusz/node6",
+                "name":"/ndn/edu/pkusz/node14",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node6",
+                "router":"/node14",
                 "nicIndex":-1,
-                "ip": "119.145.41.204:6363"
+                "ip": "121.15.171.85:6363"
+            },
+            {
+                "name":"/ndn/edu/gdcni/gdcni9",
+                "network":"/ndn",
+                "site":"/edu/gdcni",
+                "router":"/gdcni9",
+                "nicIndex":-1,
+                "ip": "183.6.152.123:6309"
             }
         ]
     },
@@ -817,7 +825,7 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":1022,
-        "args": "-i ~/.ssh/must",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"gbtest",
         "password":"111",
         "nics":[
@@ -863,7 +871,7 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":2022,
-        "args": "-i ~/.ssh/must",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"gbtest",
         "password":"111",
         "nics":[
@@ -905,7 +913,7 @@
         "id":5,
         "ip":"202.175.46.170",
         "mapPort":3022,
-        "args": "-i ~/.ssh/must",
+        "args": "-i ~/.ssh/pkusz_domain",
         "username":"gbtest",
         "password":"111",
         "nics":[
@@ -938,12 +946,20 @@
                 "nicIndex":1
             },
             {
-                "name":"/ndn/edu/pkusz/node6",
+                "name":"/ndn/edu/pkusz/node1",
                 "network":"/ndn",
                 "site":"/edu/pkusz",
-                "router":"/node6",
+                "router":"/node1",
                 "nicIndex":-1,
-                "ip": "119.145.41.204:6363"
+                "ip": "183.47.54.13:6363"
+            },
+            {
+                "name":"/ndn/edu/pkusz/node11",
+                "network":"/ndn",
+                "site":"/edu/pkusz",
+                "router":"/node11",
+                "nicIndex":-1,
+                "ip": "121.15.171.84:6363"
             }
         ]
     }
