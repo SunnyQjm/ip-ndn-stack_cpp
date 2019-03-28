@@ -23,9 +23,12 @@ general
   ; InterestLifetime (in seconds) for LSA fetching
   lsa-interest-lifetime 4    ; default value 4. Valid values 1-60
 
+  ; select sync protocol: chronosync or psync
+  sync-protocol psync
+
   ; sync interest lifetime of ChronoSync in milliseconds
   sync-interest-lifetime 60000  ; default value 60000. Valid values 1000-120,000
 
-  seq-dir       /var/lib/nlsr        ; path for sequence directory (Absolute path)
+  state-dir       /var/lib/nlsr        ; path for sequence directory (Absolute path)
 }
 EOF

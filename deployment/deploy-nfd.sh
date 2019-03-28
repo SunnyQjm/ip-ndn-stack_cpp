@@ -5,12 +5,13 @@
 ###################################################$
 
 
-NDN_CXX_VERSION=0.6.3
-NDN_NFD_VERSION=0.6.4
-WEB_SOCKET_PP_VERSION=0.7.0
+NDN_CXX_VERSION=0.6.5
+NDN_NFD_VERSION=0.6.5
+WEB_SOCKET_PP_VERSION=0.8.1
 CHRONO_SYNC_VERSION=0.5.2
-NLSR_VERSION=0.4.4_que
-NDN_TOOLS_VERSION=0.6.2
+PSYNC_VERSION=0.1.0
+NLSR_VERSION=0.5.0
+NDN_TOOLS_VERSION=0.6.3
 DEFAULT_DIR=~/Documents
 
 function ensureDir() {
@@ -28,14 +29,12 @@ function cloneOrUpdate() {
     cd ${DEFAULT_DIR}
     name=$1
     url=$2
-    if [[ -d ${name} ]];then
-        cd ${name}
-    else
+    if [[ ! -d ${name} ]];then
         mkdir ${name}
-        curl -L ${url} > ${name}.tar.gz
-        tar xf ${name}.tar.gz -C ${name} --strip 1
-        cd ${name}
     fi
+    curl -L ${url} > ${name}.tar.gz
+    tar xf ${name}.tar.gz -C ${name} --strip 1
+    cd ${name}
 }
 
 # install nfd use apt
@@ -78,8 +77,15 @@ cloneOrUpdate ChronoSync https://github.com/named-data/ChronoSync/archive/${CHRO
 ./waf
 sudo ./waf install
 
+# install PSync
+cloneOrUpdate PSync https://github.com/named-data/PSync/archive/${PSYNC_VERSION}.tar.gz
+./waf configure
+./waf
+sudo ./waf install
+
+
 # install NLSR
-cloneOrUpdate NLSR https://github.com/SunnyQjm/NLSR/archive/NLSR-${NLSR_VERSION}.tar.gz
+cloneOrUpdate NLSR https://github.com/named-data/NLSR/archive/NLSR-${NLSR_VERSION}.tar.gz
 ./waf configure
 ./waf
 sudo ./waf install
@@ -109,6 +115,6 @@ sudo ./waf install
 #sudo make install
 
 # install jsoncpp
-sudo apt install libjsoncpp-dev -y
+sudo apt install libjsoncpp-dev jq cmake -y
 # enforce loading lib
 sudo ldconfig
