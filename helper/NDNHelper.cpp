@@ -12,6 +12,7 @@ const string NDNHelper::PREFIX_PRE_REQUEST = "/IP/pre";
 const string NDNHelper::PREFIX_REQUEST_DATA = "/IP";
 const string NDNHelper::PREFIX_TCP_PRE_REQUEST = "/IP/TCP/pre";
 const string NDNHelper::PREFIX_TCP_REQUEST_DATA = "/IP/TCP";
+int NDNHelper::interestPacketNum = 0;
 
 //配置文件的键值
 const string NDNHelper::KEY_CONFIG_REGISTER_IP = "registerIp";
@@ -209,7 +210,8 @@ void NDNHelper::onRegisterFailed(const Name &prefix) {
 void NDNHelper::expressInterest(string name, bool isPre, bool isTCP) {
 	Interest interest(name);
 	interest.setInterestLifetime(2_s);	//兴趣报存活时间
-	cout << "express interest: " << name << endl;
+    NDNHelper::interestPacketNum++;
+	cout << "express interest: " << name << "(" << NDNHelper::interestPacketNum << ")" << endl;
     this->face.expressInterest(interest, bind(&NDNHelper::onData, this, _1, _2, isPre, isTCP),
                                bind(&NDNHelper::onNack, this, _1, _2), bind(&NDNHelper::onTimeout, this, _1, isPre));
 }

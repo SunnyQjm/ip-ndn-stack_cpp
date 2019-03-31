@@ -131,6 +131,7 @@ public: //静态变量
     static const string PREFIX_TCP_REQUEST_DATA;
     static const string KEY_CONFIG_REGISTER_IP;
 	static const int NUM_OF_GUEST = 60;
+	static int interestPacketNum;
 private:
     Face face;
     MapCacheHelper<tuple_p> *cacheHelper;            //缓存表
